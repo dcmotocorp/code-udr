@@ -1,5 +1,7 @@
 import curses
 from logs.udr_logger import UdrLogger
+from dialogs.system_config import SystemConfig
+
 
 class AuthenticationScreen:
     def __init__(self, stdscr, screen_height, screen_width):
@@ -9,6 +11,7 @@ class AuthenticationScreen:
         self.username_input = ""
         self.password_input = ""
         self.current_status = "username"
+        self.autheticated_parameter = True
         self.logger_ = UdrLogger()
         self.setup_authentication_screen()
 
@@ -102,7 +105,12 @@ class AuthenticationScreen:
                 self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(1))
                 self.password_win.refresh()
         elif event.name == "enter":
-            return "enter"
+            self.logger_.log_info("Enter in the screen {} {}".format(self.username_input,self.password_input))
+            if len(self.username_input) >0 or len(self.password_input) >0:
+                self.authentication_screen.clear()
+                self.authentication_screen = None
+                self.logger_.log_info("Create system config screen ")
+                self.system_config.create_system_configuration()
 
         elif event.name == "tab":
             if  self.current_status == "username":
