@@ -1,5 +1,5 @@
 import curses
-
+from logs.udr_logger import UdrLogger
 
 class AuthenticationScreen:
     def __init__(self, stdscr, screen_height, screen_width):
@@ -8,6 +8,8 @@ class AuthenticationScreen:
         self.screen_width = screen_width
         self.username_input = ""
         self.password_input = ""
+        self.current_status = "username"
+        self.logger_ = UdrLogger()
         self.setup_authentication_screen()
 
     def setup_authentication_screen(self):
@@ -101,12 +103,22 @@ class AuthenticationScreen:
                 self.password_win.refresh()
         elif event.name == "enter":
             return "enter"
+
+        elif event.name == "tab":
+            if  self.current_status == "username":
+                self.current_status = "password"
+            elif self.current_status == "password":
+                self.current_status = "username"
+            self.logger_.log_info("switch event.name - {}".format(event.name))
         elif len(event.name) == 1:
-            if len(self.username_input) < 20:
+            
+            if  self.current_status == "username" and len(self.username_input) < 20  :
+                self.logger_.log_info("event.name - {} current name {} iuser input {}".format(event.name,self.current_status,self.username_input))
                 self.username_input += event.name
                 self.username_win.addstr(0, 0, self.username_input, curses.color_pair(1))
                 self.username_win.refresh()
-            elif len(self.password_input) < 20:
+            if  self.current_status == "password" and  len(self.password_input) < 20  :
+                self.logger_.log_info("password.name - {} current name {} iuser input {}".format(event.name,self.current_status,self.username_input))
                 self.password_input += event.name
                 self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(1))
                 self.password_win.refresh()

@@ -90,7 +90,6 @@ class NovaiguApplication:
                 self.popup_window.popup_win = None
                 self.reset_main_screen_color()
             if self.authentication_screen.authentication_screen: 
-            # if hasattr(self, AUTHENTICATION_SCREEN):
                     self.current_selected = USERNAME_LABEL
                     self.clear_authetication_screen()
                     self.reset_main_screen_color()
@@ -119,11 +118,11 @@ class NovaiguApplication:
                 self.current_selected = USERNAME_LABEL
                 self.set_main_screen_black()
 
-        elif event.name == "tab" and self.current_selected == USERNAME_LABEL:
-            self.current_selected = "password"
-
-        elif event.name == "tab" and self.current_selected == "password":
-            self.current_selected = USERNAME_LABEL
+        elif event.name == "tab" :
+            if  self.authentication_screen.current_status == "username":
+                self.authentication_screen.current_status = "password"
+            elif self.authentication_screen.current_status == "password":
+                self.authentication_screen.current_status = "username"
 
         elif event.name == "backspace":
             if self.current_selected == USERNAME_LABEL:
@@ -187,7 +186,7 @@ class NovaiguApplication:
 
     def run(self):
         while True:
-            print("App running")
+            pass
 
 
 def main(stdscr):
