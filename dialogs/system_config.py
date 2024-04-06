@@ -40,16 +40,18 @@ class SystemConfig:
 
         # Create windows for each partition within the pop-up window
         self.sc_config_top_win = self.system_configuration_screen.subwin(sc_config_top_height, sc_config_width, sc_config_y, sc_config_x)
-        sc_config_bottom_win = self.system_configuration_screen.subwin(sc_config_bottom_height, sc_config_width, sc_config_y + sc_config_top_height, sc_config_x)
+        self.sc_config_bottom_win = self.system_configuration_screen.subwin(sc_config_bottom_height, sc_config_width, sc_config_y + sc_config_top_height, sc_config_x)
 
         # Set background colors for each partition within the pop-up window
         self.sc_config_top_win.bkgd(' ', curses.color_pair(1))  # Yellow background
-        sc_config_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
+        self.sc_config_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
+
+        self.sc_config_top_win.addstr(3 , 5, SYSTEM_CONFIG_LABEL, self.normal_color_pair)
 
         # System configuration labels
         for index, label in enumerate(self.labels):
             color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
-            self.sc_config_top_win.addstr(3 + index, 5, label, color_pair)
+            self.sc_config_top_win.addstr( 5+ index, 5, label, color_pair)
 
         self.system_configuration_screen.refresh()
         # Create the square
@@ -61,6 +63,7 @@ class SystemConfig:
         self.square_win.bkgd(' ', curses.color_pair(1))  # Set background color to match screen background
         self.square_win.box() 
         
+        
 
         #setup new tab
         current_label = self.labels[self.selected_index]
@@ -69,7 +72,17 @@ class SystemConfig:
         self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
         self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
         self.square_win.refresh() 
-        
+
+
+        #for the bottom part set the label
+
+        label_text_bottom_enter_ok = "<Enter> Ok"
+        self.sc_config_bottom_win.addstr(sc_config_top_height-10, 2, label_text_bottom_enter_ok, curses.color_pair(3))
+        self.sc_config_bottom_win.refresh()
+
+        label_text_bottom_esc_log_out = "<Esc> Log out"
+        self.sc_config_bottom_win.addstr(sc_config_top_height-10, sc_config_width-15, label_text_bottom_enter_ok, curses.color_pair(3))
+        self.sc_config_bottom_win.refresh()
 
 
     def handle_arrow_key(self, key):
@@ -97,7 +110,8 @@ class SystemConfig:
             self.logger_.log_info("inside key down key {}".format(key))
             self.selected_index = max(0, self.selected_index - 1)            
               # Yellow background
-            self.sc_config_top_win.addstr(3 , 5, SYSTEM_CONFIG_LABEL, self.normal_color_pair)
+            
+            
             for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 self.sc_config_top_win.addstr(5 + index, 5, label, color_pair)
