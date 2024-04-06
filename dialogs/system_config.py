@@ -16,11 +16,11 @@ class SystemConfig:
         self.logger_ = UdrLogger()
         self.active_status = True
         self.selected_index = 0  # Index of the currently selected label
-        self.labels = [SYSTEM_CONFIG_LABEL, PASSWORD, HOSTNAME, MANAGEMENT_INTERFACE, SSH, LOCK_DOWN_MODE, RESET_SYSTEM_CONFIG]
+        self.labels = [ PASSWORD, HOSTNAME, MANAGEMENT_INTERFACE, SSH, LOCK_DOWN_MODE, RESET_SYSTEM_CONFIG]
         self.label_count = len(self.labels)
         self.selected_color_pair = curses.color_pair(5)  # Color pair for selected label
         self.normal_color_pair = curses.color_pair(4)    # Color pair for normal label
-
+        
     def create_system_configuration(self):
         sc_config_height, sc_config_width = int(self.screen_height * 0.98), int(self.screen_width * 0.99)
         sc_config_x = int(self.screen_width * 0.015)
@@ -46,6 +46,15 @@ class SystemConfig:
             self.sc_config_top_win.addstr(3 + index, 5, label, color_pair)
 
         self.system_configuration_screen.refresh()
+        # Create the square
+        square_height =  22
+        square_width =  int(self.screen_width * 0.45)  # Adjust the width as needed
+        square_x = int(self.screen_width * 0.4)
+        square_y =  2
+        square_win = curses.newwin(square_height, square_width, square_y, square_x)
+        square_win.bkgd(' ', curses.color_pair(0))  # Set background color to match screen background
+        square_win.box() 
+        square_win.refresh() 
 
     def handle_arrow_key(self, key):
         self.logger_.log_info("config key {}".format(key))
@@ -70,13 +79,12 @@ class SystemConfig:
         
         if key == KEY_DOWN:
             self.logger_.log_info("inside key down key {}".format(key))
-            self.selected_index = max(0, self.selected_index - 1)
-            
+            self.selected_index = max(0, self.selected_index - 1)            
               # Yellow background
-            
+            self.sc_config_top_win.addstr(3 , 5, SYSTEM_CONFIG_LABEL, self.normal_color_pair)
             for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
-                self.sc_config_top_win.addstr(3 + index, 5, label, color_pair)
+                self.sc_config_top_win.addstr(5 + index, 5, label, color_pair)
             
             self.sc_config_top_win.refresh()
             self.logger_.log_info("screen refreash ")
@@ -87,7 +95,7 @@ class SystemConfig:
             self.selected_index = min(self.label_count - 1, self.selected_index + 1)
             for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
-                self.sc_config_top_win.addstr(3 + index, 5, label, color_pair)
+                self.sc_config_top_win.addstr(5 + index, 5, label, color_pair)
             
             self.sc_config_top_win.refresh()
         self.create_system_configuration()
