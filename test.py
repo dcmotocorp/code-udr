@@ -4,7 +4,7 @@ import keyboard
 from utils import shutdown_computer, get_ip_address, restart_computer
 from constant import SYSTEM_CONFIG_LABEL, PASSWORD_LABEL, USERNAME_LABEL, NOVAIGU_HTTP_LABEL, \
     NOVAIGU_PLATFORM_LABEL, NOVAIGU_LABEL, F2_CONFIGURATION_SYSTEM, SHUT_DOWN_RESTART, AUTHENTICATION_SCREEN, KEY_ESC, \
-    ESC_CANCLE, F11_RESTART, F2_SHUT_DOWN, PASSWORD, HOSTNAME, SSH, LOCK_DOWN_MODE
+    ESC_CANCLE, F11_RESTART, F2_SHUT_DOWN, PASSWORD, HOSTNAME, SSH, LOCK_DOWN_MODE,KEY_DOWN,KEY_UP
 from dialogs.restart_shutdown import ShutdownRestart
 from dialogs.authentication import AuthenticationScreen
 from dialogs.system_config import SystemConfig
@@ -84,7 +84,20 @@ class NovaiguApplication:
         self.popup_window.create_shut_down_restart_pop_up(self.stdscr)
 
     def _on_key_press(self, event):
-        if event.name == KEY_ESC:
+
+        self.logger_.log_info("press key {}".format(event.name))
+        if event.name == KEY_DOWN  :
+            self.logger_.log_info("key down for")
+            if self.system_config.active_status ==True :
+                self.logger_.log_info("key down for  status {} ".format(self.system_config.active_status))
+                self.system_config.handle_arrow_key(event.name)
+                self.logger_.log_info("completed status for the system ")
+        elif event.name == KEY_UP:
+            if self.system_config.active_status ==True :
+                self.system_config.handle_arrow_key(event.name)
+
+        
+        elif event.name == KEY_ESC:
             print("=====================event name", event.name)
             if self.popup_window.popup_win:
                 self.popup_window.popup_win.clear()  # KEY_ESC the pop-up window
