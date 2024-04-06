@@ -109,6 +109,13 @@ class NovaiguApplication:
                     self.current_selected = USERNAME_LABEL
                     self.clear_authetication_screen()
                     self.reset_main_screen_color()
+            elif self.system_config.active_status == True:
+                self.logger_.log_info("revert the screen")
+                self.system_config.active_status =False
+                self.system_config.system_configuration_screen.clear()
+                self.system_config.system_configuration_screen = None
+                self.reset_main_screen_color()
+                self.logger_.log_info(" end revert the screen")
 
         elif event.name == "f2":
             if self.popup_window.popup_win:
@@ -131,6 +138,9 @@ class NovaiguApplication:
                     self.clear_authetication_screen()
                     self.clear_user_name_password_screen()
                     self.system_config.create_system_configuration()
+                    
+            # elif self.system_config.active_status == True:
+
             else:
                 self.logger_.log_info("in the other else partn ")
                 self.current_selected = USERNAME_LABEL
