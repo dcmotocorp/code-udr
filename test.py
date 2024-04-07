@@ -150,10 +150,16 @@ class NovaiguApplication:
                     self.system_config.active_status = False
                 
                 elif self.system_config.update_password_screen and self.system_config.active_status == False:
-                    self.logger_.log_info("update_password_screen Update screen")
-                    self.set_main_screen_black()
-                    self.system_config.set_sytem_config_screen_dark()
-                    self.update_password = UpdatePasswordScreen(self.screen_height, self.screen_width,self)
+                    if len(self.update_password.current_password) > 0 and len(self.update_password.confirm_password) > 0 and len(self.update_password.new_password) >0:
+                        self.system_config.active_status = True
+                        self.system_config.update_password_screen = False 
+                        self.update_password.clear()
+                        self.reset_system_config_screen()
+                    else:
+                        self.logger_.log_info("update_password_screen Update screen")
+                        self.set_main_screen_black()
+                        self.system_config.set_sytem_config_screen_dark()
+                        self.update_password = UpdatePasswordScreen(self.screen_height, self.screen_width,self)
                 else:
                     print(self.logger_.log_info("else part "))
 
