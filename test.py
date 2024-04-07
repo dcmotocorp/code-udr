@@ -100,7 +100,6 @@ class NovaiguApplication:
 
         
         elif event.name == KEY_ESC:
-            print("=====================event name", event.name)
             if self.popup_window.popup_win:
                 self.popup_window.popup_win.clear()  # KEY_ESC the pop-up window
                 self.popup_window.popup_win.refresh()
@@ -118,6 +117,12 @@ class NovaiguApplication:
                 self.system_config.system_configuration_screen = None
                 self.reset_main_screen_color()
                 self.logger_.log_info(" end revert the screen")
+            elif self.system_config.update_password_screen and self.system_config.active_status == False:
+                self.system_config.active_status = True
+                self.system_config.update_password_screen = False 
+                self.update_password.clear()
+                self.reset_system_config_screen()
+
 
         elif event.name == "f2":
             if self.popup_window.popup_win:
@@ -134,7 +139,6 @@ class NovaiguApplication:
             self.create_shut_down_restart_pop_up()
 
         elif event.name == "enter":
-            self.logger_.log_info("key press for the value {}============= {}".format(self.system_config.update_password_screen,self.system_config.active_status))
             if hasattr(self, 'authentication_screen'):
                 self.logger_.log_info("in the authenticatio {}".format(self.system_config.update_password_screen))
                 if (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 ) and self.system_config.update_password_screen == False and self.system_config.active_status ==True:
@@ -147,11 +151,9 @@ class NovaiguApplication:
                 
                 elif self.system_config.update_password_screen and self.system_config.active_status == False:
                     self.logger_.log_info("update_password_screen Update screen")
-                    self.clear_system_configuration_screen()
                     self.set_main_screen_black()
                     self.system_config.set_sytem_config_screen_dark()
                     self.update_password = UpdatePasswordScreen(self.screen_height, self.screen_width,self)
-                
                 else:
                     print(self.logger_.log_info("else part "))
 
@@ -161,7 +163,10 @@ class NovaiguApplication:
                 self.set_main_screen_black()
 
         elif event.name == "tab" :
-            if  self.authentication_screen.current_status == "username":
+            self.logger_.log_info("event file for 164 {} {}".format(self.system_config.update_password_screen,self.system_config.active_status))
+            if self.system_config.update_password_screen and self.system_config.active_status == False:
+                self.update_password.handle_key_event(event)
+            elif  self.authentication_screen.current_status == "username":
                 self.authentication_screen.current_status = "password"
             elif self.authentication_screen.current_status == "password":
                 self.authentication_screen.current_status = "username"
@@ -173,11 +178,20 @@ class NovaiguApplication:
                 self.password_input = self.authentication_screen.get_password_input()
             self.authentication_screen.handle_key_event(event)
         else:
-            self.authentication_screen.handle_key_event(event)
+            if self.system_config.update_password_screen and self.system_config.active_status == False:
+                self.update_password.handle_key_event(event)
+            else:
+                self.authentication_screen.handle_key_event(event)
 
     def set_sytem_config_screen_dark(self):
         self.system_config.sc_config_top_win.bkgd(' ', curses.color_pair(0))  # Yellow background
         self.system_config.sc_config_bottom_win.bkgd(' ', curses.color_pair(0))  # Grey background
+        self.system_config.sc_config_top_win.refresh()
+        self.system_config.sc_config_bottom_win.refresh()
+    
+    def reset_system_config_screen(self):
+        self.system_config.sc_config_top_win.bkgd(' ', curses.color_pair(1))  # Yellow background
+        self.system_config.sc_config_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
         self.system_config.sc_config_top_win.refresh()
         self.system_config.sc_config_bottom_win.refresh()
 

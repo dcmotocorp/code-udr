@@ -74,9 +74,7 @@ class SystemConfig:
         self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
         self.square_win.refresh() 
 
-
         #for the bottom part set the label
-
         label_text_bottom_enter_ok = "<Enter> Ok"
         self.sc_config_bottom_win.addstr(sc_config_top_height-10, 2, label_text_bottom_enter_ok, curses.color_pair(3))
         self.sc_config_bottom_win.refresh()
