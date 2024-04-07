@@ -81,7 +81,7 @@ class SystemConfig:
         self.sc_config_bottom_win.refresh()
 
         label_text_bottom_esc_log_out = "<Esc> Log out"
-        self.sc_config_bottom_win.addstr(sc_config_top_height-10, sc_config_width-15, label_text_bottom_enter_ok, curses.color_pair(3))
+        self.sc_config_bottom_win.addstr(sc_config_top_height-10, sc_config_width-15, label_text_bottom_esc_log_out, curses.color_pair(3))
         self.sc_config_bottom_win.refresh()
 
 
