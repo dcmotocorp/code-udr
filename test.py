@@ -7,6 +7,7 @@ from constant import SYSTEM_CONFIG_LABEL, PASSWORD_LABEL, USERNAME_LABEL, NOVAIG
     ESC_CANCLE, F11_RESTART, F2_SHUT_DOWN, PASSWORD, HOSTNAME, SSH, LOCK_DOWN_MODE,KEY_DOWN,KEY_UP
 from dialogs.restart_shutdown import ShutdownRestart
 from dialogs.authentication import AuthenticationScreen
+from dialogs.update_password import UpdatePasswordScreen
 from dialogs.system_config import SystemConfig
 from logs.udr_logger import UdrLogger
 
@@ -19,6 +20,7 @@ class NovaiguApplication:
         self.logger_ = UdrLogger()
         self.popup_window = ShutdownRestart(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.system_config = SystemConfig(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
+        self.update_password = UpdatePasswordScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.setup_windows()
 
     def setup_windows(self):
@@ -132,14 +134,26 @@ class NovaiguApplication:
             self.create_shut_down_restart_pop_up()
 
         elif event.name == "enter":
-            self.logger_.log_info("enter in te screen ")
+            self.logger_.log_info("key press for the value {}============= {}".format(self.system_config.update_password_screen,self.system_config.active_status))
             if hasattr(self, 'authentication_screen'):
-                if len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0:
+                self.logger_.log_info("in the authenticatio {}".format(self.system_config.update_password_screen))
+                if (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 ) and self.system_config.update_password_screen == False and self.system_config.active_status ==True:
+                    self.logger_.log_info("in the autheticatiob paert bhai {}".format(self.system_config.update_password_screen))
                     self.clear_authetication_screen()
                     self.clear_user_name_password_screen()
                     self.system_config.create_system_configuration()
-                    
-            # elif self.system_config.active_status == True:
+                    self.system_config.update_password_screen = True 
+                    self.system_config.active_status = False
+                
+                elif self.system_config.update_password_screen and self.system_config.active_status == False:
+                    self.logger_.log_info("update_password_screen Update screen")
+                    self.clear_system_configuration_screen()
+                    self.set_main_screen_black()
+                    self.system_config.set_sytem_config_screen_dark()
+                    self.update_password = UpdatePasswordScreen(self.screen_height, self.screen_width,self)
+                
+                else:
+                    print(self.logger_.log_info("else part "))
 
             else:
                 self.logger_.log_info("in the other else partn ")
@@ -161,6 +175,16 @@ class NovaiguApplication:
         else:
             self.authentication_screen.handle_key_event(event)
 
+    def set_sytem_config_screen_dark(self):
+        self.system_config.sc_config_top_win.bkgd(' ', curses.color_pair(0))  # Yellow background
+        self.system_config.sc_config_bottom_win.bkgd(' ', curses.color_pair(0))  # Grey background
+        self.system_config.sc_config_top_win.refresh()
+        self.system_config.sc_config_bottom_win.refresh()
+
+    def clear_system_configuration_screen(self):
+        self.system_config.system_configuration_screen.clear()
+        self.system_config.system_configuration_screen = None
+        
     def clear_user_name_password_screen(self):
         self.authentication_screen.authentication_screen.clear()
         self.authentication_screen.authentication_screen = None
