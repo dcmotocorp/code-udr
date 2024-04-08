@@ -86,6 +86,17 @@ class AuthenticationScreen:
         self.authentication_screen.clear()
         self.authentication_screen.refresh()
 
+    def clear_input_field(self):
+        if hasattr(self, 'username_win') and self.username_win != None:
+            self.username_win.clear()
+            self.username_win = None 
+        if hasattr(self, 'password_win') and self.password_win != None:
+            self.password_win.clear()
+            self.password_win = None
+            
+
+
+
     def get_username_input(self):
         return self.username_input
 

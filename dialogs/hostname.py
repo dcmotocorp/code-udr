@@ -65,15 +65,17 @@ class HostnameScreen:
 
     def clear(self):
         self.clear_input_field()
-        self.hostname_screen.clear()
-        self.hostname_screen.refresh()
-        self.hostname_screen = None
+        if hasattr(self, 'hostname_screen') and self.hostname_screen != None:
+            self.hostname_screen.clear()
+            self.hostname_screen.refresh()
+            self.hostname_screen = None
 
 
     def clear_input_field(self):
-        self.current_password_win.clear()
-        self.current_password_win.refresh()
-        self.current_password_win = None
+        if hasattr(self, 'current_password_win') and self.current_password_win != None:
+            self.current_password_win.clear()
+            self.current_password_win.refresh()
+            self.current_password_win = None
 
 
 

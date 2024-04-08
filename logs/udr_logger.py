@@ -4,7 +4,7 @@ import os
 
 class UdrLogger:
     def __init__(self):
-        self.log_file_name = 'inspired_log.log'
+        self.log_file_name = 'udr_log.log'
 
         log_folder = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'log')
         
