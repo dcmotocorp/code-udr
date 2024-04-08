@@ -12,6 +12,7 @@ class UpdatePasswordScreen:
         self.new_password = ""
         self.confirm_password = ""
         self.current_status = "current_password"
+        self.update_status = False
         self.autheticated_parameter = True
         self.logger_ = UdrLogger()
         self.setup_update_password_screen()

@@ -8,6 +8,7 @@ from constant import SYSTEM_CONFIG_LABEL, PASSWORD_LABEL, USERNAME_LABEL, NOVAIG
 from dialogs.restart_shutdown import ShutdownRestart
 from dialogs.authentication import AuthenticationScreen
 from dialogs.update_password import UpdatePasswordScreen
+from dialogs.hostname import HostnameScreen
 from dialogs.system_config import SystemConfig
 from logs.udr_logger import UdrLogger
 
@@ -21,6 +22,7 @@ class NovaiguApplication:
         self.popup_window = ShutdownRestart(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.system_config = SystemConfig(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.update_password = UpdatePasswordScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
+        self.host_name = HostnameScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.setup_windows()
 
     def setup_windows(self):
@@ -85,11 +87,17 @@ class NovaiguApplication:
         self.set_main_screen_black()
         self.popup_window.create_shut_down_restart_pop_up(self.stdscr)
 
-    def _on_key_press(self, event):
+    def get_current_screen(self):
+        current_index= self.system_config.selected_index
+        current_field = self.system_config.labels[current_index]
+        return current_field
 
+    def _on_key_press(self, event):
+        current_screen = self.get_current_screen()
         self.logger_.log_info("press key {}".format(event.name))
         if event.name == KEY_DOWN  :
             self.logger_.log_info("key down for")
+            
             if self.system_config.active_status ==True :
                 self.logger_.log_info("key down for  status {} ".format(self.system_config.active_status))
                 self.system_config.handle_arrow_key(event.name)
@@ -147,10 +155,10 @@ class NovaiguApplication:
                     self.clear_user_name_password_screen()
                     self.system_config.create_system_configuration()
                     self.system_config.update_password_screen = True 
-                    self.system_config.active_status = False
                 
-                elif self.system_config.update_password_screen and self.system_config.active_status == False:
-                    if len(self.update_password.current_password) > 0 and len(self.update_password.confirm_password) > 0 and len(self.update_password.new_password) >0:
+                elif current_screen == PASSWORD:
+                    self.logger_.log_info("END THE ")
+                    if self.update_password.update_status == True :
                         self.system_config.active_status = True
                         self.system_config.update_password_screen = False 
                         self.update_password.clear()
@@ -160,17 +168,41 @@ class NovaiguApplication:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
                         self.update_password = UpdatePasswordScreen(self.screen_height, self.screen_width,self)
+                        self.update_password.update_status = True
+                elif current_screen == HOSTNAME:
+                    if self.host_name.update_status == True :
+                        self.logger_.log_info("HOST NAME IN TNE TYESY")
+                        self.system_config.active_status = True
+                        self.system_config.update_password_screen = False 
+                        self.update_password.clear()
+                        self.reset_system_config_screen()
+                        self.logger_.log_info("END NAME IN TNE TYESY")
+                    else:
+                        self.logger_.log_info("START THE TEST ")
+                        self.logger_.log_info("update_password_screen Update screen")
+                        self.set_main_screen_black()
+                        self.system_config.set_sytem_config_screen_dark()
+                        self.host_name = HostnameScreen(self.screen_height, self.screen_width,self)
+                        self.host_name.update_status = True
+                        self.logger_.log_info("END THE TEST ")
+
+                
+                
                 else:
-                    print(self.logger_.log_info("else part "))
+                    self.logger_.log_info("END THE 191 ")
+                    current_sys_config = self.get_current_screen()
+                    if current_sys_config == HOSTNAME:
+                        self.host_name = HostnameScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
+                    
+
 
             else:
-                self.logger_.log_info("in the other else partn ")
+                self.logger_.log_info("END THE 19=199 ")
                 self.current_selected = USERNAME_LABEL
                 self.set_main_screen_black()
 
         elif event.name == "tab" :
-            self.logger_.log_info("event file for 164 {} {}".format(self.system_config.update_password_screen,self.system_config.active_status))
-            if self.system_config.update_password_screen and self.system_config.active_status == False:
+            if self.update_password.update_status == True and current_screen == PASSWORD:
                 self.update_password.handle_key_event(event)
             elif  self.authentication_screen.current_status == "username":
                 self.authentication_screen.current_status = "password"
@@ -178,14 +210,20 @@ class NovaiguApplication:
                 self.authentication_screen.current_status = "username"
 
         elif event.name == "backspace":
+            if self.update_password.update_status == True and current_screen == PASSWORD:
+                self.update_password.handle_key_event(event)            
+            
             if self.current_selected == USERNAME_LABEL:
                 self.username_input = self.authentication_screen.get_username_input()
             else:
                 self.password_input = self.authentication_screen.get_password_input()
             self.authentication_screen.handle_key_event(event)
+
         else:
-            if self.system_config.update_password_screen and self.system_config.active_status == False:
+            if self.update_password.update_status == True and current_screen == PASSWORD:
                 self.update_password.handle_key_event(event)
+            if self.host_name.update_status == True and current_screen == HOSTNAME:
+                self.host_name.handle_key_event(event)
             else:
                 self.authentication_screen.handle_key_event(event)
 
