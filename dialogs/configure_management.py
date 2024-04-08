@@ -24,7 +24,7 @@ class SystemConfig:
         self.sys_config ={PASSWORD:["Set/Change","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"],
                             HOSTNAME: ["Set/Change","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"] ,
                             MANAGEMENT_INTERFACE:["Configure Management Interface","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"] ,
-                            SSH:["SSH","Enable of disable SSH Service",""],
+                            SSH:["SSH","To prevent unautherized access to this system use complex"," password with minimum lenth of 14 characters"],
                             LOCK_DOWN_MODE:["LOCK_DOWN_MODE","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"],
                             RESET_SYSTEM_CONFIG:["RESET_SYSTEM_CONFIG","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"]}
         
