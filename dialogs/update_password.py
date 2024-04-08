@@ -95,10 +95,23 @@ class UpdatePasswordScreen:
         curses.curs_set(0)
 
     def clear(self):
-        self.authentication_screen.clear()
-        self.authentication_screen.refresh()
-        self.authentication_screen = None
+        self.clear_all_input()
+        if hasattr(self, 'authentication_screen') and self.authentication_screen != None:
+            self.authentication_screen.clear()
+            self.authentication_screen.refresh()
+            self.authentication_screen = None
 
+    def clear_all_input(self):
+        if hasattr(self, 'conform_password_win') and self.conform_password_win != None:   
+            self.conform_password_win.clear()
+            self.conform_password_win = None 
+        if hasattr(self, 'new_password_win') and self.new_password_win != None:
+            self.new_password_win.clear()
+            self.new_password_win  = None
+        if hasattr(self, 'current_password_win') and self.current_password_win != None:
+            self.current_password_win.clear()         
+            self.current_password_win = None
+    
     def get_username_input(self):
         return self.current_password
 
@@ -124,11 +137,9 @@ class UpdatePasswordScreen:
                 self.conform_password_win.refresh()
         
         elif event.name == "enter":
-            self.logger_.log_info("Enter in the screen {} {}".format(self.current_password,self.new_password))
             if len(self.current_password) >0 or len(self.new_password) >0:
                 self.authentication_screen.clear()
                 self.authentication_screen = None
-                self.logger_.log_info("Create system config screen ")
                 self.system_config.create_system_configuration()
 
         elif event.name == "tab":
@@ -139,20 +150,17 @@ class UpdatePasswordScreen:
             elif self.current_status == "conform_new":
                 self.current_status = "current_password"
 
-            self.logger_.log_info("switch event.name for the update passeord - {}".format(event.name))
         elif len(event.name) == 1:
             
-            if  self.current_status == "current_password" and len(self.current_password) < 10  :
-                self.logger_.log_info("event.name - {} current name {} iuser input {}".format(event.name,self.current_status,self.current_password))
+            if hasattr(self, 'current_password_win') and self.current_password_win != None and  self.current_status == "current_password" and len(self.current_password) < 10  :
                 self.current_password += event.name
                 self.current_password_win.addstr(0, 0, self.current_password, curses.color_pair(1))
                 self.current_password_win.refresh()
-            if  self.current_status == "current_new" and  len(self.new_password) < 10  :
-                self.logger_.log_info("current_new.name - {} current name {} iuser input {}".format(event.name,self.current_status,self.current_password))
+            elif hasattr(self, 'new_password_win') and self.new_password_win != None and self.current_status == "current_new" and  len(self.new_password) < 10  :
                 self.new_password += event.name
                 self.new_password_win.addstr(0, 0, "*" * len(self.new_password), curses.color_pair(1))
                 self.new_password_win.refresh()
-            if  self.current_status == "conform_new" and len(self.confirm_password) < 10:
+            elif  hasattr(self, 'conform_password_win') and self.conform_password_win != None and self.current_status == "conform_new" and len(self.confirm_password) < 10:
                 self.confirm_password += event.name
                 self.conform_password_win.addstr(0, 0, "*" * len(self.confirm_password), curses.color_pair(1))
                 self.conform_password_win.refresh()

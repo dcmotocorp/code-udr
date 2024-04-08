@@ -20,7 +20,6 @@ class NovaiguApplication:
         self.password_input = ""
         self.logger_ = UdrLogger()
         self.popup_window = ShutdownRestart(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
-        self.system_config = SystemConfig(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.update_password = UpdatePasswordScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.host_name = HostnameScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.setup_windows()
@@ -88,48 +87,73 @@ class NovaiguApplication:
         self.popup_window.create_shut_down_restart_pop_up(self.stdscr)
 
     def get_current_screen(self):
-        current_index= self.system_config.selected_index
-        current_field = self.system_config.labels[current_index]
-        return current_field
+        
+        if hasattr(self, 'system_config') and self.system_config != None:
+            current_index= self.system_config.selected_index
+            current_field = self.system_config.labels[current_index]
+            return current_field
 
     def _on_key_press(self, event):
-        current_screen = self.get_current_screen()
-        self.logger_.log_info("press key {}".format(event.name))
+        current_screen = self.get_current_screen()       
         if event.name == KEY_DOWN  :
-            self.logger_.log_info("key down for")
-            
-            if self.system_config.active_status ==True :
-                self.logger_.log_info("key down for  status {} ".format(self.system_config.active_status))
+            if  hasattr(self, 'system_config') and self.system_config != None and self.system_config.active_status ==True :
                 self.system_config.handle_arrow_key(event.name)
-                self.logger_.log_info("completed status for the system ")
         elif event.name == KEY_UP:
-            if self.system_config.active_status ==True :
+            if hasattr(self, 'system_config') and self.system_config != None and  self.system_config.active_status ==True :
                 self.system_config.handle_arrow_key(event.name)
 
         
         elif event.name == KEY_ESC:
+            
             if self.popup_window.popup_win:
+                self.logger_.log_info("pop up win {}".format(current_screen)) 
                 self.popup_window.popup_win.clear()  # KEY_ESC the pop-up window
                 self.popup_window.popup_win.refresh()
                 self.popup_window.popup_win.deleteln()
                 self.popup_window.popup_win = None
                 self.reset_main_screen_color()
-            if self.authentication_screen.authentication_screen: 
-                    self.current_selected = USERNAME_LABEL
-                    self.clear_authetication_screen()
-                    self.reset_main_screen_color()
-            elif self.system_config.active_status == True:
-                self.logger_.log_info("revert the screen")
-                self.system_config.active_status =False
-                self.system_config.system_configuration_screen.clear()
-                self.system_config.system_configuration_screen = None
-                self.reset_main_screen_color()
-                self.logger_.log_info(" end revert the screen")
-            elif self.system_config.update_password_screen and self.system_config.active_status == False:
+            
+
+            elif current_screen == PASSWORD and hasattr(self, 'update_password')  and self.update_password !=None and self.update_password.update_status == True :
+                self.logger_.log_info("password up win {}".format(current_screen)) 
+                # self.system_config.active_status = True
+                # self.system_config.update_password_screen = False 
+                # self.update_password.clear()
+                # self.update_password = None
+                # self.reset_system_config_screen()
+
+
                 self.system_config.active_status = True
                 self.system_config.update_password_screen = False 
                 self.update_password.clear()
                 self.reset_system_config_screen()
+                self.update_password = None
+
+                
+                self.logger_.log_info("password  end up win {}".format(current_screen))
+
+            elif current_screen == HOSTNAME and self.host_name.update_status == True :
+                self.logger_.log_info("hostname up win {}".format(current_screen)) 
+                self.logger_.log_info("host name {}".format(current_screen)) 
+                self.system_config.active_status = True
+                self.system_config.update_password_screen = False 
+                self.host_name.clear()
+                self.reset_system_config_screen()
+                self.logger_.log_info("host name end host name")
+
+            elif hasattr(self, 'system_config')  and self.system_config !=None and  self.system_config.active_status == True:
+                self.logger_.log_info("active ststus up win {}".format(current_screen)) 
+                self.system_config.active_status =False
+                self.system_config.system_configuration_screen.clear()
+                self.system_config.system_configuration_screen = None
+                self.system_config = None
+                self.reset_main_screen_color()
+
+            elif self.authentication_screen.authentication_screen: 
+                
+                self.current_selected = USERNAME_LABEL
+                # self.clear_authetication_screen()
+                self.reset_main_screen_color()
 
 
         elif event.name == "f2":
@@ -147,62 +171,61 @@ class NovaiguApplication:
             self.create_shut_down_restart_pop_up()
 
         elif event.name == "enter":
+            self.logger_.log_info("175 line  up win {}".format(current_screen)) 
             if hasattr(self, 'authentication_screen'):
-                self.logger_.log_info("in the authenticatio {}".format(self.system_config.update_password_screen))
-                if (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 ) and self.system_config.update_password_screen == False and self.system_config.active_status ==True:
-                    self.logger_.log_info("in the autheticatiob paert bhai {}".format(self.system_config.update_password_screen))
-                    self.clear_authetication_screen()
-                    self.clear_user_name_password_screen()
+                self.logger_.log_info("176 line  up winsdjhgjsdf lskj {} === {} ==={}".format(self.authentication_screen.username_input,self.authentication_screen.password_input,hasattr(self, 'system_config'))) 
+                if (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 )  and not hasattr(self, 'system_config'):
+                    self.logger_.log_info("179 line  up winsdjhgjsdf lskj {} === {} ==={}".format(self.authentication_screen.username_input,self.authentication_screen.password_input,hasattr(self, 'system_config'))) 
+                    self.system_config = SystemConfig(self.stdscr.getmaxyx()[0], self.stdscr.getmaxyx()[1], self)
                     self.system_config.create_system_configuration()
                     self.system_config.update_password_screen = True 
                 
+                elif  (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 )  and  hasattr(self, 'system_config') and self.system_config == None:
+                    self.logger_.log_info("179 line  up winsdjhgjsdf lskj {} === {} ==={}".format(self.authentication_screen.username_input,self.authentication_screen.password_input,hasattr(self, 'system_config'))) 
+                    self.system_config = SystemConfig(self.stdscr.getmaxyx()[0], self.stdscr.getmaxyx()[1], self)
+                    self.system_config.create_system_configuration()
+                    self.system_config.update_password_screen = True 
+                    
+                
                 elif current_screen == PASSWORD:
-                    self.logger_.log_info("END THE ")
-                    if self.update_password.update_status == True :
+                    if  hasattr(self, 'update_password')  and self.update_password !=None  and self.update_password.update_status == True  :
                         self.system_config.active_status = True
                         self.system_config.update_password_screen = False 
                         self.update_password.clear()
                         self.reset_system_config_screen()
+                        self.update_password = None
                     else:
-                        self.logger_.log_info("update_password_screen Update screen")
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
                         self.update_password = UpdatePasswordScreen(self.screen_height, self.screen_width,self)
                         self.update_password.update_status = True
                 elif current_screen == HOSTNAME:
-                    if self.host_name.update_status == True :
-                        self.logger_.log_info("HOST NAME IN TNE TYESY")
+                    if   hasattr(self, 'host_name')  and self.host_name !=None  and self.host_name.update_status == True  :
                         self.system_config.active_status = True
                         self.system_config.update_password_screen = False 
-                        self.update_password.clear()
+                        self.host_name.clear()
                         self.reset_system_config_screen()
-                        self.logger_.log_info("END NAME IN TNE TYESY")
+                        self.host_name = None
+                        self.host_name.update_status = True
                     else:
-                        self.logger_.log_info("START THE TEST ")
-                        self.logger_.log_info("update_password_screen Update screen")
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
                         self.host_name = HostnameScreen(self.screen_height, self.screen_width,self)
-                        self.host_name.update_status = True
-                        self.logger_.log_info("END THE TEST ")
-
-                
+                        self.host_name.update_status = True        
                 
                 else:
-                    self.logger_.log_info("END THE 191 ")
+                    self.logger_.log_info("210 else part line  up win {}".format(current_screen)) 
+                    
+                    
                     current_sys_config = self.get_current_screen()
                     if current_sys_config == HOSTNAME:
                         self.host_name = HostnameScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
-                    
-
-
             else:
-                self.logger_.log_info("END THE 19=199 ")
                 self.current_selected = USERNAME_LABEL
                 self.set_main_screen_black()
 
         elif event.name == "tab" :
-            if self.update_password.update_status == True and current_screen == PASSWORD:
+            if hasattr(self, 'update_password') and self.update_password !=None and current_screen == PASSWORD:
                 self.update_password.handle_key_event(event)
             elif  self.authentication_screen.current_status == "username":
                 self.authentication_screen.current_status = "password"
@@ -220,9 +243,9 @@ class NovaiguApplication:
             self.authentication_screen.handle_key_event(event)
 
         else:
-            if self.update_password.update_status == True and current_screen == PASSWORD:
+            if hasattr(self, 'update_password') and self.update_password !=None and  self.update_password.update_status == True and current_screen == PASSWORD:
                 self.update_password.handle_key_event(event)
-            if self.host_name.update_status == True and current_screen == HOSTNAME:
+            elif hasattr(self, 'host_name') and  self.host_name.update_status == True and current_screen == HOSTNAME:
                 self.host_name.handle_key_event(event)
             else:
                 self.authentication_screen.handle_key_event(event)
@@ -238,20 +261,11 @@ class NovaiguApplication:
         self.system_config.sc_config_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
         self.system_config.sc_config_top_win.refresh()
         self.system_config.sc_config_bottom_win.refresh()
+        self.system_config.handle_arrow_key("up")
 
     def clear_system_configuration_screen(self):
         self.system_config.system_configuration_screen.clear()
         self.system_config.system_configuration_screen = None
-        
-    def clear_user_name_password_screen(self):
-        self.authentication_screen.authentication_screen.clear()
-        self.authentication_screen.authentication_screen = None
-
-    def clear_authetication_screen(self):
-        self.authentication_screen.username_win.clear()
-        self.authentication_screen.password_win.clear()
-        self.authentication_screen.password_win = None
-        self.authentication_screen.username_win = None
     
     def set_main_screen_black(self):
         self.top_win.bkgd(' ', curses.color_pair(0))  # Black background

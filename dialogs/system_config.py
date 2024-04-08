@@ -112,7 +112,6 @@ class SystemConfig:
                 
 
     def handle_arrow_key(self, key):
-        self.logger_.log_info("config key {}".format(key))
         self.sc_config_top_win.clear()
         self.sc_config_top_win = None
         
@@ -133,7 +132,6 @@ class SystemConfig:
         
         
         if key ==  KEY_UP:
-            self.logger_.log_info("inside key down key {}".format(key))
             self.selected_index = max(0, self.selected_index - 1)            
               # Yellow background
             
@@ -152,11 +150,10 @@ class SystemConfig:
             self.square_win.refresh() 
 
             self.sc_config_top_win.refresh()
-            self.logger_.log_info("screen refreash ")
+
             
 
         elif key == KEY_DOWN:
-            self.logger_.log_info("inside key up key {}".format(key))
             self.selected_index = min(self.label_count - 1, self.selected_index + 1)
             for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair

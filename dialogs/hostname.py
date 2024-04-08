@@ -64,9 +64,18 @@ class HostnameScreen:
         curses.curs_set(0)
 
     def clear(self):
+        self.clear_input_field()
         self.hostname_screen.clear()
         self.hostname_screen.refresh()
         self.hostname_screen = None
+
+
+    def clear_input_field(self):
+        self.current_password_win.clear()
+        self.current_password_win.refresh()
+        self.current_password_win = None
+
+
 
     def get_username_input(self):
         return self.current_hostname
