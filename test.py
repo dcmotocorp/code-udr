@@ -10,6 +10,7 @@ from dialogs.authentication import AuthenticationScreen
 from dialogs.update_password import UpdatePasswordScreen
 from dialogs.hostname import HostnameScreen
 from dialogs.system_config import SystemConfig
+from dialogs.lock_down_mode import LockdownModeScreen
 from dialogs.ssh import SSHScreen
 from logs.udr_logger import UdrLogger
 
@@ -95,7 +96,7 @@ class NovaiguApplication:
             return current_field
 
     def _on_key_press(self, event):
-        self.logger_.log_info("262 ssh screen {}".format(event.name))
+        
         current_screen = self.get_current_screen()       
         if event.name == KEY_DOWN  :
             if  hasattr(self, 'system_config') and self.system_config != None and self.system_config.active_status ==True :
@@ -136,6 +137,13 @@ class NovaiguApplication:
                 self.ssh_screen.clear()
                 self.reset_system_config_screen()
                 self.ssh_screen = None
+            
+            elif current_screen == LOCK_DOWN_MODE and self.lock_down_screen.update_status == True :
+                self.system_config.active_status = True
+                self.system_config.update_password_screen = False 
+                self.lock_down_screen.clear()
+                self.reset_system_config_screen()
+                self.lock_down_screen = None
 
             elif hasattr(self, 'system_config')  and self.system_config !=None and  self.system_config.active_status == True:
                 self.system_config.active_status =False
@@ -215,7 +223,19 @@ class NovaiguApplication:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
                         self.ssh_screen = SSHScreen(self.screen_height, self.screen_width,self)
-                        self.ssh_screen.update_status = True  
+                        self.ssh_screen.update_status = True 
+                elif current_screen == LOCK_DOWN_MODE:
+                    if   hasattr(self, 'lock_down_screen')  and self.lock_down_screen !=None  and self.lock_down_screen.update_status == True  :
+                        self.system_config.active_status = True
+                        self.system_config.update_password_screen = False 
+                        self.lock_down_screen.clear()
+                        self.reset_system_config_screen()
+                        self.lock_down_screen = None
+                    else:
+                        self.set_main_screen_black()
+                        self.system_config.set_sytem_config_screen_dark()
+                        self.lock_down_screen = LockdownModeScreen(self.screen_height, self.screen_width,self)
+                        self.lock_down_screen.update_status = True  
                 else:
                   
                     current_sys_config = self.get_current_screen()
@@ -248,8 +268,14 @@ class NovaiguApplication:
             self.authentication_screen.handle_key_event(event)
 
         elif event.name == "space":
-            if self.ssh_screen.update_status == True and current_screen == SSH:  
+            self.logger_.log_info("===={}===".format(current_screen))
+            if hasattr(self, 'ssh_screen') and self.ssh_screen !=None and self.ssh_screen.update_status == True and current_screen == SSH:  
+                self.logger_.log_info("272 ssh screen {}".format(event.name))
                 self.ssh_screen.handle_arrow_key(event)
+                
+            elif hasattr(self, 'lock_down_screen') and self.lock_down_screen !=None and self.lock_down_screen.update_status == True and current_screen == LOCK_DOWN_MODE:  
+                self.logger_.log_info("276 ssh screen {}".format(event.name))
+                self.lock_down_screen.handle_arrow_key(event)
 
 
         else:
