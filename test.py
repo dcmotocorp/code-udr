@@ -175,8 +175,6 @@ class NovaiguApplication:
                     self.net_work_adaptor = None
                     self.configuration_management_screen.reset_screen_color()
                     self.configuration_management_screen.handle_arrow_key("up")
-                    
-                
                 else:
                     
                     self.configuration_management_screen.clear()
@@ -295,6 +293,9 @@ class NovaiguApplication:
                                 self.net_work_adaptor.clear()
                                 self.net_work_adaptor = None
                                 self.configuration_management_screen.reset_screen_color()
+                                self.configuration_management_screen.handle_arrow_key("up")                                
+                                # self.configuration_management_screen.reset_screen_color()
+
                             else:      
                                 self.configuration_management_screen.set_sytem_config_screen_dark()
                                 self.net_work_adaptor = NetworkAdoptorScreen(self.screen_height, self.screen_width,self)
@@ -346,7 +347,13 @@ class NovaiguApplication:
             elif hasattr(self, 'lock_down_screen') and self.lock_down_screen !=None and self.lock_down_screen.update_status == True and current_screen == LOCK_DOWN_MODE:  
                 self.logger_.log_info("276 ssh screen {}".format(event.name))
                 self.lock_down_screen.handle_arrow_key(event)
-
+            
+            elif   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
+                selected_index = self.configuration_management_screen.selected_index
+                selected_label = self.configuration_management_screen.labels[selected_index]
+                if hasattr(self, 'net_work_adaptor') and self.net_work_adaptor !=None and self.net_work_adaptor.update_status == True and selected_label == NETWORK_ADAPTOR:  
+                    self.logger_.log_info("349 ssh screen {}".format(event.name))
+                    self.net_work_adaptor.handle_arrow_key(event)
 
         else:
             if hasattr(self, 'update_password') and self.update_password !=None and  self.update_password.update_status == True and current_screen == PASSWORD:
