@@ -15,6 +15,7 @@ from dialogs.ssh import SSHScreen
 from dialogs.configure_management import ConfigureManagement
 from dialogs.ip_configuration import IPConfigurationScreen
 from dialogs.net_work_adaptor import NetworkAdaptorScreen
+from dialogs.dns_configuration import DNSScreen
 from logs.udr_logger import UdrLogger
 
 class NovaiguApplication:
@@ -183,6 +184,13 @@ class NovaiguApplication:
                     self.net_work_screen = None
                     self.configuration_management_screen.reset_screen_color()
                     self.configuration_management_screen.handle_arrow_key("up")
+                
+                elif selected_label ==  DNS_SERVER and  hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
+                    self.dns_screen.clear()
+                    self.dns_screen = None
+                    self.configuration_management_screen.reset_screen_color()
+                    self.configuration_management_screen.handle_arrow_key("up")
+            
                 else:
                     
                     self.configuration_management_screen.clear()
@@ -321,6 +329,19 @@ class NovaiguApplication:
                                 self.net_work_screen.update_status =True
                                 self.configuration_management_screen.update_status = True
 
+                        elif  selected_label ==  DNS_SERVER:
+                            if hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
+                                self.dns_screen.clear()
+                                self.dns_screen = None
+                                self.configuration_management_screen.reset_screen_color()
+                                self.configuration_management_screen.handle_arrow_key("up")                                
+                                
+                            else:      
+                                self.configuration_management_screen.set_sytem_config_screen_dark()
+                                self.dns_screen = DNSScreen(self.screen_height, self.screen_width,self)
+                                self.dns_screen.update_status =True
+                                self.configuration_management_screen.update_status = True
+
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
@@ -373,9 +394,14 @@ class NovaiguApplication:
                 if hasattr(self, 'ip_config_adaptor') and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True and selected_label == IP_CONFIGURATION:  
                     self.logger_.log_info("349 ssh screen {}".format(event.name))
                     self.ip_config_adaptor.handle_arrow_key(event)
-                if hasattr(self, 'net_work_screen') and self.net_work_screen !=None and self.net_work_screen.update_status == True and selected_label == NETWORK_ADAPTOR:  
+                elif hasattr(self, 'net_work_screen') and self.net_work_screen !=None and self.net_work_screen.update_status == True and selected_label == NETWORK_ADAPTOR:  
                     self.logger_.log_info("349 ssh screen {}".format(event.name))
-                    self.net_work_screen.handle_arrow_key(event)
+                    self.net_work_screen.handle_arrow_key(event) 
+                elif hasattr(self, 'dns_screen') and self.dns_screen !=None and self.dns_screen.update_status == True and selected_label == DNS_SERVER:  
+                    self.logger_.log_info("349 ssh screen {}".format(event.name))
+                    self.dns_screen.handle_arrow_key(event)
+
+                    
         else:
             if hasattr(self, 'update_password') and self.update_password !=None and  self.update_password.update_status == True and current_screen == PASSWORD:
                 self.update_password.handle_key_event(event)
