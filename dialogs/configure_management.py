@@ -86,9 +86,7 @@ class ConfigureManagement:
     def set_sytem_config_screen_dark(self):
         self.sc_config_top_win.bkgd(' ', curses.color_pair(0))  # Yellow background
         self.sc_config_bottom_win.bkgd(' ', curses.color_pair(0))  # Grey background
-        
         self.update_color_font()
-        
         self.sc_config_top_win.refresh()
         self.sc_config_bottom_win.refresh()
 
@@ -98,18 +96,19 @@ class ConfigureManagement:
         sc_config_height, sc_config_width = int(self.screen_height * 0.98), int(self.screen_width * 0.99)
         sc_config_top_height = max(int(0.6 * sc_config_height), 1)
         
-        self.sc_config_top_win.addstr(3 , 5, SYSTEM_CONFIG_LABEL, curses.color_pair(0))
+        self.sc_config_top_win.addstr(3 , 5, SYSTEM_CONFIG_LABEL, curses.color_pair(5))
         
         for index, label in enumerate(self.labels):
-            self.sc_config_top_win.addstr( 5+ index, 5, label, curses.color_pair(0))
+            self.sc_config_top_win.addstr( 5+ index, 5, label, curses.color_pair(5))
         
         label_text_bottom_enter_ok = "<Enter> Ok"
-        self.sc_config_bottom_win.addstr(sc_config_top_height-10, 2, label_text_bottom_enter_ok, curses.color_pair(0))
-    
+        self.sc_config_bottom_win.addstr(sc_config_top_height-10, 2, label_text_bottom_enter_ok, curses.color_pair(5))
 
         label_text_bottom_esc_log_out = "<Esc> Log out"
-        self.sc_config_bottom_win.addstr(sc_config_top_height-10, sc_config_width-15, label_text_bottom_esc_log_out, curses.color_pair(0))
-                
+        self.sc_config_bottom_win.addstr(sc_config_top_height-10, sc_config_width-15, label_text_bottom_esc_log_out, curses.color_pair(5))
+
+        self.sc_config_top_win.refresh()
+        self.sc_config_bottom_win.refresh()     
 
     def clear(self):
         self.clear_other_items()
@@ -129,7 +128,21 @@ class ConfigureManagement:
             self.square_win.clear()
             self.square_win = None
 
+    def set_screen_black(self):
+        self.sc_config_top_win.bkgd(' ', curses.color_pair(0))  # Yellow background
+        self.sc_config_bottom_win.bkgd(' ', curses.color_pair(0))  # Grey background
+        self.sc_config_top_win.refresh()
+        self.sc_config_bottom_win.refresh()
 
+    def reset_screen_color(self):
+        self.sc_config_top_win.bkgd(' ', curses.color_pair(1))  # Yellow background
+        self.sc_config_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
+        self.sc_config_top_win.refresh()
+        self.sc_config_bottom_win.refresh()
+
+    def update_color(self):
+        pass 
+    
 
     def handle_arrow_key(self, key):
         if hasattr(self, 'sc_config_top_win') and self.sc_config_top_win != None:

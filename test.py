@@ -4,7 +4,7 @@ import keyboard
 from utils import shutdown_computer, get_ip_address, restart_computer
 from constant import SYSTEM_CONFIG_LABEL, PASSWORD_LABEL, USERNAME_LABEL, NOVAIGU_HTTP_LABEL, \
     NOVAIGU_PLATFORM_LABEL, NOVAIGU_LABEL, F2_CONFIGURATION_SYSTEM, SHUT_DOWN_RESTART, AUTHENTICATION_SCREEN, KEY_ESC, \
-    ESC_CANCLE, F11_RESTART, F2_SHUT_DOWN, PASSWORD, HOSTNAME, SSH, LOCK_DOWN_MODE,KEY_DOWN,KEY_UP,MANAGEMENT_INTERFACE
+    ESC_CANCLE, F11_RESTART, F2_SHUT_DOWN, PASSWORD, HOSTNAME, SSH, LOCK_DOWN_MODE,KEY_DOWN,KEY_UP,MANAGEMENT_INTERFACE, NETWORK_ADAPTOR, IP_CONFIGURATION, DNS_SERVER
 from dialogs.restart_shutdown import ShutdownRestart
 from dialogs.authentication import AuthenticationScreen
 from dialogs.update_password import UpdatePasswordScreen
@@ -13,6 +13,7 @@ from dialogs.system_config import SystemConfig
 from dialogs.lock_down_mode import LockdownModeScreen
 from dialogs.ssh import SSHScreen
 from dialogs.configure_management import ConfigureManagement
+from dialogs.network_adaptor import NetworkAdoptorScreen
 from logs.udr_logger import UdrLogger
 
 class NovaiguApplication:
@@ -38,6 +39,8 @@ class NovaiguApplication:
         curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_BLUE)  # Orange background
         curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_BLUE)
         curses.init_pair(4, curses.COLOR_BLACK, curses.COLOR_WHITE)
+        curses.init_pair(5, curses.COLOR_WHITE, curses.COLOR_BLACK)
+        
 
         # Get screen dimensions
         self.screen_height, self.screen_width = self.stdscr.getmaxyx()
@@ -88,7 +91,7 @@ class NovaiguApplication:
     def create_shut_down_restart_pop_up(self):
         self.set_main_screen_black()
         self.popup_window.create_shut_down_restart_pop_up(self.stdscr)
-
+     
     def get_current_screen(self):
         
         if hasattr(self, 'system_config') and self.system_config != None:
@@ -119,7 +122,7 @@ class NovaiguApplication:
 
         
         elif event.name == KEY_ESC:
-            
+            self.logger_.log_info("125 {}".format(event.name))   
             if self.popup_window.popup_win:
                 self.popup_window.popup_win.clear()  # KEY_ESC the pop-up window
                 self.popup_window.popup_win.refresh()
@@ -157,25 +160,48 @@ class NovaiguApplication:
                 self.reset_system_config_screen()
                 self.lock_down_screen = None
             
+           
+            
             elif current_screen == MANAGEMENT_INTERFACE and self.configuration_management_screen.update_status == True :
+                self.logger_.log_info("164 {}".format(event.name)) 
                 self.system_config.active_status = True
                 self.system_config.update_password_screen = False 
-                self.configuration_management_screen.clear()
-                self.reset_system_config_screen()
-                self.configuration_management_screen = None
+                
+                selected_index = self.configuration_management_screen.selected_index
+                selected_label = self.configuration_management_screen.labels[selected_index]
+                if selected_label ==  NETWORK_ADAPTOR and  hasattr(self, 'net_work_adaptor')  and self.net_work_adaptor !=None and self.net_work_adaptor.update_status == True:
+                    
+                    self.net_work_adaptor.clear()
+                    self.net_work_adaptor = None
+                    self.configuration_management_screen.reset_screen_color()
+                    self.configuration_management_screen.handle_arrow_key("up")
+                    
+                
+                else:
+                    
+                    self.configuration_management_screen.clear()
+                    self.reset_system_config_screen()
+                    self.configuration_management_screen = None
             
 
             elif hasattr(self, 'system_config')  and self.system_config !=None and  self.system_config.active_status == True:
+                self.logger_.log_info("172 {}".format(event.name))     
                 self.system_config.active_status =False
                 self.system_config.system_configuration_screen.clear()
                 self.system_config.system_configuration_screen = None
                 self.system_config = None
                 self.reset_main_screen_color()
 
-            elif self.authentication_screen.authentication_screen:                 
+            
+                    
+            
+            elif self.authentication_screen.authentication_screen:  
+                self.logger_.log_info("else {}".format(event.name))               
                 self.current_selected = USERNAME_LABEL
                 # self.clear_authetication_screen()
                 self.reset_main_screen_color()
+            
+            
 
 
         elif event.name == "f2":
@@ -259,11 +285,22 @@ class NovaiguApplication:
                 
                 elif current_screen == MANAGEMENT_INTERFACE:
                     if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
-                        self.system_config.active_status = True
-                        self.system_config.update_password_screen = False 
-                        self.configuration_management_screen.clear()
-                        self.reset_system_config_screen()
-                        self.configuration_management_screen = None
+                        
+
+
+                        selected_index = self.configuration_management_screen.selected_index
+                        selected_label = self.configuration_management_screen.labels[selected_index]
+                        if selected_label ==  NETWORK_ADAPTOR:
+                            if hasattr(self, 'net_work_adaptor')  and self.net_work_adaptor !=None and self.net_work_adaptor.update_status == True:
+                                self.net_work_adaptor.clear()
+                                self.net_work_adaptor = None
+                                self.configuration_management_screen.reset_screen_color()
+                            else:      
+                                self.configuration_management_screen.set_sytem_config_screen_dark()
+                                self.net_work_adaptor = NetworkAdoptorScreen(self.screen_height, self.screen_width,self)
+                                self.net_work_adaptor.update_status =True
+                                self.configuration_management_screen.update_status = True
+
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
