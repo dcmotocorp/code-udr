@@ -13,7 +13,8 @@ from dialogs.system_config import SystemConfig
 from dialogs.lock_down_mode import LockdownModeScreen
 from dialogs.ssh import SSHScreen
 from dialogs.configure_management import ConfigureManagement
-from dialogs.network_adaptor import NetworkAdoptorScreen
+from dialogs.ip_configuration import IPConfigurationScreen
+from dialogs.net_work_adaptor import NetworkAdaptorScreen
 from logs.udr_logger import UdrLogger
 
 class NovaiguApplication:
@@ -169,10 +170,17 @@ class NovaiguApplication:
                 
                 selected_index = self.configuration_management_screen.selected_index
                 selected_label = self.configuration_management_screen.labels[selected_index]
-                if selected_label ==  NETWORK_ADAPTOR and  hasattr(self, 'net_work_adaptor')  and self.net_work_adaptor !=None and self.net_work_adaptor.update_status == True:
+                if selected_label ==  IP_CONFIGURATION and  hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
                     
-                    self.net_work_adaptor.clear()
-                    self.net_work_adaptor = None
+                    self.ip_config_adaptor.clear()
+                    self.ip_config_adaptor = None
+                    self.configuration_management_screen.reset_screen_color()
+                    self.configuration_management_screen.handle_arrow_key("up")
+
+                elif selected_label ==  NETWORK_ADAPTOR and  hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
+                    
+                    self.net_work_screen.clear()
+                    self.net_work_screen = None
                     self.configuration_management_screen.reset_screen_color()
                     self.configuration_management_screen.handle_arrow_key("up")
                 else:
@@ -283,23 +291,34 @@ class NovaiguApplication:
                 
                 elif current_screen == MANAGEMENT_INTERFACE:
                     if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
-                        
-
-
                         selected_index = self.configuration_management_screen.selected_index
                         selected_label = self.configuration_management_screen.labels[selected_index]
-                        if selected_label ==  NETWORK_ADAPTOR:
-                            if hasattr(self, 'net_work_adaptor')  and self.net_work_adaptor !=None and self.net_work_adaptor.update_status == True:
-                                self.net_work_adaptor.clear()
-                                self.net_work_adaptor = None
+                        if selected_label ==  IP_CONFIGURATION:
+                            if hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
+                                self.ip_config_adaptor.clear()
+                                self.ip_config_adaptor = None
                                 self.configuration_management_screen.reset_screen_color()
                                 self.configuration_management_screen.handle_arrow_key("up")                                
                                 # self.configuration_management_screen.reset_screen_color()
 
                             else:      
                                 self.configuration_management_screen.set_sytem_config_screen_dark()
-                                self.net_work_adaptor = NetworkAdoptorScreen(self.screen_height, self.screen_width,self)
-                                self.net_work_adaptor.update_status =True
+                                self.ip_config_adaptor = IPConfigurationScreen(self.screen_height, self.screen_width,self)
+                                self.ip_config_adaptor.update_status =True
+                                self.configuration_management_screen.update_status = True
+
+
+                        elif  selected_label ==  NETWORK_ADAPTOR:
+                            if hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
+                                self.net_work_screen.clear()
+                                self.net_work_screen = None
+                                self.configuration_management_screen.reset_screen_color()
+                                self.configuration_management_screen.handle_arrow_key("up")                                
+                                
+                            else:      
+                                self.configuration_management_screen.set_sytem_config_screen_dark()
+                                self.net_work_screen = NetworkAdaptorScreen(self.screen_height, self.screen_width,self)
+                                self.net_work_screen.update_status =True
                                 self.configuration_management_screen.update_status = True
 
                     else:
@@ -351,10 +370,12 @@ class NovaiguApplication:
             elif   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
                 selected_index = self.configuration_management_screen.selected_index
                 selected_label = self.configuration_management_screen.labels[selected_index]
-                if hasattr(self, 'net_work_adaptor') and self.net_work_adaptor !=None and self.net_work_adaptor.update_status == True and selected_label == NETWORK_ADAPTOR:  
+                if hasattr(self, 'ip_config_adaptor') and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True and selected_label == IP_CONFIGURATION:  
                     self.logger_.log_info("349 ssh screen {}".format(event.name))
-                    self.net_work_adaptor.handle_arrow_key(event)
-
+                    self.ip_config_adaptor.handle_arrow_key(event)
+                if hasattr(self, 'net_work_screen') and self.net_work_screen !=None and self.net_work_screen.update_status == True and selected_label == NETWORK_ADAPTOR:  
+                    self.logger_.log_info("349 ssh screen {}".format(event.name))
+                    self.net_work_screen.handle_arrow_key(event)
         else:
             if hasattr(self, 'update_password') and self.update_password !=None and  self.update_password.update_status == True and current_screen == PASSWORD:
                 self.update_password.handle_key_event(event)

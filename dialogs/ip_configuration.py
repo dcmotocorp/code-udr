@@ -1,9 +1,9 @@
 import curses
 from logs.udr_logger import UdrLogger
 from dialogs.system_config import SystemConfig
-from constant import KEY_UP,KEY_DOWN,SELECT_MANAGEMENT_NETWORK_SERVICE,OBTAIN_IP_AUTOMATIC,MANUALLY_IP_AUTOMATIC
+from constant import KEY_UP,KEY_DOWN,CONFIGURE_MANAGEMENT_NETWORK_SERVICE,OBTAIN_IP_AUTOMATIC,MANUALLY_IP_AUTOMATIC
 
-class NetworkAdoptorScreen:
+class IPConfigurationScreen:
     def __init__(self, screen_height, screen_width,app):
         self.app = app
         self.screen_height = screen_height
@@ -45,9 +45,9 @@ class NetworkAdoptorScreen:
 
 
         # Add label to auth_top_win
-        label_x = (auth_screen_width - len(SELECT_MANAGEMENT_NETWORK_SERVICE)) // 2
+        label_x = (auth_screen_width - len(CONFIGURE_MANAGEMENT_NETWORK_SERVICE)) // 2
         label_y = (popup_top_height - 1) // 2  # Center vertically
-        auth_top_win.addstr(label_y, label_x, SELECT_MANAGEMENT_NETWORK_SERVICE, curses.color_pair(4))
+        auth_top_win.addstr(label_y, label_x, CONFIGURE_MANAGEMENT_NETWORK_SERVICE, curses.color_pair(4))
         
 
         # Add labels to popup_bottom_win
