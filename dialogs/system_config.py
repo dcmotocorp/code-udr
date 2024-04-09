@@ -25,7 +25,7 @@ class SystemConfig:
                             HOSTNAME: ["Set/Change","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"] ,
                             MANAGEMENT_INTERFACE:["Configure Management Interface","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"] ,
                             SSH:["SSH","Enable of disable SSH Service",""],
-                            LOCK_DOWN_MODE:["LOCK_DOWN_MODE","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"],
+                            LOCK_DOWN_MODE:["Enter/Change Lockdown Mode","Enabling Lockdown Mode will make Following changes","1- Disable the management interface","2 -Disable all user accounts except root access to the console interface.","3- Disable SSH","To exit lockdown made you will need physical access to the UDF from the consolde interface and login with the root creadentials."],
                             RESET_SYSTEM_CONFIG:["RESET_SYSTEM_CONFIG","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"]}
         
     def create_system_configuration(self):
@@ -72,6 +72,7 @@ class SystemConfig:
         self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
         self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
         self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
+        self.square_win.addstr(5, 2, "", self.normal_color_pair)
         self.square_win.refresh() 
 
         #for the bottom part set the label
@@ -147,8 +148,9 @@ class SystemConfig:
             self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
             self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
             self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
-            self.square_win.refresh() 
-
+            if len(label_value) ==4 :
+                self.square_win.addstr(5, 2, label_value[3], self.normal_color_pair)
+            self.square_win.refresh()
             self.sc_config_top_win.refresh()
 
             
@@ -164,7 +166,10 @@ class SystemConfig:
             self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
             self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
             self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
-            self.square_win.refresh()
+            if len(label_value) ==4 :
+                self.square_win.addstr(5, 2, label_value[2], self.normal_color_pair)
+            
 
+            self.square_win.refresh()
             self.sc_config_top_win.refresh()
         self.create_system_configuration()
