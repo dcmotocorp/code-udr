@@ -4,7 +4,7 @@ import keyboard
 from utils import shutdown_computer, get_ip_address, restart_computer
 from constant import SYSTEM_CONFIG_LABEL, PASSWORD_LABEL, USERNAME_LABEL, NOVAIGU_HTTP_LABEL, \
     NOVAIGU_PLATFORM_LABEL, NOVAIGU_LABEL, F2_CONFIGURATION_SYSTEM, SHUT_DOWN_RESTART, AUTHENTICATION_SCREEN, KEY_ESC, \
-    ESC_CANCLE, F11_RESTART, F2_SHUT_DOWN, PASSWORD, HOSTNAME, SSH, LOCK_DOWN_MODE,KEY_DOWN,KEY_UP
+    ESC_CANCLE, F11_RESTART, F2_SHUT_DOWN, PASSWORD, HOSTNAME, SSH, LOCK_DOWN_MODE,KEY_DOWN,KEY_UP,MANAGEMENT_INTERFACE
 from dialogs.restart_shutdown import ShutdownRestart
 from dialogs.authentication import AuthenticationScreen
 from dialogs.update_password import UpdatePasswordScreen
@@ -12,6 +12,7 @@ from dialogs.hostname import HostnameScreen
 from dialogs.system_config import SystemConfig
 from dialogs.lock_down_mode import LockdownModeScreen
 from dialogs.ssh import SSHScreen
+from dialogs.configure_management import ConfigureManagement
 from logs.udr_logger import UdrLogger
 
 class NovaiguApplication:
@@ -99,10 +100,21 @@ class NovaiguApplication:
         
         current_screen = self.get_current_screen()       
         if event.name == KEY_DOWN  :
-            if  hasattr(self, 'system_config') and self.system_config != None and self.system_config.active_status ==True :
+            
+            if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
+                self.configuration_management_screen.handle_arrow_key(event.name)
+            
+            elif  hasattr(self, 'system_config') and self.system_config != None and self.system_config.active_status ==True :
                 self.system_config.handle_arrow_key(event.name)
+            
+            
+        
+
         elif event.name == KEY_UP:
-            if hasattr(self, 'system_config') and self.system_config != None and  self.system_config.active_status ==True :
+            if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
+                self.configuration_management_screen.handle_arrow_key(event.name)
+            
+            elif hasattr(self, 'system_config') and self.system_config != None and  self.system_config.active_status ==True :
                 self.system_config.handle_arrow_key(event.name)
 
         
@@ -144,6 +156,14 @@ class NovaiguApplication:
                 self.lock_down_screen.clear()
                 self.reset_system_config_screen()
                 self.lock_down_screen = None
+            
+            elif current_screen == MANAGEMENT_INTERFACE and self.configuration_management_screen.update_status == True :
+                self.system_config.active_status = True
+                self.system_config.update_password_screen = False 
+                self.configuration_management_screen.clear()
+                self.reset_system_config_screen()
+                self.configuration_management_screen = None
+            
 
             elif hasattr(self, 'system_config')  and self.system_config !=None and  self.system_config.active_status == True:
                 self.system_config.active_status =False
@@ -236,6 +256,20 @@ class NovaiguApplication:
                         self.system_config.set_sytem_config_screen_dark()
                         self.lock_down_screen = LockdownModeScreen(self.screen_height, self.screen_width,self)
                         self.lock_down_screen.update_status = True  
+                
+                elif current_screen == MANAGEMENT_INTERFACE:
+                    if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
+                        self.system_config.active_status = True
+                        self.system_config.update_password_screen = False 
+                        self.configuration_management_screen.clear()
+                        self.reset_system_config_screen()
+                        self.configuration_management_screen = None
+                    else:
+                        self.set_main_screen_black()
+                        self.system_config.set_sytem_config_screen_dark()
+                        self.configuration_management_screen = ConfigureManagement(self.screen_height, self.screen_width,self)
+                        self.configuration_management_screen.create_configuration_management()
+                        self.configuration_management_screen.update_status = True  
                 else:
                   
                     current_sys_config = self.get_current_screen()
@@ -268,7 +302,6 @@ class NovaiguApplication:
             self.authentication_screen.handle_key_event(event)
 
         elif event.name == "space":
-            self.logger_.log_info("===={}===".format(current_screen))
             if hasattr(self, 'ssh_screen') and self.ssh_screen !=None and self.ssh_screen.update_status == True and current_screen == SSH:  
                 self.logger_.log_info("272 ssh screen {}".format(event.name))
                 self.ssh_screen.handle_arrow_key(event)
