@@ -103,7 +103,7 @@ class AuthenticationScreen:
         return self.password_input
 
     def cehck_shift_char(self,next_char):
-        symbol_char = {1:"!" ,2:"@",3:"#",4:"$",5:"%",6:"^",7:"&",8:"*",9:"(",0:")"}
+        symbol_char = {"1":"!" ,"2":"@","3":"#","4":"$","5":"%","6":"^","7":"&","8":"*","9":"(","0":")"}
         if self.shift_status:
             if next_char in symbol_char:
                 self.shift_status = False
