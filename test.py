@@ -463,9 +463,9 @@ class NovaiguApplication:
                         self.host_name = HostnameScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
             else:
                 self.logger_.log_info("in else part 465")
-                self.authentication_screen = AuthenticationScreen(self.stdscr, self.screen_height, self.screen_width)
+                # self.authentication_screen = AuthenticationScreen(self.stdscr, self.screen_height, self.screen_width)
                 self.current_selected = USERNAME_LABEL
-                self.set_main_screen_black()
+                # self.set_main_screen_black()
 
         elif event.name == "tab" :
             if hasattr(self, 'update_password') and self.update_password !=None and current_screen == PASSWORD:
