@@ -12,6 +12,7 @@ class AuthenticationScreen:
         self.password_input = ""
         self.current_status = "username"
         self.autheticated_parameter = True
+        self.shift_status = False
         self.logger_ = UdrLogger()
         self.setup_authentication_screen()
 
@@ -101,6 +102,15 @@ class AuthenticationScreen:
     def get_password_input(self):
         return self.password_input
 
+    def cehck_shift_char(self,next_char):
+        symbol_char = {1:"!" ,2:"@",3:"#",4:"$",5:"%",6:"^",7:"&",8:"*",9:"(",0:")"}
+        if self.shift_status:
+            if next_char in symbol_char:
+                self.shift_status = False
+                return symbol_char[next_char]
+        else:
+            return next_char
+
     def handle_key_event(self, event):
         if event.name == "backspace":
             if self.current_status == "username" and len(self.username_input) > 0:
@@ -126,16 +136,19 @@ class AuthenticationScreen:
                 self.current_status = "password"
             elif self.current_status == "password":
                 self.current_status = "username"
+        elif event.name == "shift":
+            self.shift_status = True 
 
         elif len(event.name) == 1:
             
+            char_ = self.cehck_shift_char(event.name)
             if  self.current_status == "username" and len(self.username_input) < 20  :
-                self.username_input += event.name
+                self.username_input += char_
                 if hasattr(self, 'username_win') and self.username_win != None:
                     self.username_win.addstr(0, 0, self.username_input, curses.color_pair(1))
                     self.username_win.refresh()
             if  self.current_status == "password" and  len(self.password_input) < 20  :
-                self.password_input += event.name
+                self.password_input += char_
                 if hasattr(self, 'password_win') and self.password_win != None:
                     self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(1))
                     self.password_win.refresh()
