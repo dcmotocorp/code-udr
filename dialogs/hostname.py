@@ -1,6 +1,7 @@
 import curses
 from logs.udr_logger import UdrLogger
 from dialogs.system_config import SystemConfig
+from  system_controller.systemcontroler import SystemControler
 
 
 class HostnameScreen:
@@ -11,6 +12,7 @@ class HostnameScreen:
         self.current_hostname = ""
         self.autheticated_parameter = True
         self.update_status = False
+        self.system_controller  = SystemControler()
         self.logger_ = UdrLogger()
         self.setup_hostname_screen()
 
@@ -57,6 +59,9 @@ class HostnameScreen:
         user_input_y = popup_y + popup_top_height + 1
         user_input_x = popup_x + 15
         self.current_password_win = curses.newwin(1, 20, user_input_y, user_input_x)
+        self.current_password_win.refresh()
+        current_hostname = self.system_controller.get_hostname()
+        self.current_password_win.addstr(0, 0, current_hostname, curses.color_pair(1))
         self.current_password_win.refresh()
 
         curses.curs_set(1)
