@@ -239,38 +239,50 @@ class NovaiguApplication:
 
         elif event.name == "f2":
             if self.popup_window.popup_win:
+                self.logger_.log_info("shut down system  press f2")
                 self.system_controller.shutdown_system()
-                # shutdown_computer()
+
             else:
                 self.username_input = ""
                 self.password_input = ""
                 self.set_main_screen_black()
+                self.logger_.log_info("open Authentication system")
                 self.authentication_screen = AuthenticationScreen(self.stdscr, self.screen_height, self.screen_width)
+                self.logger_.log_info("Current Authentication system")
         elif event.name == "f11":
             if self.popup_window.popup_win:
                 self.system_controller.restart_computer()
-                # restart_computer()
+    
         elif event.name == "f12":
             self.create_shut_down_restart_pop_up()
 
         elif event.name == "enter":
             if hasattr(self, 'authentication_screen'):
                 if (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 )  and not hasattr(self, 'system_config'):
+                    self.logger_.log_info("Current username and password match the condition")
                     response = self.system_controller.authenticate(self.authentication_screen.username_input,self.authentication_screen.password_input)
+                    self.logger_.log_info("authentication resposne {}".format(response))
                     if response:
-                        self.username_input = self.authentication_screen.username_input
-                        self.password_input = self.authentication_screen.password_input
+                        try:
+                            self.username_input = self.authentication_screen.username_input
+                            self.password_input = self.authentication_screen.password_input
+                            self.authentication_screen. clear_input_field()
+                            self.system_config = SystemConfig(self.stdscr.getmaxyx()[0], self.stdscr.getmaxyx()[1], self)
+                            self.system_config.create_system_configuration()
+                            self.system_config.update_password_screen = True 
+                            self.logger_.log_info("switch to system config screen")
+                        except Exception as ex:
+                            self.logger_.log_info("Exception while switching to config screen {}".format(ex))
+                            pass 
+                elif  (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 )  and  hasattr(self, 'system_config') and self.system_config == None:
+                    try:
                         self.authentication_screen. clear_input_field()
                         self.system_config = SystemConfig(self.stdscr.getmaxyx()[0], self.stdscr.getmaxyx()[1], self)
                         self.system_config.create_system_configuration()
                         self.system_config.update_password_screen = True 
-                
-                elif  (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 )  and  hasattr(self, 'system_config') and self.system_config == None:
-                    self.authentication_screen. clear_input_field()
-                    self.system_config = SystemConfig(self.stdscr.getmaxyx()[0], self.stdscr.getmaxyx()[1], self)
-                    self.system_config.create_system_configuration()
-                    self.system_config.update_password_screen = True 
-                    
+                    except Exception as ex:
+                        self.logger_.log_info("Exception while creating to config screen {}".format(ex))
+
                 
                 elif current_screen == PASSWORD:
                     if  hasattr(self, 'update_password')  and self.update_password !=None  and self.update_password.update_status == True  :
