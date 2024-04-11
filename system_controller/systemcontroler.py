@@ -32,7 +32,7 @@ class SystemControler:
 
             # Verify the password
             response = crypt.crypt(password, encrypted_password) == encrypted_password
-            self.logger_.log_info("Response of authentication{}".format(response))
+            self.logger_.log_info("Response of authentication {} = {} == {}".format(response,username, password))
             return response
             
         except KeyError as ex:
