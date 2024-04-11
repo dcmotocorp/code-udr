@@ -17,6 +17,10 @@ class SystemControler:
     def __init__(self) -> None:
         pass
 
+    
+    
+    
+    
     def authenticate(self, username, password):
         try:
             # Get the encrypted password hash from /etc/shadow
@@ -135,35 +139,27 @@ class SystemControler:
         else:
             return "127.0.0.1", "255.255.255.0", "Not found"
 
-    def shutdown_system(self, password):
-        system_platform = platform.system()
-
-        if system_platform == 'Windows':
-            # Use 'shutdown' command on Windows
-            subprocess.run(['shutdown', '/s', '/t', '1'])
-
-        elif system_platform == 'Linux' or system_platform == 'Darwin':
-            # Use 'shutdown' command on Linux and macOS
-            command = f"echo {password} | sudo -S shutdown -h now"
-            subprocess.run(command, shell=True)
-
+    def shutdown_system(self):
+        system_type = platform.system()
+        if system_type == "Windows":
+            os.system("shutdown /s /t 1")
+        elif system_type == "macOS":
+            os.system("sudo shutdown -h now")
+        elif system_type == "Linux":
+            os.system("sudo shutdown -P now")
         else:
-            print("Unsupported platform")
+            print("Unsupported operating system")
 
-    def restart_system(self, password):
-        system_platform = platform.system()
-
-        if system_platform == 'Windows':
-            # Use 'shutdown' command on Windows
-            subprocess.run(['restart', '/s', '/t', '1'])
-
-        elif system_platform == 'Linux' or system_platform == 'Darwin':
-            # Use 'sudo reboot' command on Linux and macOS
-            command = f"echo {password} | sudo -S reboot"
-            subprocess.run(command, shell=True)
-
+    def restart_computer(self):
+        system_type = platform.system()
+        if system_type == "Windows":
+            os.system("shutdown /r /t 1")
+        elif system_type == "Linux":
+            os.system("sudo shutdown -r now")
+        elif system_type == "Darwin":  # For macOS
+            os.system("sudo shutdown -r now")
         else:
-            print("Unsupported platform")
+            print("Unsupported operating system")
 
     def set_dns_configuration_linux(self,primary_dns, secondary_dns):
         try:

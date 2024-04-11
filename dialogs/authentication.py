@@ -83,6 +83,7 @@ class AuthenticationScreen:
         curses.curs_set(0)
 
     def clear(self):
+        
         self.authentication_screen.clear()
         self.authentication_screen.refresh()
 
@@ -93,9 +94,6 @@ class AuthenticationScreen:
         if hasattr(self, 'password_win') and self.password_win != None:
             self.password_win.clear()
             self.password_win = None
-            
-
-
 
     def get_username_input(self):
         return self.username_input
@@ -131,9 +129,11 @@ class AuthenticationScreen:
             
             if  self.current_status == "username" and len(self.username_input) < 20  :
                 self.username_input += event.name
-                self.username_win.addstr(0, 0, self.username_input, curses.color_pair(1))
-                self.username_win.refresh()
+                if hasattr(self, 'username_win') and self.username_win != None:
+                    self.username_win.addstr(0, 0, self.username_input, curses.color_pair(1))
+                    self.username_win.refresh()
             if  self.current_status == "password" and  len(self.password_input) < 20  :
                 self.password_input += event.name
-                self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(1))
-                self.password_win.refresh()
+                if hasattr(self, 'password_win') and self.password_win != None:
+                    self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(1))
+                    self.password_win.refresh()

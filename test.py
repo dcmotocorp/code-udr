@@ -17,6 +17,8 @@ from dialogs.ip_configuration import IPConfigurationScreen
 from dialogs.net_work_adaptor import NetworkAdaptorScreen
 from dialogs.dns_configuration import DNSScreen
 from logs.udr_logger import UdrLogger
+from  system_controller.systemcontroler import SystemControler
+
 
 class NovaiguApplication:
     def __init__(self, stdscr):
@@ -28,6 +30,7 @@ class NovaiguApplication:
         self.popup_window = ShutdownRestart(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.update_password = UpdatePasswordScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.host_name = HostnameScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
+        self.system_controller  = SystemControler()
         self.setup_windows()
 
     def setup_windows(self):
@@ -67,7 +70,7 @@ class NovaiguApplication:
         self.top_win.refresh()
         self.bottom_win.refresh()
 
-        ip_address = get_ip_address()
+        ip_address = self.system_controller.get_ip_address()
         novaigu_http_address = NOVAIGU_HTTP_LABEL.format(ip_address)
 
         # Calculate positions for labels
@@ -220,7 +223,8 @@ class NovaiguApplication:
 
         elif event.name == "f2":
             if self.popup_window.popup_win:
-                shutdown_computer()
+                self.system_controller.shutdown_system()
+                # shutdown_computer()
             else:
                 self.username_input = ""
                 self.password_input = ""
@@ -228,17 +232,22 @@ class NovaiguApplication:
                 self.authentication_screen = AuthenticationScreen(self.stdscr, self.screen_height, self.screen_width)
         elif event.name == "f11":
             if self.popup_window.popup_win:
-                restart_computer()
+                self.system_controller.restart_computer()
+                # restart_computer()
         elif event.name == "f12":
             self.create_shut_down_restart_pop_up()
 
         elif event.name == "enter":
             if hasattr(self, 'authentication_screen'):
                 if (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 )  and not hasattr(self, 'system_config'):
-                    self.authentication_screen. clear_input_field()
-                    self.system_config = SystemConfig(self.stdscr.getmaxyx()[0], self.stdscr.getmaxyx()[1], self)
-                    self.system_config.create_system_configuration()
-                    self.system_config.update_password_screen = True 
+                    response = self.system_controller.authenticate(self.authentication_screen.username_input,self.authentication_screen.password_input)
+                    if response:
+                        self.username_input = self.authentication_screen.username_input
+                        self.password_input = self.authentication_screen.password_input
+                        self.authentication_screen. clear_input_field()
+                        self.system_config = SystemConfig(self.stdscr.getmaxyx()[0], self.stdscr.getmaxyx()[1], self)
+                        self.system_config.create_system_configuration()
+                        self.system_config.update_password_screen = True 
                 
                 elif  (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 )  and  hasattr(self, 'system_config') and self.system_config == None:
                     self.authentication_screen. clear_input_field()
@@ -249,11 +258,16 @@ class NovaiguApplication:
                 
                 elif current_screen == PASSWORD:
                     if  hasattr(self, 'update_password')  and self.update_password !=None  and self.update_password.update_status == True  :
-                        self.system_config.active_status = True
-                        self.system_config.update_password_screen = False 
-                        self.update_password.clear()
-                        self.reset_system_config_screen()
-                        self.update_password = None
+                        self.logger_.log_info("self.self.update_password.current_password {} == self.password_input {}".format(self.update_password.current_password,self.password_input))
+                        if self.update_password.current_password == self.password_input: 
+                            self.logger_.log_info("self.username_input {} == self.password_input{}".format(self.username_input,self.password_input,self.update_password.new_password))
+                            status = self.system_controller.change_password(self.username_input,self.password_input,self.update_password.new_password)
+                            if status:
+                                self.system_config.active_status = True
+                                self.system_config.update_password_screen = False 
+                                self.update_password.clear()
+                                self.reset_system_config_screen()
+                                self.update_password = None
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
@@ -407,9 +421,11 @@ class NovaiguApplication:
                 self.update_password.handle_key_event(event)
             elif hasattr(self, 'host_name') and self.host_name !=None and self.host_name.update_status == True and current_screen == HOSTNAME:
                 self.host_name.handle_key_event(event)
-            else:
+            elif hasattr(self, 'authentication_screen') and self.authentication_screen !=None:
                 self.authentication_screen.handle_key_event(event)
-
+            else:
+                pass 
+                
 
     def set_sytem_config_screen_dark(self):
         self.system_config.sc_config_top_win.bkgd(' ', curses.color_pair(0))  # Yellow background
