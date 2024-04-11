@@ -109,7 +109,9 @@ class AuthenticationScreen:
                 self.shift_status = False
                 return symbol_char[next_char]
             else:
+                self.shift_status = False
                 return next_char.title()
+                
         else:
                 return next_char
         
