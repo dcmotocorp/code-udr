@@ -41,7 +41,7 @@ class SystemControler:
             output = result.stdout.strip()
             match = re.search(r'default via \S+ dev (\S+)', output)
             if match:
-                return [match.group(1)]
+                return match.group(1)
             else:
                 return None
         except subprocess.CalledProcessError as e:
