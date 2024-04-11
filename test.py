@@ -212,11 +212,13 @@ class NovaiguApplication:
             
                     
             
-            elif self.authentication_screen.authentication_screen:  
+            elif hasattr(self, 'authentication_screen')  and self.authentication_screen !=None and self.authentication_screen.authentication_screen:  
                 self.logger_.log_info("else {}".format(event.name))               
                 self.current_selected = USERNAME_LABEL
                 # self.clear_authetication_screen()
                 self.reset_main_screen_color()
+            else:
+                pass 
             
             
 
