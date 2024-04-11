@@ -26,8 +26,6 @@ class SystemControler:
             # Get the encrypted password hash from /etc/shadow
             encrypted_password = spwd.getspnam(username).sp_pwd
 
-            print(encrypted_password)
-            print(f"testing {crypt.crypt(password, encrypted_password)}")
 
             # Verify the password
             return crypt.crypt(password, encrypted_password) == encrypted_password
@@ -45,7 +43,7 @@ class SystemControler:
             else:
                 return None
         except subprocess.CalledProcessError as e:
-            print('Error retrieving default interface:', e)
+            pass 
             return None
 
     # def authenticate(self, username, password):
@@ -626,7 +624,7 @@ class SystemControler:
         try:
             subprocess.run(['sudo', 'ifdown', interface], check=True)
         except Exception as e:
-            print(f"error ip interface {str(e)}")
+            pass 
     
     def reset_ip_up_interface(self, interface):
         try:
