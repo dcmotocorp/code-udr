@@ -3,7 +3,8 @@
 
 
 import curses
-from constant import SYSTEM_CONFIG_LABEL, PASSWORD, HOSTNAME, SSH,LOCK_DOWN_MODE,MANAGEMENT_INTERFACE,RESET_SYSTEM_CONFIG,KEY_DOWN,KEY_UP,NETWORK_ADAPTOR,IP_CONFIGURATION,DNS_SERVER
+from constant import SYSTEM_CONFIG_LABEL, PASSWORD, HOSTNAME, SSH,LOCK_DOWN_MODE,MANAGEMENT_INTERFACE,\
+    RESET_SYSTEM_CONFIG,KEY_DOWN,KEY_UP,NETWORK_ADAPTOR,IP_CONFIGURATION,DNS_SERVER,CONFIGURE_MANAGEMENT_INTERFACE
 from logs.udr_logger import UdrLogger
 
 class ConfigureManagement:
@@ -45,7 +46,7 @@ class ConfigureManagement:
         self.sc_config_top_win.bkgd(' ', curses.color_pair(1))  # Yellow background
         self.sc_config_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
 
-        self.sc_config_top_win.addstr(3 , 5, SYSTEM_CONFIG_LABEL, self.normal_color_pair)
+        self.sc_config_top_win.addstr(3 , 5, CONFIGURE_MANAGEMENT_INTERFACE, self.normal_color_pair)
 
         # System configuration labels
         for index, label in enumerate(self.labels):

@@ -374,16 +374,16 @@ class NovaiguApplication:
         elif event.name == "tab" :
             if hasattr(self, 'update_password') and self.update_password !=None and current_screen == PASSWORD:
                 self.update_password.handle_key_event(event)
-            elif  self.authentication_screen.current_status == "username":
+            elif  hasattr(self, 'authentication_screen') and self.authentication_screen !=None and self.authentication_screen.current_status == "username":
                 self.authentication_screen.current_status = "password"
-            elif self.authentication_screen.current_status == "password":
+            elif  hasattr(self, 'authentication_screen') and self.authentication_screen !=None and self.authentication_screen.current_status == "password":
                 self.authentication_screen.current_status = "username"
 
         elif event.name == "backspace":
-            if self.update_password.update_status == True and current_screen == PASSWORD:
+            if hasattr(self, 'update_password') and self.update_password !=None and  self.update_password.update_status == True and current_screen == PASSWORD:
                 self.update_password.handle_key_event(event) 
 
-            elif self.host_name.update_status == True and current_screen == HOSTNAME:
+            elif hasattr(self, 'host_name') and self.host_name !=None and self.host_name.update_status == True and current_screen == HOSTNAME:
                 self.host_name.handle_key_event(event)            
             
 
@@ -391,7 +391,9 @@ class NovaiguApplication:
                 self.username_input = self.authentication_screen.get_username_input()
             else:
                 self.password_input = self.authentication_screen.get_password_input()
-            self.authentication_screen.handle_key_event(event)
+            
+            if hasattr(self, 'authentication_screen') and self.authentication_screen !=None:
+                self.authentication_screen.handle_key_event(event)
 
         elif event.name == "space":
             if hasattr(self, 'ssh_screen') and self.ssh_screen !=None and self.ssh_screen.update_status == True and current_screen == SSH:  

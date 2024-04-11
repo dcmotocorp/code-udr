@@ -105,14 +105,16 @@ class AuthenticationScreen:
         if event.name == "backspace":
             if len(self.username_input) > 0:
                 self.username_input = self.username_input[:-1]
-                self.username_win.clear()
-                self.username_win.addstr(0, 0, self.username_input, curses.color_pair(1))
-                self.username_win.refresh()
+                if hasattr(self, 'username_win') and self.username_win != None:
+                    self.username_win.clear()
+                    self.username_win.addstr(0, 0, self.username_input, curses.color_pair(1))
+                    self.username_win.refresh()
             elif len(self.password_input) > 0:
                 self.password_input = self.password_input[:-1]
-                self.password_win.clear()
-                self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(1))
-                self.password_win.refresh()
+                if hasattr(self, 'password_win') and self.password_win != None:
+                    self.password_win.clear()
+                    self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(1))
+                    self.password_win.refresh()
         elif event.name == "enter":
             if len(self.username_input) >0 or len(self.password_input) >0:
                 self.authentication_screen.clear()
