@@ -46,21 +46,7 @@ class SystemControler:
             pass 
             return None
 
-    # def authenticate(self, username, password):
-    #     try:
-    #         # p = pam.pam()
-    #         print(f"user name entered {username}")
-    #         print(f"password entered {password}")
-    #         print(f"format is {type(password)}")
-    #         print(f"length is {len(username)}")
-    #         print(f"length is pass {len(password)}")
-    #         username = "xadmin01"
-    #         password = "Xph@mv3x@100"
-    #         print(pam.authenticate(username, password))
-    #         return pam.authenticate(username, password)
-    #     except pam.exception.PAMError as e:
-    #         print(f"PAM Error: {e}")
-    #         return False
+
         
     def change_password(self, user_name, old_password, new_password):
         try:
@@ -69,11 +55,9 @@ class SystemControler:
 
             # Execute the command
             os.system(command)
-
-            print(f"Password changed successfully for user: {user_name}")
             return True
         except Exception as e:
-            print(f"Failed to change password for user {user_name}. Error: {e}")
+            pass 
             return False
 
         
@@ -146,7 +130,7 @@ class SystemControler:
         elif system_type == "Linux":
             os.system("sudo shutdown -P now")
         else:
-            print("Unsupported operating system")
+            pass 
 
     def restart_computer(self):
         system_type = platform.system()
@@ -157,17 +141,15 @@ class SystemControler:
         elif system_type == "Darwin":  # For macOS
             os.system("sudo shutdown -r now")
         else:
-            print("Unsupported operating system")
+            pass 
 
     def set_dns_configuration_linux(self,primary_dns, secondary_dns):
         try:
             # Use sudo to write to /etc/resolv.conf
             command = f"echo 'nameserver {primary_dns}\nnameserver {secondary_dns}' | sudo tee /etc/resolv.conf > /dev/null"
             subprocess.run(command, shell=True, check=True)
-            print("DNS configuration updated successfully.")
             return True, "DNS configuration updated successfully."
         except subprocess.CalledProcessError as e:
-            print(f"An error occurred: {e}")
             return False, "Error DNS configuration updated."
         
     def get_connection_name(self, interface):
@@ -188,7 +170,6 @@ class SystemControler:
             return None
 
         except subprocess.CalledProcessError as e:
-            print(f"Error occurred: {e}")
             return None
         
     def set_dns_configuration_manually_linux(self,primary_dns, secondary_dns):
@@ -219,7 +200,6 @@ class SystemControler:
             #         f.write(f"nameserver {dns_server}\n")
             return True, "DNS configuration updated successfully."
         except subprocess.CalledProcessError as e:
-            print(f"An error occurred: {e}")
             return False, "Error DNS configuration updated."
         
     def get_dns_configuration_linux(self):
@@ -231,17 +211,14 @@ class SystemControler:
             # Split the output by '|' and strip whitespace
             dns_servers = [dns.strip() for dns in output.split('|')]
 
-            print(f"these are the dns servers {dns_servers}")
             # Extract primary and secondary DNS servers
             primary_dns = dns_servers[0]
             secondary_dns = dns_servers[1] if len(dns_servers) > 1 else None
             
             return primary_dns,secondary_dns
         except FileNotFoundError:
-            print("/etc/resolv.conf not found.")
             return "", ""
         except Exception as e:
-            print(f"error in dns {str(e)}")
             return "", ""
         
         
@@ -251,10 +228,8 @@ class SystemControler:
             # Use sudo to write to /etc/resolv.conf
             command = "echo '' | sudo tee /etc/resolv.conf > /dev/null"
             subprocess.run(command, shell=True, check=True)
-            print("DNS configuration reset to default successfully.")
             return True, "DNS configuration reset to default successfully."
         except subprocess.CalledProcessError as e:
-            print(f"An error occurred: {e}")
             return False, "Error DNS configuration reset to default."
         
     def auto_dns_configuration_linux(self):
@@ -275,7 +250,6 @@ class SystemControler:
             subprocess.run(["systemctl", "restart", "systemd-networkd"])
             return True, "DNS configuration reset to default successfully."
         except subprocess.CalledProcessError as e:
-            print(f"An error occurred: {e}")
             return False, "Error DNS configuration reset to default."
 
     def stop_all_containers(self):
@@ -284,10 +258,9 @@ class SystemControler:
             containers = client.containers.list()
 
             for container in containers:
-                print(f"Stopping container: {container.name} ({container.id})")
                 container.stop()
         except Exception as e:
-            print(f"error in exit stop containers {str(e)}")
+            pass 
 
     def enable_lockdown_mode(self, user_name=None):
         try:
@@ -315,10 +288,9 @@ class SystemControler:
             #         subprocess.run(["sudo", "chpasswd"], input=f"{user}:Xadmin@123\n", universal_newlines=True)
             #         subprocess.run(["sudo", "passwd", "-l", user])
 
-            print("Lockdown mode enabled successfully.")
 
         except Exception as e:
-            print(f"Error enabling lockdown mode: {e}")
+            pass 
 
     def exit_lockdown_mode(self, user_name):
         try:
@@ -336,18 +308,9 @@ class SystemControler:
             # Enable SSH
             subprocess.run(["sudo", "service", "ssh", "start"])
 
-            # Enable all user accounts and set passwords
-            # users = self.get_all_users()
-            # root_users = self.get_root_users(users=users)
-            # for user in users:
-            #     print(f"changing {user}")
-            #     if user not in root_users:
-            #         subprocess.run(["sudo", "chpasswd"], input=f"{user}:Xadmin@123\n", universal_newlines=True)
-
-            print("Exited lockdown mode successfully.")
-
+    
         except Exception as e:
-            print(f"Error exiting lockdown mode: {e}")
+            pass 
     
     def lock_screen_linux(self):
         subprocess.run(["xdg-screensaver", "lock"])
@@ -358,7 +321,6 @@ class SystemControler:
             uid = int(result.stdout.decode())
             return uid == 0
         except Exception as e:
-            print(f"Error checking if {user} is root: {e}")
             return False
     
     def get_root_users(self, users):
@@ -369,7 +331,7 @@ class SystemControler:
             return root_users
 
         except Exception as e:
-            print(f"Error getting user list: {e}")
+            
             return []
 
     def get_all_users(self):
@@ -379,17 +341,16 @@ class SystemControler:
             return users
 
         except Exception as e:
-            print(f"Error getting user list: {e}")
+           
             return []
 
     def get_all_network_interfaces(self):
         try:
             result = subprocess.run(["ip", "link", "show"], stdout=subprocess.PIPE, check=True)
             interfaces = [line.split(":")[1].strip() for line in result.stdout.decode().split('\n') if line.startswith(' ') and ':' in line]
-            print("Interfaces:", interfaces)  # Add this line for debugging
+          
             return interfaces
         except Exception as e:
-            print(f"Error getting network interfaces: {e}")
             return []
     
     def enable_ssh(self):
@@ -406,10 +367,9 @@ class SystemControler:
             containers = client.containers.list(all=True)
 
             for container in containers:
-                print(f"Starting container: {container.name} ({container.id})")
                 container.start()
         except Exception as e:
-            print(f"error in start container {str(e)}")
+            pass 
 
     def get_hostname(self):
         try:
@@ -417,21 +377,17 @@ class SystemControler:
             hostname = socket.gethostname()
             return hostname
         except Exception as e:
-            print(f"Error: {e}")
             return None
         
     def set_hostname(self, new_hostname):
         try:
             self.update_hosts_file(socket.gethostname(), new_hostname)
-            print(f"new host name is {new_hostname}")
+
             # Run the hostnamectl command to set the new hostname
             subprocess.run(['sudo', 'hostnamectl', 'set-hostname', new_hostname], check=True)
-            print("command run")
-            
-            print(f"error nothing")
+
             return True, "host name changed"
         except subprocess.CalledProcessError as e:
-            print(f"Error: {e}")
             return False, f"Error: {str(e)}"
     
     def update_hosts_file(self, hostname, new_hostname):
@@ -444,8 +400,6 @@ class SystemControler:
             new_lines = []
             for line in lines:
                 if hostname in line:
-                    print(f"found host name is {hostname}")
-                    print(f"new hot name is {new_hostname}")
                     line = line.replace(hostname, new_hostname)
                 new_lines.append(line)
 
@@ -453,27 +407,23 @@ class SystemControler:
             with open('/etc/hosts', 'w') as f:
                 f.writelines(new_lines)
 
-            print("Updated /etc/hosts file successfully.")
         except Exception as e:
-            print(f"An error occurred: {e}")
+            pass 
         
     def reset_network_config(self):
         try:
             # Reset network configurations to use DHCP
             subprocess.run(['sudo', 'dhclient', '-r'])  # Release current IP address
             subprocess.run(['sudo', 'dhclient'])  # Obtain new IP address using DHCP
-            print("Network configuration reset successfully.")
             return True, "Network configuration reset successfully."
         except subprocess.CalledProcessError as e:
-            print(f"Error: {e}")
-            print("Failed to reset network configuration.")
             return False, "Failed to reset network configuration."
         
     def reset_network_file(self, interface):
         try:
             with open('/etc/network/interfaces', 'r') as config_file:
                 existing_config = config_file.readlines()
-                print(existing_config)
+
                 unique_identifier = f"# Interface: {interface}\n"
         
         
@@ -513,8 +463,8 @@ class SystemControler:
             # Restart NetworkManager service
             subprocess.run(['sudo', 'systemctl', 'restart', 'NetworkManager'], check=True)
         except Exception as e:
-            print(f"error in reset file {str(e)}")
-    
+            pass 
+
     def reset_ip_config(self):
         try:
             interface = self.get_default_interface()
@@ -526,10 +476,10 @@ class SystemControler:
             # Request a new DHCP lease
             subprocess.run(['sudo', 'dhclient', interface], check=True)
             subprocess.run(['sudo', 'systemctl', 'restart', 'NetworkManager'], check=True)
-            print("Network interface reset successfully.")
+
             return True, "Network interface reset successfully."
         except subprocess.CalledProcessError as e:
-            print(f"Error occurred: {e}")
+
             return False, f"Error occurred: {e}"
 
         
@@ -580,7 +530,7 @@ class SystemControler:
             return True, "IP configuration set successfully."
         except subprocess.CalledProcessError as e:
             self.reset_network_config()
-            print(f"Error: {e}")
+
             return False, f"Error: while updating the IP Automatically"
     
     def reset_network_configuration(self):
@@ -630,7 +580,7 @@ class SystemControler:
         try:
             subprocess.run(['sudo', 'ifup', interface], check=True)
         except Exception as e:
-            print(f"error ip interface {str(e)}")
+            pass 
 
     def convert_subnet_mask_to_cidr(self, subnet_mask):
         """
@@ -670,7 +620,6 @@ class SystemControler:
             return True, "IP configuration set successfully."
         except subprocess.CalledProcessError as e:
             self.reset_ip_config()
-            print(f"Error: {e}")
             return False, f"Error while updating the IP manually."
     
     def setup_ip_configuration(self, ip_address, subnet_mask, default_gateway):
@@ -698,7 +647,6 @@ class SystemControler:
             return True, "IP configuration set successfully."
         except subprocess.CalledProcessError as e:
             self.reset_network_config()
-            print(f"Error: {e}")
             return False, f"Error: while updating the IP Automatically"
         
     def reset_dns_servers(self):
@@ -710,15 +658,12 @@ class SystemControler:
                 if 'IP4.DNS' in line:
                     dns_servers.append(line.split(':')[-1].strip())
             if dns_servers:
-                print(f"these are dns {dns_servers}")
                 self.set_dns_servers(*dns_servers)
-                print("DNS servers set successfully.")
             else:
-                print("Failed to obtain DNS servers.")
+                pass 
                 
-            print("Network configuration reset successfully.")
         except subprocess.CalledProcessError as e:
-            print(f"Error: {e}")
+
             return []
     
     def set_dns_servers(self, ip_address, primary_dns, secondary_dns):
@@ -727,7 +672,7 @@ class SystemControler:
             command = f"sudo nmcli connection modify 'Wired connection 1' ipv4.dns '{primary_dns} {secondary_dns}'"
             subprocess.run(command, shell=True)
         except subprocess.CalledProcessError as e:
-            print(f"Error: {e}")
+            pass 
     
     def is_valid_ip(self, ip):
         # Regular expression pattern for matching an IP address
@@ -768,7 +713,6 @@ class SystemControler:
             result = subprocess.run(['sudo', 'resolvectl', 'dns', interface], capture_output=True, text=True)
             if result.returncode == 0:
                 output = result.stdout
-                print(output)
                 output = output.split(":")
                 servers = output[-1].split(" ")
                 ip_addresses = [ip.strip() for ip in servers if ip.strip() and ip.strip().count('.') == 3]
@@ -777,9 +721,9 @@ class SystemControler:
                 if len(ip_addresses) >= 2:
                     secondary_dns = ip_addresses[1]
             else:
-                print(f"Error getting DNS information for interface '{interface}'")
+                pass 
         except Exception as e:
-            print(f"Failed to get DNS information for interface '{interface}': {str(e)}")
+            pass 
         return primary_dns, secondary_dns
     
     def convert_duplex_to_standard(self, speed_duplex):
@@ -798,8 +742,6 @@ class SystemControler:
 
             # Read speed and duplex information from files
             with open(speed_file_path, 'r') as speed_file, open(duplex_file_path, 'r') as duplex_file:
-                print(f"inf {interface_name}")
-                print(speed_file.read())
                 speed = speed_file.read().strip() if speed_file else "Unknown"
                 duplex = duplex_file.read().strip() if duplex_file else "Unknown"
 
@@ -827,7 +769,7 @@ class SystemControler:
                         interface = default_route_info[4]
                         return interface
         except Exception as e:
-            print(f"error in defualt interface {str(e)}")
+            pass 
         return None
         
     def get_management_interface_details(self):
@@ -899,7 +841,6 @@ class SystemControler:
             return default_gateway
 
         except subprocess.CalledProcessError as e:
-            print(f"Error occurred: {e}")
             return None
     
     def read_network_config(self):
@@ -916,8 +857,7 @@ class SystemControler:
             default_gateway = None
             
             
-            lines = output.split('\n')
-            print(f"this is lines {lines}")
+            lines = output.split('\n')s
             for line in lines:
                 if 'inet ' in line:
                     parts = line.split()
@@ -932,10 +872,9 @@ class SystemControler:
             network_config_dict['Network']['Gateway'] = self.get_default_gateway(interface=interface)
 
         except subprocess.CalledProcessError as e:
-            print(f"Error occurred: {e}")
+            pass 
         except Exception as e:
-            print(f"error while doing this {str(e)}")
-        print(network_config_dict)
+            pass 
         return network_config_dict
     
     def read_network_interface(self, interface):
@@ -955,7 +894,7 @@ class SystemControler:
                         key, value = line.split("=", 1)
                         network_config_dict[section][key.strip()] = value.strip()
         except Exception as e:
-            print("file not found")
+                pass 
         return network_config_dict
     
     def create_network_file(self, interface, network_config):
@@ -1133,13 +1072,11 @@ Mask={mask}"""
     def set_management_interface(self, interface):
         try:
             ip_address = self.get_ipv4_address(interface=interface)
-            print(ip_address)
             if ip_address:
                 with IPRoute() as ipr:
                     # Find the index of the specified interface
                     index = ipr.link_lookup(ifname=interface)[0]
-                    print(f"this is index {index}")
-
+                    
                     # Set the specified interface as the primary interface
                     ipr.link('set', index=index, state='up')
                     ipr.route('del', dst='default')
