@@ -78,7 +78,7 @@ class SSHScreen:
     
     def handle_arrow_key(self, key):
     
-        if key.name == "up":
+        if key == "up":
             if self.selected_index == 1:
                  self.selected_index = 0
             else:
@@ -88,7 +88,7 @@ class SSHScreen:
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             
             self.auth_bottom_win.refresh()
-        elif key.name == "down":
+        elif key == "down":
             if self.selected_index == 0:
                  self.selected_index = 1
             else:
