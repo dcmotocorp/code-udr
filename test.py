@@ -311,7 +311,7 @@ class NovaiguApplication:
                             self.system_config = SystemConfig(self.stdscr.getmaxyx()[0], self.stdscr.getmaxyx()[1], self)
                             self.system_config.create_system_configuration()
                             self.system_config.update_password_screen = True 
-                            self.logger_.log_info("switch to system config screen")
+                            self.logger_.log_info("switch to system config screen if not available")
                         except Exception as ex:
                             self.logger_.log_info("Exception while switching to config screen {}".format(ex))
                             pass 
@@ -321,6 +321,7 @@ class NovaiguApplication:
                         self.system_config = SystemConfig(self.stdscr.getmaxyx()[0], self.stdscr.getmaxyx()[1], self)
                         self.system_config.create_system_configuration()
                         self.system_config.update_password_screen = True 
+                        self.logger_.log_info("switch to system config screen")
                     except Exception as ex:
                         self.logger_.log_info("Exception while creating to config screen {}".format(ex))
 
@@ -336,11 +337,13 @@ class NovaiguApplication:
                                 self.update_password.clear()
                                 self.reset_system_config_screen()
                                 self.update_password = None
+                                self.logger_.log_info("switch to clean password screen")
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
                         self.update_password = UpdatePasswordScreen(self.screen_height, self.screen_width,self)
                         self.update_password.update_status = True
+                        self.logger_.log_info("switch to update password screen")
                 elif current_screen == HOSTNAME:
                     if   hasattr(self, 'host_name')  and self.host_name !=None  and self.host_name.update_status == True  :
                         if len(self.host_name.current_hostname) >0:
@@ -350,11 +353,13 @@ class NovaiguApplication:
                             self.host_name.clear()
                             self.reset_system_config_screen()
                             self.host_name = None
+                            self.logger_.log_info("switch to clean host name screen")
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
                         self.host_name = HostnameScreen(self.screen_height, self.screen_width,self)
-                        self.host_name.update_status = True    
+                        self.host_name.update_status = True  
+                        self.logger_.log_info("switch to uostname password screen")  
                 elif current_screen == SSH:
                      
                     if   hasattr(self, 'ssh_screen')  and self.ssh_screen !=None  and self.ssh_screen.update_status == True  :
@@ -370,11 +375,13 @@ class NovaiguApplication:
                             self.ssh_screen.clear()
                             self.reset_system_config_screen()
                             self.ssh_screen = None
+                            self.logger_.log_info("switch to clean ssh screen")
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
                         self.ssh_screen = SSHScreen(self.screen_height, self.screen_width,self)
                         self.ssh_screen.update_status = True 
+                        self.logger_.log_info("switch to ssh screen")
                 elif current_screen == LOCK_DOWN_MODE:
                     if   hasattr(self, 'lock_down_screen')  and self.lock_down_screen !=None  and self.lock_down_screen.update_status == True  :
                         selected_value = self.lock_down_screen.current_label_head
@@ -388,11 +395,13 @@ class NovaiguApplication:
                             self.lock_down_screen.clear()
                             self.reset_system_config_screen()
                             self.lock_down_screen = None
+                            self.logger_.log_info("switch to lockdown clean  screen")
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
                         self.lock_down_screen = LockdownModeScreen(self.screen_height, self.screen_width,self)
-                        self.lock_down_screen.update_status = True  
+                        self.lock_down_screen.update_status = True 
+                        self.logger_.log_info("switch to lockdown  screen") 
                 
                 elif current_screen == MANAGEMENT_INTERFACE:
                     if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
@@ -405,13 +414,13 @@ class NovaiguApplication:
                                 self.configuration_management_screen.reset_screen_color()
                                 self.configuration_management_screen.handle_arrow_key("up")                                
                                 # self.configuration_management_screen.reset_screen_color()
-
+                                self.logger_.log_info("ip config value")
                             else:      
                                 self.configuration_management_screen.set_sytem_config_screen_dark()
                                 self.ip_config_adaptor = IPConfigurationScreen(self.screen_height, self.screen_width,self)
                                 self.ip_config_adaptor.update_status =True
                                 self.configuration_management_screen.update_status = True
-
+                                self.logger_.log_info("switch to configuration management screen")
 
                         elif  selected_label ==  NETWORK_ADAPTOR:
                             if hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
@@ -419,12 +428,13 @@ class NovaiguApplication:
                                 self.net_work_screen = None
                                 self.configuration_management_screen.reset_screen_color()
                                 self.configuration_management_screen.handle_arrow_key("up")                                
-                                
+                                self.logger_.log_info("switch to network adaptor management screen")
                             else:      
                                 self.configuration_management_screen.set_sytem_config_screen_dark()
                                 self.net_work_screen = NetworkAdaptorScreen(self.screen_height, self.screen_width,self)
                                 self.net_work_screen.update_status =True
                                 self.configuration_management_screen.update_status = True
+                                self.logger_.log_info("switch to configuration management screen")
 
                         elif  selected_label ==  DNS_SERVER:
                             if hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
@@ -440,17 +450,19 @@ class NovaiguApplication:
                                 self.configuration_management_screen.update_status = True
 
                     else:
+                        self.logger_.log_info("in else part 453")
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
                         self.configuration_management_screen = ConfigureManagement(self.screen_height, self.screen_width,self)
                         self.configuration_management_screen.create_configuration_management()
                         self.configuration_management_screen.update_status = True  
                 else:
-                  
+                    self.logger_.log_info("in else part 460")
                     current_sys_config = self.get_current_screen()
                     if current_sys_config == HOSTNAME:
                         self.host_name = HostnameScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
             else:
+                self.logger_.log_info("in else part 465")
                 self.authentication_screen = AuthenticationScreen(self.stdscr, self.screen_height, self.screen_width)
                 self.current_selected = USERNAME_LABEL
                 self.set_main_screen_black()
