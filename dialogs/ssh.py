@@ -103,10 +103,10 @@ class SSHScreen:
             
             if self.selected_index == 1:
                 self.current_label_head = 1
-                values = ["[] enable", "[0] disable"]
+                values = ["[ ] enable", "[0] disable"]
             else:
                 self.current_label_head = 0
-                values = ["[0] enable", "[] disable"]
+                values = ["[0] enable", "[ ] disable"]
             self.labels = values           
             for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
