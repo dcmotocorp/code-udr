@@ -11,7 +11,7 @@ class SSHScreen:
         self.current_ssh = ""
         self.autheticated_parameter = True
         self.update_status = False
-        self.labels = ["[] enable", "[] disable"]
+        self.labels = ["[ ] enable", "[ ] disable"]
         self.normal_color_pair = curses.color_pair(3) 
         self.selected_color_pair = curses.color_pair(5)
         self.logger_ = UdrLogger()
