@@ -857,7 +857,7 @@ class SystemControler:
             default_gateway = None
             
             
-            lines = output.split('\n')s
+            lines = output.split('\n')
             for line in lines:
                 if 'inet ' in line:
                     parts = line.split()
