@@ -124,6 +124,9 @@ class NovaiguApplication:
             
             elif hasattr(self, 'system_config') and self.system_config != None and  self.system_config.active_status ==True :
                 self.system_config.handle_arrow_key(event.name)
+            
+            elif hasattr(self, 'ssh_screen') and self.ssh_screen != None and  self.ssh_screen.update_status ==True :
+                self.ssh_screen.handle_arrow_key(event.name)
 
         
         elif event.name == KEY_ESC:
