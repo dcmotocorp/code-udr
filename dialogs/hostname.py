@@ -60,13 +60,16 @@ class HostnameScreen:
         user_input_x = popup_x + 15
         self.current_password_win = curses.newwin(1, 20, user_input_y, user_input_x)
         self.current_password_win.refresh()
-        current_hostname = self.system_controller.get_hostname()
-        self.current_password_win.addstr(0, 0, current_hostname, curses.color_pair(1))
-        self.current_password_win.refresh()
+        
 
         curses.curs_set(1)
         self.hostname_screen.refresh()
         curses.curs_set(0)
+        
+        self.current_hostname = self.system_controller.get_hostname()
+        self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(1))
+        self.current_password_win.refresh()
+
 
     def clear(self):
         self.clear_input_field()
