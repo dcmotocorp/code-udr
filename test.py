@@ -143,7 +143,7 @@ class NovaiguApplication:
                 self.reset_system_config_screen()
                 self.update_password = None
 
-            elif current_screen == HOSTNAME and self.host_name.update_status == True :
+            elif current_screen == HOSTNAME and hasattr(self, 'host_name')  and self.host_name !=None and self.host_name.update_status == True :
                 self.system_config.active_status = True
                 self.system_config.update_password_screen = False 
                 self.host_name.clear()
@@ -151,14 +151,14 @@ class NovaiguApplication:
                 self.host_name = None
 
             
-            elif current_screen == SSH and self.ssh_screen.update_status == True :
+            elif current_screen == SSH and hasattr(self, 'ssh_screen')  and self.ssh_screen !=None and self.ssh_screen.update_status == True :
                 self.system_config.active_status = True
                 self.system_config.update_password_screen = False 
                 self.ssh_screen.clear()
                 self.reset_system_config_screen()
                 self.ssh_screen = None
             
-            elif current_screen == LOCK_DOWN_MODE and self.lock_down_screen.update_status == True :
+            elif current_screen == LOCK_DOWN_MODE and hasattr(self, 'lock_down_screen')  and self.lock_down_screen !=None and self.lock_down_screen.update_status == True :
                 self.system_config.active_status = True
                 self.system_config.update_password_screen = False 
                 self.lock_down_screen.clear()
@@ -167,7 +167,7 @@ class NovaiguApplication:
             
            
             
-            elif current_screen == MANAGEMENT_INTERFACE and self.configuration_management_screen.update_status == True :
+            elif current_screen == MANAGEMENT_INTERFACE and hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None and self.configuration_management_screen.update_status == True :
                 self.logger_.log_info("164 {}".format(event.name)) 
                 self.system_config.active_status = True
                 self.system_config.update_password_screen = False 
@@ -275,11 +275,13 @@ class NovaiguApplication:
                         self.update_password.update_status = True
                 elif current_screen == HOSTNAME:
                     if   hasattr(self, 'host_name')  and self.host_name !=None  and self.host_name.update_status == True  :
-                        self.system_config.active_status = True
-                        self.system_config.update_password_screen = False 
-                        self.host_name.clear()
-                        self.reset_system_config_screen()
-                        self.host_name = None
+                        if len(self.host_name.current_hostname) >0:
+                            self.system_controller.set_hostname(self.host_name.current_hostname)
+                            self.system_config.active_status = True
+                            self.system_config.update_password_screen = False 
+                            self.host_name.clear()
+                            self.reset_system_config_screen()
+                            self.host_name = None
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
