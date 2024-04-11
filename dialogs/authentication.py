@@ -110,6 +110,9 @@ class AuthenticationScreen:
                 return symbol_char[next_char]
             else:
                 return next_char
+        else:
+                return next_char
+        
 
     def handle_key_event(self, event):
         if event.name == "backspace":
