@@ -247,7 +247,7 @@ class NovaiguApplication:
                         self.system_config.system_configuration_screen.clear()
                         self.system_config.system_configuration_screen = None
                         self.system_config = None
-                        self.clear_authentication()
+                        
                         
                         self.reset_main_screen_color()
                     except Exception as ex:
