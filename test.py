@@ -94,6 +94,7 @@ class NovaiguApplication:
         self.bottom_win.refresh()
 
     def create_shut_down_restart_pop_up(self):
+        self.logger_.log_info("Shut down and restart pop up")
         self.set_main_screen_black()
         self.popup_window.create_shut_down_restart_pop_up(self.stdscr)
      
@@ -108,133 +109,149 @@ class NovaiguApplication:
         
         current_screen = self.get_current_screen()       
         if event.name == KEY_DOWN  :
+            try: 
+                if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
+                    self.configuration_management_screen.handle_arrow_key(event.name)
+                
+                elif hasattr(self, 'ssh_screen') and self.ssh_screen != None and  self.ssh_screen.update_status ==True :
+                    self.ssh_screen.handle_arrow_key(event.name)
+                
+                elif hasattr(self, 'lock_down_screen') and self.lock_down_screen != None and  self.lock_down_screen.update_status ==True :
+                    self.lock_down_screen.handle_arrow_key(event.name)
+                
+                elif  hasattr(self, 'system_config') and self.system_config != None and self.system_config.active_status ==True :
+                    self.system_config.handle_arrow_key(event.name)
             
-            if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
-                self.configuration_management_screen.handle_arrow_key(event.name)
-            
-            elif hasattr(self, 'ssh_screen') and self.ssh_screen != None and  self.ssh_screen.update_status ==True :
-                self.ssh_screen.handle_arrow_key(event.name)
-            
-            elif hasattr(self, 'lock_down_screen') and self.lock_down_screen != None and  self.lock_down_screen.update_status ==True :
-                self.lock_down_screen.handle_arrow_key(event.name)
-            
-            elif  hasattr(self, 'system_config') and self.system_config != None and self.system_config.active_status ==True :
-                self.system_config.handle_arrow_key(event.name)
-            
-            
+            except Exception as ex:
+                self.logger_.log_info("Exception while key down {}".format(str(ex)))
         
 
         elif event.name == KEY_UP:
-            if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
-                self.configuration_management_screen.handle_arrow_key(event.name)
+            try:
+                if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
+                    self.configuration_management_screen.handle_arrow_key(event.name)
+                
+                elif hasattr(self, 'ssh_screen') and self.ssh_screen != None and  self.ssh_screen.update_status ==True :
+                    self.ssh_screen.handle_arrow_key(event.name)
+                
+                elif hasattr(self, 'lock_down_screen') and self.lock_down_screen != None and  self.lock_down_screen.update_status ==True :
+                    self.lock_down_screen.handle_arrow_key(event.name)
+                
+                elif hasattr(self, 'system_config') and self.system_config != None and  self.system_config.active_status ==True :
+                    self.system_config.handle_arrow_key(event.name)
             
-            elif hasattr(self, 'ssh_screen') and self.ssh_screen != None and  self.ssh_screen.update_status ==True :
-                self.ssh_screen.handle_arrow_key(event.name)
-            
-            elif hasattr(self, 'lock_down_screen') and self.lock_down_screen != None and  self.lock_down_screen.update_status ==True :
-                self.lock_down_screen.handle_arrow_key(event.name)
-            
-            elif hasattr(self, 'system_config') and self.system_config != None and  self.system_config.active_status ==True :
-                self.system_config.handle_arrow_key(event.name)
-            
+            except Exception as ex:
+                self.logger_.log_info("Exception while key up {}".format(str(ex)))
+
             
 
         
         elif event.name == KEY_ESC:
-            self.logger_.log_info("125 {}".format(event.name))   
-            if self.popup_window.popup_win:
-                self.popup_window.popup_win.clear()  # KEY_ESC the pop-up window
-                self.popup_window.popup_win.refresh()
-                self.popup_window.popup_win.deleteln()
-                self.popup_window.popup_win = None
-                self.reset_main_screen_color()
-            
-
-            elif current_screen == PASSWORD and hasattr(self, 'update_password')  and self.update_password !=None and self.update_password.update_status == True :
-                self.system_config.active_status = True
-                self.system_config.update_password_screen = False 
-                self.update_password.clear()
-                self.reset_system_config_screen()
-                self.update_password = None
-
-            elif current_screen == HOSTNAME and hasattr(self, 'host_name')  and self.host_name !=None and self.host_name.update_status == True :
-                self.system_config.active_status = True
-                self.system_config.update_password_screen = False 
-                self.host_name.clear()
-                self.reset_system_config_screen()
-                self.host_name = None
-
-            
-            elif current_screen == SSH and hasattr(self, 'ssh_screen')  and self.ssh_screen !=None and self.ssh_screen.update_status == True :
-                self.system_config.active_status = True
-                self.system_config.update_password_screen = False 
-                self.ssh_screen.clear()
-                self.reset_system_config_screen()
-                self.ssh_screen = None
-            
-            elif current_screen == LOCK_DOWN_MODE and hasattr(self, 'lock_down_screen')  and self.lock_down_screen !=None and self.lock_down_screen.update_status == True :
-                self.system_config.active_status = True
-                self.system_config.update_password_screen = False 
-                self.lock_down_screen.clear()
-                self.reset_system_config_screen()
-                self.lock_down_screen = None
-            
-           
-            
-            elif current_screen == MANAGEMENT_INTERFACE and hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None and self.configuration_management_screen.update_status == True :
-                self.logger_.log_info("164 {}".format(event.name)) 
-                self.system_config.active_status = True
-                self.system_config.update_password_screen = False 
+            try:  
+                if self.popup_window.popup_win:
+                    self.popup_window.popup_win.clear()  # KEY_ESC the pop-up window
+                    self.popup_window.popup_win.refresh()
+                    self.popup_window.popup_win.deleteln()
+                    self.popup_window.popup_win = None
+                    self.reset_main_screen_color()
+                    self.logger_.log_info("Clear pop up window")
                 
-                selected_index = self.configuration_management_screen.selected_index
-                selected_label = self.configuration_management_screen.labels[selected_index]
-                if selected_label ==  IP_CONFIGURATION and  hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
-                    
-                    self.ip_config_adaptor.clear()
-                    self.ip_config_adaptor = None
-                    self.configuration_management_screen.reset_screen_color()
-                    self.configuration_management_screen.handle_arrow_key("up")
 
-                elif selected_label ==  NETWORK_ADAPTOR and  hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
-                    
-                    self.net_work_screen.clear()
-                    self.net_work_screen = None
-                    self.configuration_management_screen.reset_screen_color()
-                    self.configuration_management_screen.handle_arrow_key("up")
-                
-                elif selected_label ==  DNS_SERVER and  hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
-                    self.dns_screen.clear()
-                    self.dns_screen = None
-                    self.configuration_management_screen.reset_screen_color()
-                    self.configuration_management_screen.handle_arrow_key("up")
-            
-                else:
-                    
-                    self.configuration_management_screen.clear()
+                elif current_screen == PASSWORD and hasattr(self, 'update_password')  and self.update_password !=None and self.update_password.update_status == True :
+                    self.system_config.active_status = True
+                    self.system_config.update_password_screen = False 
+                    self.update_password.clear()
                     self.reset_system_config_screen()
-                    self.configuration_management_screen = None
-            
+                    self.update_password = None
+                    self.logger_.log_info("Clear pop up password screen")
 
-            elif hasattr(self, 'system_config')  and self.system_config !=None and  self.system_config.active_status == True:
-                self.logger_.log_info("172 {}".format(event.name))     
-                self.system_config.active_status =False
-                self.system_config.system_configuration_screen.clear()
-                self.system_config.system_configuration_screen = None
-                self.system_config = None
-                self.reset_main_screen_color()
+                elif current_screen == HOSTNAME and hasattr(self, 'host_name')  and self.host_name !=None and self.host_name.update_status == True :
+                    self.system_config.active_status = True
+                    self.system_config.update_password_screen = False 
+                    self.host_name.clear()
+                    self.reset_system_config_screen()
+                    self.host_name = None
+                    self.logger_.log_info("Clear pop up hostname screen")
 
+                
+                elif current_screen == SSH and hasattr(self, 'ssh_screen')  and self.ssh_screen !=None and self.ssh_screen.update_status == True :
+                    self.system_config.active_status = True
+                    self.system_config.update_password_screen = False 
+                    self.ssh_screen.clear()
+                    self.reset_system_config_screen()
+                    self.ssh_screen = None
+                    self.logger_.log_info("Clear pop up ssh screen")
+                
+                elif current_screen == LOCK_DOWN_MODE and hasattr(self, 'lock_down_screen')  and self.lock_down_screen !=None and self.lock_down_screen.update_status == True :
+                    self.system_config.active_status = True
+                    self.system_config.update_password_screen = False 
+                    self.lock_down_screen.clear()
+                    self.reset_system_config_screen()
+                    self.lock_down_screen = None
+                    self.logger_.log_info("Clear pop up lock down screen")
+                
             
+                
+                elif current_screen == MANAGEMENT_INTERFACE and hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None and self.configuration_management_screen.update_status == True :
+                    try:                    
+                        self.system_config.active_status = True
+                        self.system_config.update_password_screen = False 
+                        
+                        selected_index = self.configuration_management_screen.selected_index
+                        selected_label = self.configuration_management_screen.labels[selected_index]
+                        if selected_label ==  IP_CONFIGURATION and  hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
+                            
+                            self.ip_config_adaptor.clear()
+                            self.ip_config_adaptor = None
+                            self.configuration_management_screen.reset_screen_color()
+                            self.configuration_management_screen.handle_arrow_key("up")
+
+                        elif selected_label ==  NETWORK_ADAPTOR and  hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
+                            
+                            self.net_work_screen.clear()
+                            self.net_work_screen = None
+                            self.configuration_management_screen.reset_screen_color()
+                            self.configuration_management_screen.handle_arrow_key("up")
+                        
+                        elif selected_label ==  DNS_SERVER and  hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
+                            self.dns_screen.clear()
+                            self.dns_screen = None
+                            self.configuration_management_screen.reset_screen_color()
+                            self.configuration_management_screen.handle_arrow_key("up")
                     
-            
-            elif hasattr(self, 'authentication_screen')  and self.authentication_screen !=None and self.authentication_screen.authentication_screen:  
-                self.logger_.log_info("else {}".format(event.name))               
-                self.current_selected = USERNAME_LABEL
-                # self.clear_authetication_screen()
-                self.reset_main_screen_color()
-            else:
-                pass 
-            
-            
+                        else:
+                            
+                            self.configuration_management_screen.clear()
+                            self.reset_system_config_screen()
+                            self.configuration_management_screen = None
+                    except Exception as ex:
+                        self.logger_.log_info("Exception occure in management interface {}".format(str(ex)))
+
+                elif hasattr(self, 'system_config')  and self.system_config !=None and  self.system_config.active_status == True:
+                    try:
+                        self.logger_.log_info("172 {}".format(event.name))     
+                        self.system_config.active_status =False
+                        self.system_config.system_configuration_screen.clear()
+                        self.system_config.system_configuration_screen = None
+                        self.system_config = None
+                        self.reset_main_screen_color()
+                    except Exception as ex:
+                        self.logger_.log_info("Exception occure in system config on pressing esc")
+                
+                        
+                
+                elif hasattr(self, 'authentication_screen')  and self.authentication_screen !=None and self.authentication_screen.authentication_screen:  
+                    try:               
+                        self.current_selected = USERNAME_LABEL
+                        # self.clear_authetication_screen()
+                        self.reset_main_screen_color()
+                    except Exception as ex:
+                        self.logger_.log_info("Exception occure in authetication ssystem on pressing esc") 
+                else:
+                    pass 
+                
+            except Exception as ex:
+                self.logger_.log_info("Exception while pressing key ESC {}".format(str(ex)))
 
 
         elif event.name == "f2":
@@ -286,7 +303,6 @@ class NovaiguApplication:
                 
                 elif current_screen == PASSWORD:
                     if  hasattr(self, 'update_password')  and self.update_password !=None  and self.update_password.update_status == True  :
-                        self.logger_.log_info("self.self.update_password.current_password {} == self.password_input {}".format(self.update_password.current_password,self.password_input))
                         if self.update_password.current_password == self.password_input: 
                             self.logger_.log_info("self.username_input {} == self.password_input{}".format(self.username_input,self.password_input,self.update_password.new_password))
                             status = self.system_controller.change_password(self.username_input,self.password_input,self.update_password.new_password)
