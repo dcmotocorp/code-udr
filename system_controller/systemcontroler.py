@@ -28,8 +28,6 @@ class SystemControler:
         try:
             # Get the encrypted password hash from /etc/shadow
             encrypted_password = spwd.getspnam(username).sp_pwd
-
-
             # Verify the password
             response = crypt.crypt(password, encrypted_password) == encrypted_password
             self.logger_.log_info("Response of authentication {} = {} == {}".format(response,username, password))
