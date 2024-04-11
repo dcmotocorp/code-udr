@@ -12,10 +12,13 @@ import time
 import os
 import spwd
 from pyroute2 import IPRoute
+from logs.udr_logger import UdrLogger
+
 
 class SystemControler:
     def __init__(self) -> None:
-        pass
+        self.logger_ = UdrLogger()
+        
 
     
     
@@ -28,9 +31,13 @@ class SystemControler:
 
 
             # Verify the password
-            return crypt.crypt(password, encrypted_password) == encrypted_password
-        except KeyError:
+            response = crypt.crypt(password, encrypted_password) == encrypted_password
+            self.logger_.log_info("Response of authentication{}".format(response))
+            return response
+            
+        except KeyError as ex:
             # User not found
+            self.logger_.log_info("Error of authentication{}".format(str(ex)))
             return False
 
     def get_default_interface(self):
