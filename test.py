@@ -308,6 +308,11 @@ class NovaiguApplication:
                         self.ssh_screen.update_status = True 
                 elif current_screen == LOCK_DOWN_MODE:
                     if   hasattr(self, 'lock_down_screen')  and self.lock_down_screen !=None  and self.lock_down_screen.update_status == True  :
+                        selected_value = self.lock_down_screen.selected_index
+                        if selected_value == 0:
+                            self.system_controller.enable_lockdown_mode()
+                        else:
+                            self.system_controller.exit_lockdown_mode()
                         self.system_config.active_status = True
                         self.system_config.update_password_screen = False 
                         self.lock_down_screen.clear()
