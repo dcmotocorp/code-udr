@@ -104,6 +104,12 @@ class NovaiguApplication:
             current_index= self.system_config.selected_index
             current_field = self.system_config.labels[current_index]
             return current_field
+    def clear_authentication(self):
+        if hasattr(self, 'authentication_screen')  and self.authentication_screen !=None:
+            self.authentication_screen.clear_input_field()
+            self.authentication_screen.clear()
+            self.authentication_screen = None
+
 
     def _on_key_press(self, event):
         
@@ -164,6 +170,7 @@ class NovaiguApplication:
                     self.reset_system_config_screen()
                     self.update_password = None
                     self.logger_.log_info("Clear pop up password screen")
+                    self.clear_authentication()
 
                 elif current_screen == HOSTNAME and hasattr(self, 'host_name')  and self.host_name !=None and self.host_name.update_status == True :
                     self.system_config.active_status = True
@@ -172,6 +179,7 @@ class NovaiguApplication:
                     self.reset_system_config_screen()
                     self.host_name = None
                     self.logger_.log_info("Clear pop up hostname screen")
+                    self.clear_authentication()
 
                 
                 elif current_screen == SSH and hasattr(self, 'ssh_screen')  and self.ssh_screen !=None and self.ssh_screen.update_status == True :
@@ -181,6 +189,7 @@ class NovaiguApplication:
                     self.reset_system_config_screen()
                     self.ssh_screen = None
                     self.logger_.log_info("Clear pop up ssh screen")
+                    self.clear_authentication()
                 
                 elif current_screen == LOCK_DOWN_MODE and hasattr(self, 'lock_down_screen')  and self.lock_down_screen !=None and self.lock_down_screen.update_status == True :
                     self.system_config.active_status = True
@@ -189,6 +198,7 @@ class NovaiguApplication:
                     self.reset_system_config_screen()
                     self.lock_down_screen = None
                     self.logger_.log_info("Clear pop up lock down screen")
+                    self.clear_authentication()
                 
             
                 
@@ -205,6 +215,7 @@ class NovaiguApplication:
                             self.ip_config_adaptor = None
                             self.configuration_management_screen.reset_screen_color()
                             self.configuration_management_screen.handle_arrow_key("up")
+                            self.clear_authentication()
 
                         elif selected_label ==  NETWORK_ADAPTOR and  hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
                             
@@ -212,18 +223,21 @@ class NovaiguApplication:
                             self.net_work_screen = None
                             self.configuration_management_screen.reset_screen_color()
                             self.configuration_management_screen.handle_arrow_key("up")
+                            self.clear_authentication()
                         
                         elif selected_label ==  DNS_SERVER and  hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
                             self.dns_screen.clear()
                             self.dns_screen = None
                             self.configuration_management_screen.reset_screen_color()
                             self.configuration_management_screen.handle_arrow_key("up")
+                            self.clear_authentication()
                     
                         else:
                             
                             self.configuration_management_screen.clear()
                             self.reset_system_config_screen()
                             self.configuration_management_screen = None
+                            self.clear_authentication()
                     except Exception as ex:
                         self.logger_.log_info("Exception occure in management interface {}".format(str(ex)))
 
@@ -234,9 +248,8 @@ class NovaiguApplication:
                         self.system_config.system_configuration_screen.clear()
                         self.system_config.system_configuration_screen = None
                         self.system_config = None
-                        self.authentication_screen.clear_input_field()
-                        self.authentication_screen.clear()
-                        self.authentication_screen = None
+                        self.clear_authentication()
+                        
                         self.reset_main_screen_color()
                     except Exception as ex:
                         self.logger_.log_info("Exception occure in system config on pressing esc")
@@ -285,7 +298,7 @@ class NovaiguApplication:
 
         
         elif event.name == "enter":
-            if hasattr(self, 'authentication_screen'):
+            if hasattr(self, 'authentication_screen') and self.authentication_screen != None:
                 if (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 )  and not hasattr(self, 'system_config'):
                     self.logger_.log_info("Current username and password match the condition")
                     response = self.system_controller.authenticate(self.authentication_screen.username_input,self.authentication_screen.password_input)
