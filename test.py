@@ -234,6 +234,9 @@ class NovaiguApplication:
                         self.system_config.system_configuration_screen.clear()
                         self.system_config.system_configuration_screen = None
                         self.system_config = None
+                        self.authentication_screen.clear_input_field()
+                        self.authentication_screen.clear()
+                        self.authentication_screen = None
                         self.reset_main_screen_color()
                     except Exception as ex:
                         self.logger_.log_info("Exception occure in system config on pressing esc")
@@ -242,6 +245,9 @@ class NovaiguApplication:
                 
                 elif hasattr(self, 'authentication_screen')  and self.authentication_screen !=None and self.authentication_screen.authentication_screen:  
                     try:               
+                        self.authentication_screen.clear_input_field()
+                        self.authentication_screen.clear()
+                        self.authentication_screen = None
                         self.current_selected = USERNAME_LABEL
                         # self.clear_authetication_screen()
                         self.reset_main_screen_color()
@@ -273,6 +279,11 @@ class NovaiguApplication:
         elif event.name == "f12":
             self.create_shut_down_restart_pop_up()
 
+        elif event.name =="shift":
+            if hasattr(self, 'authentication_screen') and self.authentication_screen !=None:
+                self.authentication_screen.handle_key_event(event)
+
+        
         elif event.name == "enter":
             if hasattr(self, 'authentication_screen'):
                 if (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 )  and not hasattr(self, 'system_config'):
@@ -427,6 +438,7 @@ class NovaiguApplication:
                     if current_sys_config == HOSTNAME:
                         self.host_name = HostnameScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
             else:
+                self.authentication_screen = AuthenticationScreen(self.stdscr, self.screen_height, self.screen_width)
                 self.current_selected = USERNAME_LABEL
                 self.set_main_screen_black()
 
