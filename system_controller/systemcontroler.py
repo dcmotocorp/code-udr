@@ -41,7 +41,7 @@ class SystemControler:
             output = result.stdout.strip()
             match = re.search(r'default via \S+ dev (\S+)', output)
             if match:
-                return match.group(1)
+                return [match.group(1)]
             else:
                 return None
         except subprocess.CalledProcessError as e:
@@ -295,7 +295,7 @@ class SystemControler:
         try:
             # Disable all network interfaces
             interfaces = self.get_default_interface()
-            print(interfaces,"======================interfaces")
+            
             for interface in interfaces:
                 self.reset_ip_down_interface(interface=interface)
                 subprocess.run(["sudo", "ip", "link", "set", interface, "down"])
