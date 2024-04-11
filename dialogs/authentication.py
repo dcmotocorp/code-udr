@@ -103,13 +103,13 @@ class AuthenticationScreen:
 
     def handle_key_event(self, event):
         if event.name == "backspace":
-            if len(self.username_input) > 0:
+            if self.current_status == "username" and len(self.username_input) > 0:
                 self.username_input = self.username_input[:-1]
                 if hasattr(self, 'username_win') and self.username_win != None:
                     self.username_win.clear()
                     self.username_win.addstr(0, 0, self.username_input, curses.color_pair(1))
                     self.username_win.refresh()
-            elif len(self.password_input) > 0:
+            elif self.current_status == "password" and len(self.password_input) > 0:
                 self.password_input = self.password_input[:-1]
                 if hasattr(self, 'password_win') and self.password_win != None:
                     self.password_win.clear()
