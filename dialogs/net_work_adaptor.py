@@ -13,7 +13,7 @@ class NetworkAdaptorScreen:
         self.update_status = False
         self.current_seleected_parameter = None
         self.current_selected_label_index = 0
-        self.labels = [["[{}] N1C1".format(""),"00.01.D1:F3:55:2D".format(""),"Connected".format("")],["[{}] N1C2","00.01.D5:F3:55:2D","Connected"],["[{}] N1C3","00.01.D1:F3:55:2D","Connected"]]
+        self.labels = [["[{}] N1C1".format(""),"00.01.D1:F3:55:2D","Connected"],["[{}] N1C2".format(""),"00.01.D5:F3:55:2D","Connected"],["[{}] N1C3".format(""),"00.01.D1:F3:55:2D","Connected"]]
         self.normal_color_pair = curses.color_pair(3) 
         self.selected_color_pair = curses.color_pair(5)
         self.logger_ = UdrLogger()
