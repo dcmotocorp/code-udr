@@ -89,10 +89,11 @@ class UpdatePasswordScreen:
     def clear(self):
         self.clear_all_input()
         if hasattr(self, 'authentication_screen') and self.authentication_screen != None:
+            curses.curs_set(0)
             self.authentication_screen.clear()
             self.authentication_screen.refresh()
             self.authentication_screen = None
-            curses.curs_set(0)
+            
 
     def clear_all_input(self):
         if hasattr(self, 'conform_password_win') and self.conform_password_win != None:   
