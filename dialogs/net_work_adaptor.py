@@ -3,6 +3,7 @@ from logs.udr_logger import UdrLogger
 from dialogs.system_config import SystemConfig
 from constant import KEY_UP,KEY_DOWN,SELECT_MANAGEMENT_NETWORK_SERVICE,OBTAIN_IP_AUTOMATIC,MANUALLY_IP_AUTOMATIC
 from copy import deepcopy
+from system_controller.systemcontroler import SystemControler
 import json 
 
 class NetworkAdaptorScreen:
@@ -17,12 +18,19 @@ class NetworkAdaptorScreen:
         self.current_selected_label_index = None
         self.labels = [["N1C1","00.01.D1:F3:55:2D","Connected"],["N1C2","00.01.D5:F3:55:2D","Connected"],["N1C3","00.01.D1:F3:55:2D","Connected"]]
         self.current_label = []
+        self.system_controller = SystemControler()
         self.normal_color_pair = curses.color_pair(3) 
         self.selected_color_pair = curses.color_pair(5)
         self.logger_ = UdrLogger()
         self.selected_index= 0
+        self.get_data_from_source()
         self.setup_network_adaptor_screen()
 
+    def get_data_from_source(self):
+        data = self.system_controller.get_all_network_interfaces()
+        self.logger_.log_info("==========data from the interface {}".format(json.dumps(data))) 
+
+    
     def setup_network_adaptor_screen(self):
         auth_screen_height = 15
         auth_screen_width = 50
