@@ -144,6 +144,9 @@ class ConfigureManagement:
     def update_color(self):
         pass 
     
+    def refresh_screen(self):
+        self.create_configuration_management()
+
 
     def handle_arrow_key(self, key):
         if hasattr(self, 'sc_config_top_win') and self.sc_config_top_win != None:

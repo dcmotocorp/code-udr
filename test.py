@@ -405,8 +405,7 @@ class NovaiguApplication:
                                 self.ip_config_adaptor.clear()
                                 self.ip_config_adaptor = None
                                 self.configuration_management_screen.reset_screen_color()
-                                self.configuration_management_screen.handle_arrow_key("up")                                
-                                # self.configuration_management_screen.reset_screen_color()
+                                self.configuration_management_screen.refresh_screen()
 
                             else:      
                                 self.configuration_management_screen.set_sytem_config_screen_dark()
@@ -420,7 +419,7 @@ class NovaiguApplication:
                                 self.net_work_screen.clear()
                                 self.net_work_screen = None
                                 self.configuration_management_screen.reset_screen_color()
-                                self.configuration_management_screen.handle_arrow_key("up")                                
+                                self.configuration_management_screen.refresh_screen()                                
                                 
                             else:      
                                 self.configuration_management_screen.set_sytem_config_screen_dark()
@@ -433,7 +432,7 @@ class NovaiguApplication:
                                 self.dns_screen.clear()
                                 self.dns_screen = None
                                 self.configuration_management_screen.reset_screen_color()
-                                self.configuration_management_screen.handle_arrow_key("up")                                
+                                self.configuration_management_screen.refresh_screen()                                
                                 
                             else:      
                                 self.configuration_management_screen.set_sytem_config_screen_dark()
@@ -461,8 +460,7 @@ class NovaiguApplication:
                 self.update_password.handle_key_event(event)
             elif  hasattr(self, 'authentication_screen') and self.authentication_screen !=None :
                 self.authentication_screen.handle_key_event(event)
-            # elif  hasattr(self, 'authentication_screen') and self.authentication_screen !=None and self.authentication_screen.current_status == "password":
-            #     self.authentication_screen.current_status = "username"
+
 
         elif event.name == "backspace":
             if hasattr(self, 'update_password') and self.update_password !=None and  self.update_password.update_status == True and current_screen == PASSWORD:
@@ -482,24 +480,19 @@ class NovaiguApplication:
 
         elif event.name == "space":
             if hasattr(self, 'ssh_screen') and self.ssh_screen !=None and self.ssh_screen.update_status == True and current_screen == SSH:  
-                self.logger_.log_info("272 ssh screen {}".format(event.name))
                 self.ssh_screen.handle_arrow_key(event)
                 
             elif hasattr(self, 'lock_down_screen') and self.lock_down_screen !=None and self.lock_down_screen.update_status == True and current_screen == LOCK_DOWN_MODE:  
-                self.logger_.log_info("276 ssh screen {}".format(event.name))
                 self.lock_down_screen.handle_arrow_key(event)
             
             elif   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
                 selected_index = self.configuration_management_screen.selected_index
                 selected_label = self.configuration_management_screen.labels[selected_index]
                 if hasattr(self, 'ip_config_adaptor') and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True and selected_label == IP_CONFIGURATION:  
-                    self.logger_.log_info("349 ssh screen {}".format(event.name))
                     self.ip_config_adaptor.handle_arrow_key(event)
                 elif hasattr(self, 'net_work_screen') and self.net_work_screen !=None and self.net_work_screen.update_status == True and selected_label == NETWORK_ADAPTOR:  
-                    self.logger_.log_info("349 ssh screen {}".format(event.name))
                     self.net_work_screen.handle_arrow_key(event) 
                 elif hasattr(self, 'dns_screen') and self.dns_screen !=None and self.dns_screen.update_status == True and selected_label == DNS_SERVER:  
-                    self.logger_.log_info("349 ssh screen {}".format(event.name))
                     self.dns_screen.handle_arrow_key(event)
 
                     
