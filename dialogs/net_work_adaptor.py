@@ -3,6 +3,7 @@ from logs.udr_logger import UdrLogger
 from dialogs.system_config import SystemConfig
 from constant import KEY_UP,KEY_DOWN,SELECT_MANAGEMENT_NETWORK_SERVICE,OBTAIN_IP_AUTOMATIC,MANUALLY_IP_AUTOMATIC
 from copy import deepcopy
+import json 
 
 class NetworkAdaptorScreen:
     def __init__(self, screen_height, screen_width,app):
@@ -100,7 +101,7 @@ class NetworkAdaptorScreen:
                     test[0] = test[0].format("")
                     tem.append(test)
                 data = tem
-
+            self.logger_.log_info("up data login info {}".format(json.dumps(data)))
             for index, label in enumerate(data):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 self.auth_bottom_win.addstr( 2+ index, 5, label[0], color_pair)
@@ -113,9 +114,9 @@ class NetworkAdaptorScreen:
                 self.selected_index =len(self.labels)-1
             else :
                  self.selected_index += 1
+            
             if len(self.current_label)>0:
-                data = self.current_label
-                
+                data = self.current_label    
             else:
                 test_daat = deepcopy(self.labels) 
                 tem = []
@@ -123,7 +124,7 @@ class NetworkAdaptorScreen:
                     test[0] = test[0].format("")
                     tem.append(test)
                 data = tem
-
+            self.logger_.log_info("down data login info {}".format(json.dumps(data)))
             for index, label in enumerate(data):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 self.auth_bottom_win.addstr( 2+ index, 5, label[0], color_pair)
@@ -142,7 +143,7 @@ class NetworkAdaptorScreen:
                     label[0] = label[0].format("")
                 self.current_label.append(label)
 
-            import json 
+            
             self.logger_.log_info("current login info {}".format(json.dumps(self.current_label)))
             for index, label in enumerate(self.current_label):
             
