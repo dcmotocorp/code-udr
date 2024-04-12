@@ -308,8 +308,11 @@ class NovaiguApplication:
                     if response:
                         try:
                             
-                            self.user_data_base.default_settings(self.system_controller.get_hostname(), self.authentication_screen.password_input)
-                            self.user_data_base.update_current_login(self.authentication_screen.username_input)
+                            try :
+                                self.user_data_base.default_settings(self.system_controller.get_hostname(), self.authentication_screen.password_input)
+                                self.user_data_base.update_current_login(self.authentication_screen.username_input)
+                            except Exception as ex:
+                                self.logger_.log_info("Exception error in database resposne {}".format(str(ex)))
                             self.username_input = self.authentication_screen.username_input
                             self.password_input = self.authentication_screen.password_input
                             self.authentication_screen. clear_input_field()
