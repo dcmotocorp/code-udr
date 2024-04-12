@@ -111,6 +111,12 @@ class NetworkAdaptorScreen:
         if key.name == "space":
             
             for index, label in enumerate(self.labels):
+                if index == self.selected_index:
+                    label[0] = label[0].format("0")
+            import json 
+            self.logger_.log_info("current login info {}".format(json.dumps(self.labels)))
+            for index, label in enumerate(self.labels):
+            
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 if index == self.selected_index:
                     self.auth_bottom_win.addstr( 2+ index, 5, label[0].format("0"), color_pair)
