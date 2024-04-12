@@ -115,6 +115,16 @@ class AuthenticationScreen:
         else:
                 return next_char
         
+    def set_cursor_position(self):
+        """Set the cursor position based on the current input and status."""
+        if self.current_status == "username":
+            # Move the cursor to the end of the current username input
+            self.username_win.move(0, len(self.username_input))
+            self.username_win.refresh()
+        elif self.current_status == "password":
+            # Move the cursor to the end of the current password input
+            self.password_win.move(0, len(self.password_input))
+            self.password_win.refresh()
 
     def handle_key_event(self, event):
         if event.name == "backspace":
@@ -122,14 +132,16 @@ class AuthenticationScreen:
                 self.username_input = self.username_input[:-1]
                 if hasattr(self, 'username_win') and self.username_win != None:
                     self.username_win.clear()
-                    self.username_win.addstr(0, 0, self.username_input, curses.color_pair(1))
+                    self.username_win.addstr(0, 0, self.username_input, curses.color_pair(2))
                     self.username_win.refresh()
+                    self.set_cursor_position()
             elif self.current_status == "password" and len(self.password_input) > 0:
                 self.password_input = self.password_input[:-1]
                 if hasattr(self, 'password_win') and self.password_win != None:
                     self.password_win.clear()
-                    self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(1))
+                    self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(2))
                     self.password_win.refresh()
+                    self.set_cursor_position()
         elif event.name == "enter":
             if len(self.username_input) >0 or len(self.password_input) >0:
                 self.authentication_screen.clear()
@@ -141,6 +153,7 @@ class AuthenticationScreen:
                 self.current_status = "password"
             elif self.current_status == "password":
                 self.current_status = "username"
+            self.set_cursor_position()
         elif event.name == "shift":
             self.shift_status = True 
 
@@ -150,10 +163,12 @@ class AuthenticationScreen:
             if  self.current_status == "username" and len(self.username_input) < 20  :
                 self.username_input += char_
                 if hasattr(self, 'username_win') and self.username_win != None:
-                    self.username_win.addstr(0, 0, self.username_input, curses.color_pair(1))
+                    self.username_win.addstr(0, 0, self.username_input, curses.color_pair(2))
                     self.username_win.refresh()
+                    self.set_cursor_position()
             if  self.current_status == "password" and  len(self.password_input) < 20  :
                 self.password_input += char_
                 if hasattr(self, 'password_win') and self.password_win != None:
-                    self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(1))
+                    self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(2))
                     self.password_win.refresh()
+                    self.set_cursor_position()
