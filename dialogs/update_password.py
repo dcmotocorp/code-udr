@@ -92,7 +92,7 @@ class UpdatePasswordScreen:
 
         curses.curs_set(1)
         self.authentication_screen.refresh()
-        curses.curs_set(0)
+        self.set_cursor_position()
 
     def clear(self):
         self.clear_all_input()
@@ -136,7 +136,7 @@ class UpdatePasswordScreen:
                 self.new_password_win.addstr(0, 0, "*" * len(self.new_password), curses.color_pair(1))
                 self.new_password_win.refresh()
                 self.set_cursor_position()
-                
+
             elif self.current_status == "conform_new" and len(self.confirm_password) > 0:
                 self.confirm_password = self.confirm_password[:-1]
                 self.conform_password_win.clear()
