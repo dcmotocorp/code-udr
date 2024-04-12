@@ -71,13 +71,7 @@ class AuthenticationScreen:
         self.password_win = curses.newwin(1, 10, password_input_y, user_input_x)
         self.password_win.refresh()
 
-        # Set placeholders for username and password fields
-        username_placeholder = "Enter username"
-        password_placeholder = "Enter password"
-        self.username_win.addstr(0, 0, username_placeholder, curses.color_pair(3))
-        self.password_win.addstr(0, 0, password_placeholder, curses.color_pair(3))
-        self.username_win.refresh()
-        self.password_win.refresh()
+    
 
         curses.curs_set(1)
         self.authentication_screen.refresh()
