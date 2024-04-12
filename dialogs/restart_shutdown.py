@@ -51,4 +51,4 @@ class ShutdownRestart:
         label_y_bottom = 5  # Center vertically
         popup_bottom_win.addstr(label_y_bottom, label_x_bottom, ESC_CANCLE)
         self.popup_win.refresh()
-        curses.curs_set(1)
+        curses.curs_set(0)

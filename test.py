@@ -92,6 +92,7 @@ class NovaiguApplication:
         self.bottom_win.addstr(bottom_height - 2, self.screen_width - len("<F12> Shut down/Restart") - 2,
                                 "<F12> Shut down/Restart", curses.A_UNDERLINE)
         self.bottom_win.refresh()
+        curses.curs_set(0)
 
     def create_shut_down_restart_pop_up(self):
         self.logger_.log_info("Shut down and restart pop up")
