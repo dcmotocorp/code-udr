@@ -104,6 +104,7 @@ class HostnameScreen:
             if len(self.current_hostname) > 0:
                 self.current_hostname = self.current_hostname[:-1]
                 self.current_password_win.clear()
+                self.current_password_win.bkgd(' ', curses.color_pair(2)) 
                 self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(1))
                 self.current_password_win.refresh()
                 self.set_cursor_position()

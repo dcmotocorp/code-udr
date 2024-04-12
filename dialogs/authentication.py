@@ -126,6 +126,7 @@ class AuthenticationScreen:
                 self.username_input = self.username_input[:-1]
                 if hasattr(self, 'username_win') and self.username_win != None:
                     self.username_win.clear()
+                    self.username_win.bkgd(' ', curses.color_pair(2)) 
                     self.username_win.addstr(0, 0, self.username_input, curses.color_pair(2))
                     self.username_win.refresh()
                     self.set_cursor_position()
@@ -133,6 +134,7 @@ class AuthenticationScreen:
                 self.password_input = self.password_input[:-1]
                 if hasattr(self, 'password_win') and self.password_win != None:
                     self.password_win.clear()
+                    self.password_win.bkgd(' ', curses.color_pair(2)) 
                     self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(2))
                     self.password_win.refresh()
                     self.set_cursor_position()

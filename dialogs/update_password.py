@@ -127,6 +127,7 @@ class UpdatePasswordScreen:
             if self.current_status == "current_password"  and  len(self.current_password) > 0:
                 self.current_password = self.current_password[:-1]
                 self.current_password_win.clear()
+                self.current_password_win.bkgd(' ', curses.color_pair(2)) 
                 self.current_password_win.addstr(0, 0, self.current_password, curses.color_pair(1))
                 self.current_password_win.refresh()
                 self.set_cursor_position()
@@ -134,6 +135,7 @@ class UpdatePasswordScreen:
             elif self.current_status == "current_new" and  len(self.new_password) > 0:
                 self.new_password = self.new_password[:-1]
                 self.new_password_win.clear()
+                self.new_password_win.bkgd(' ', curses.color_pair(2)) 
                 self.new_password_win.addstr(0, 0, "*" * len(self.new_password), curses.color_pair(1))
                 self.new_password_win.refresh()
                 self.set_cursor_position()
@@ -141,6 +143,7 @@ class UpdatePasswordScreen:
             elif self.current_status == "conform_new" and len(self.confirm_password) > 0:
                 self.confirm_password = self.confirm_password[:-1]
                 self.conform_password_win.clear()
+                self.conform_password_win.bkgd(' ', curses.color_pair(2)) 
                 self.conform_password_win.addstr(0, 0, "*" * len(self.new_password), curses.color_pair(1))
                 self.conform_password_win.refresh()
                 self.set_cursor_position()
