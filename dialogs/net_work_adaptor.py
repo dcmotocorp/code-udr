@@ -29,9 +29,17 @@ class NetworkAdaptorScreen:
     def get_data_from_source(self):
         data = self.system_controller.get_management_interface_details()
         self.logger_.log_info("==========data from the interface {}".format(json.dumps(data))) 
-
-    def set_source_data(self):
-        pass 
+       
+    def set_source_data(self,data):
+        resposne_data = []
+        for __data in data:
+            tem_list = []
+            tem_list.append(__data.get('interface'))
+            tem_list.append(__data.get('macAddress'))
+            tem_list.append(__data.get('state'))
+            resposne_data.append(tem_list)
+        
+        self.labels = resposne_data
     
     def setup_network_adaptor_screen(self):
         auth_screen_height = 15
