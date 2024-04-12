@@ -112,7 +112,10 @@ class SystemConfig:
         self.sc_config_bottom_win.addstr(sc_config_top_height-10, sc_config_width-15, label_text_bottom_esc_log_out, curses.color_pair(0))
                 
 
-    def handle_arrow_key(self, key=None,refresh=False):
+    def refreash_command(self):
+        self.create_system_configuration()
+        
+    def handle_arrow_key(self, key=None):
         self.sc_config_top_win.clear()
         self.sc_config_top_win = None
         
@@ -130,55 +133,16 @@ class SystemConfig:
     
         # Set background colors for each partition within the pop-up window
         self.sc_config_top_win.bkgd(' ', curses.color_pair(1))
-        
-        if not refresh:
-            if key ==  KEY_UP:
-                self.selected_index = max(0, self.selected_index - 1)            
-                # Yellow background
-                
-                
-                for index, label in enumerate(self.labels):
-                    color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
-                    self.sc_config_top_win.addstr(5 + index, 5, label, color_pair)
-                
-
-
-                current_label = self.labels[self.selected_index]
-                label_value = self.sys_config.get(current_label) 
-                self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
-                self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
-                self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
-                if len(label_value) ==4 :
-                    self.square_win.addstr(5, 2, label_value[3], self.normal_color_pair)
-                self.square_win.refresh()
-                self.sc_config_top_win.refresh()
-
-                
-
-            elif key == KEY_DOWN:
-                self.selected_index = min(self.label_count - 1, self.selected_index + 1)
-                for index, label in enumerate(self.labels):
-                    color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
-                    self.sc_config_top_win.addstr(5 + index, 5, label, color_pair)
-                
-                current_label = self.labels[self.selected_index]
-                label_value = self.sys_config.get(current_label) 
-                self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
-                self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
-                self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
-                if len(label_value) ==4 :
-                    self.square_win.addstr(5, 2, label_value[2], self.normal_color_pair)
-                
-
-                self.square_win.refresh()
-                self.sc_config_top_win.refresh()
-            self.create_system_configuration()
-        else:
-
+  
+        if key ==  KEY_UP:
+            self.selected_index = max(0, self.selected_index - 1)            
+            # Yellow background
+            
+            
             for index, label in enumerate(self.labels):
-                    color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
-                    self.sc_config_top_win.addstr(5 + index, 5, label, color_pair)
-                
+                color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                self.sc_config_top_win.addstr(5 + index, 5, label, color_pair)
+            
 
 
             current_label = self.labels[self.selected_index]
@@ -190,3 +154,25 @@ class SystemConfig:
                 self.square_win.addstr(5, 2, label_value[3], self.normal_color_pair)
             self.square_win.refresh()
             self.sc_config_top_win.refresh()
+
+            
+
+        elif key == KEY_DOWN:
+            self.selected_index = min(self.label_count - 1, self.selected_index + 1)
+            for index, label in enumerate(self.labels):
+                color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                self.sc_config_top_win.addstr(5 + index, 5, label, color_pair)
+            
+            current_label = self.labels[self.selected_index]
+            label_value = self.sys_config.get(current_label) 
+            self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
+            self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
+            self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
+            if len(label_value) ==4 :
+                self.square_win.addstr(5, 2, label_value[2], self.normal_color_pair)
+            
+
+            self.square_win.refresh()
+            self.sc_config_top_win.refresh()
+        self.create_system_configuration()
+
