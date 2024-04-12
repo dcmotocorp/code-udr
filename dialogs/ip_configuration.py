@@ -2,6 +2,7 @@ import curses
 from logs.udr_logger import UdrLogger
 from dialogs.system_config import SystemConfig
 from constant import KEY_UP,KEY_DOWN,CONFIGURE_MANAGEMENT_NETWORK_SERVICE,OBTAIN_IP_AUTOMATIC,MANUALLY_IP_AUTOMATIC
+from system_controller.systemcontroler import SystemControler
 
 class IPConfigurationScreen:
     def __init__(self, screen_height, screen_width,app):
@@ -18,10 +19,18 @@ class IPConfigurationScreen:
         self.selected_color_pair = curses.color_pair(5)
         self.logger_ = UdrLogger()
         self.selected_index= 0
+        self.system_controller = SystemControler()
         self.ip_address = "192.168.1.1"
         self.sub_mask =  "192.168.1.1"
         self.gate_Way =  "192.168.1.1"
+        self.set_data()
         self.setup_network_adaptor_screen()
+
+    def set_data(self):
+        ip,mask,gate_way= self.system_controller.get_network_info_su_de()
+        self.ip_address = ip 
+        self.sub_mask = mask
+        self.gate_Way = gate_way
 
     def setup_network_adaptor_screen(self):
         auth_screen_height = 15
