@@ -81,7 +81,18 @@ class AuthenticationScreen:
 
         curses.curs_set(1)
         self.authentication_screen.refresh()
-        curses.curs_set(0)
+        self.set_cursor_position()
+
+    def set_cursor_position(self):
+        """Set the cursor position based on the current input and status."""
+        if self.current_status == "username":
+            # Move the cursor to the end of the current username input
+            self.username_win.move(0, len(self.username_input))
+            self.username_win.refresh()
+        elif self.current_status == "password":
+            # Move the cursor to the end of the current password input
+            self.password_win.move(0, len(self.password_input))
+            self.password_win.refresh()
 
     def clear(self):
         
@@ -115,17 +126,6 @@ class AuthenticationScreen:
         else:
                 return next_char
         
-    def set_cursor_position(self):
-        """Set the cursor position based on the current input and status."""
-        if self.current_status == "username":
-            # Move the cursor to the end of the current username input
-            self.username_win.move(0, len(self.username_input))
-            self.username_win.refresh()
-        elif self.current_status == "password":
-            # Move the cursor to the end of the current password input
-            self.password_win.move(0, len(self.password_input))
-            self.password_win.refresh()
-
     def handle_key_event(self, event):
         if event.name == "backspace":
             if self.current_status == "username" and len(self.username_input) > 0:
