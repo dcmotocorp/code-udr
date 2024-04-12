@@ -116,6 +116,8 @@ class NetworkAdaptorScreen:
             for index, label in enumerate(test_daat):
                 if index == self.selected_index:
                     label[0] = label[0].format("0")
+                else:
+                    label[0] = label[0].format("")
                 self.current_label.append(label)
 
             import json 
