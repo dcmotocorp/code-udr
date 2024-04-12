@@ -68,7 +68,7 @@ class AuthenticationScreen:
 
         # Create password input box
         password_input_y = user_input_y + 2
-        self.password_win = curses.newwin(2, 20, password_input_y, user_input_x)
+        self.password_win = curses.newwin(1, 20, password_input_y, user_input_x)
         self.password_win.refresh()
 
         # Set placeholders for username and password fields
@@ -162,9 +162,7 @@ class AuthenticationScreen:
             
         elif event.name == "shift":
             self.shift_status = True 
-
         elif len(event.name) == 1:
-            
             char_ = self.cehck_shift_char(event.name)
             if  self.current_status == "username" and len(self.username_input) < 10  :
                 self.username_input += char_
