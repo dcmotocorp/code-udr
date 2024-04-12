@@ -45,7 +45,7 @@ class NovaiguApplication:
         curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_BLUE)
         curses.init_pair(4, curses.COLOR_BLACK, curses.COLOR_WHITE)
         curses.init_pair(5, curses.COLOR_WHITE, curses.COLOR_BLACK)
-        
+
 
         # Get screen dimensions
         self.screen_height, self.screen_width = self.stdscr.getmaxyx()
@@ -440,9 +440,9 @@ class NovaiguApplication:
             if hasattr(self, 'update_password') and self.update_password !=None and current_screen == PASSWORD:
                 self.update_password.handle_key_event(event)
             elif  hasattr(self, 'authentication_screen') and self.authentication_screen !=None and self.authentication_screen.current_status == "username":
-                self.authentication_screen.current_status = "password"
-            elif  hasattr(self, 'authentication_screen') and self.authentication_screen !=None and self.authentication_screen.current_status == "password":
-                self.authentication_screen.current_status = "username"
+                self.authentication_screen.handle_key_event(event)
+            # elif  hasattr(self, 'authentication_screen') and self.authentication_screen !=None and self.authentication_screen.current_status == "password":
+            #     self.authentication_screen.current_status = "username"
 
         elif event.name == "backspace":
             if hasattr(self, 'update_password') and self.update_password !=None and  self.update_password.update_status == True and current_screen == PASSWORD:
