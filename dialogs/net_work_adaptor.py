@@ -84,8 +84,8 @@ class NetworkAdaptorScreen:
     def handle_arrow_key(self, key):
         
         if key.name =="up":
-            if self.selected_index == 2:
-                self.selected_index =1
+            if self.selected_index == 0:
+                self.selected_index =0
             else :
                 self.selected_index = self.selected_index - 1
             for index, label in enumerate(self.labels):
