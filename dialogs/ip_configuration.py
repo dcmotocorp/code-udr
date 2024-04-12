@@ -94,6 +94,12 @@ class IPConfigurationScreen:
         auth_top_win.refresh()
         self.auth_bottom_win.refresh()
 
+    def set_manually_ip(self):
+        self.system_controller.set_ip_configuration_manual(self.ip_address,self.sub_mask,self.gate_Way)
+         
+    def set_ip_address_automatic(self):
+        self.system_controller.setup_ip_configuration(self.ip_address,self.sub_mask,self.gate_Way)
+        
     def clear(self):
         if hasattr(self, 'hostname_screen') and self.hostname_screen != None:
             self.hostname_screen.clear()

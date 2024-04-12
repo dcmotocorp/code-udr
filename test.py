@@ -232,6 +232,11 @@ class NovaiguApplication:
                         selected_label = self.configuration_management_screen.labels[selected_index]
                         if selected_label ==  IP_CONFIGURATION and  hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
                             
+                            if self.ip_config_adaptor.current_selected_label_index ==1 :
+                                self.ip_config_adaptor.set_manually_ip() 
+                            elif self.ip_config_adaptor.current_selected_label_index ==0:
+                                self.ip_config_adaptor.set_ip_address_automatic()
+                            
                             self.ip_config_adaptor.clear()
                             self.ip_config_adaptor = None
                             self.configuration_management_screen.reset_screen_color()
