@@ -72,13 +72,13 @@ class UpdatePasswordScreen:
 
         # Create password input box
         password_input_y = user_input_y + 2
-        self.new_password_win = curses.newwin(2, 20, password_input_y, user_input_x)
+        self.new_password_win = curses.newwin(1, 20, password_input_y, user_input_x)
         self.new_password_win.refresh()
 
 
         #conform password 
         conform_password_input_y = password_input_y +2 
-        self.conform_password_win = curses.newwin(2, 20, conform_password_input_y, user_input_x)
+        self.conform_password_win = curses.newwin(1, 20, conform_password_input_y, user_input_x)
         self.conform_password_win.refresh()
 
 
@@ -123,7 +123,7 @@ class UpdatePasswordScreen:
 
     def handle_key_event(self, event):
         if event.name == "backspace":
-            if self.current_status == "current_password_win"  and  len(self.current_password) > 0:
+            if self.current_status == "current_password"  and  len(self.current_password) > 0:
                 self.current_password = self.current_password[:-1]
                 self.current_password_win.clear()
                 self.current_password_win.addstr(0, 0, self.current_password, curses.color_pair(1))
