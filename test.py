@@ -105,7 +105,7 @@ class NovaiguApplication:
             current_index= self.system_config.selected_index
             current_field = self.system_config.labels[current_index]
             return current_field
-            
+
     def clear_authetication_screen(self):
         self.authentication_screen.clear_input_field()
         self.authentication_screen.clear()
@@ -286,7 +286,7 @@ class NovaiguApplication:
 
         
         elif event.name == "enter":
-            if hasattr(self, 'authentication_screen'):
+            if hasattr(self, 'authentication_screen') and self.authentication_screen != None  :
                 if (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 )  and not hasattr(self, 'system_config'):
                     self.logger_.log_info("Current username and password match the condition")
                     response = self.system_controller.authenticate(self.authentication_screen.username_input,self.authentication_screen.password_input)
@@ -440,7 +440,7 @@ class NovaiguApplication:
                         self.host_name = HostnameScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
             else:
                 self.current_selected = USERNAME_LABEL
-                self.set_main_screen_black()
+                # self.set_main_screen_black()
 
         elif event.name == "tab" :
             if hasattr(self, 'update_password') and self.update_password !=None and current_screen == PASSWORD:
