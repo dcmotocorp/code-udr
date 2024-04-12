@@ -15,7 +15,7 @@ class NetworkAdaptorScreen:
         self.update_status = False
         self.current_seleected_parameter = None
         self.current_selected_label_index = 0
-        self.labels = [["[{}] N1C1","00.01.D1:F3:55:2D","Connected"],["[{}] N1C2","00.01.D5:F3:55:2D","Connected"],["[{}] N1C3","00.01.D1:F3:55:2D","Connected"]]
+        self.labels = [["N1C1","00.01.D1:F3:55:2D","Connected"],["N1C2","00.01.D5:F3:55:2D","Connected"],["N1C3","00.01.D1:F3:55:2D","Connected"]]
         self.current_label = []
         self.normal_color_pair = curses.color_pair(3) 
         self.selected_color_pair = curses.color_pair(5)
@@ -57,7 +57,8 @@ class NetworkAdaptorScreen:
         # Add labels to popup_bottom_win
         for index, label in enumerate(self.labels):
             color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
-            self.auth_bottom_win.addstr( 2+ index, 5, label[0].format(""), color_pair)
+            self.auth_bottom_win.addstr( 2+ index, 4, "[]", color_pair)
+            self.auth_bottom_win.addstr( 2+ index, 5, label[0], color_pair)
             self.auth_bottom_win.addstr( 2+ index, 15, label[1], color_pair)
             self.auth_bottom_win.addstr( 2+ index, 35, label[2], color_pair)
 
@@ -92,18 +93,10 @@ class NetworkAdaptorScreen:
                 self.selected_index =0
             else :
                 self.selected_index = self.selected_index - 1
-            if len(self.current_label)>0:
-                data = self.current_label
-            else:
-                test_daat = self.labels 
-                tem = []
-                for test in test_daat:
-                    test[0] = test[0].format("")
-                    tem.append(test)
-                data = tem
-            self.logger_.log_info("up data login info {}".format(json.dumps(data)))
-            for index, label in enumerate(data):
+      
+            for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                self.auth_bottom_win.addstr( 2+ index, 4, "[]", color_pair)
                 self.auth_bottom_win.addstr( 2+ index, 5, label[0], color_pair)
                 self.auth_bottom_win.addstr( 2+ index, 15, label[1], color_pair)
                 self.auth_bottom_win.addstr( 2+ index, 35, label[2], color_pair)
@@ -115,51 +108,24 @@ class NetworkAdaptorScreen:
             else :
                  self.selected_index += 1
             
-            if len(self.current_label)>0:
-                data = self.current_label    
-            else:
-                test_daat = self.labels 
-                tem = []
-                for test in test_daat:
-                    test[0] = test[0].format("")
-                    tem.append(test)
-                data = tem
-            self.logger_.log_info("down data login info {}".format(json.dumps(data)))
-            for index, label in enumerate(data):
+           
+            for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                self.auth_bottom_win.addstr( 2+ index, 4, "[]", color_pair)
                 self.auth_bottom_win.addstr( 2+ index, 5, label[0], color_pair)
                 self.auth_bottom_win.addstr( 2+ index, 15, label[1], color_pair)
                 self.auth_bottom_win.addstr( 2+ index, 35, label[2], color_pair)
             self.auth_bottom_win.refresh()
 
         if key.name == "space":
-            self.current_label = []
-            
-            test_daat = self.labels 
-            self.logger_.log_info("current login info self.selected_index{}".format(self.selected_index))
-            for index, label in enumerate(test_daat):
-                if index == self.selected_index:
-                    c= []
-                    for index,_tet in enumerate(label):
-                        if index ==0:
-                            ceo = _tet.format("0")
-                            c.append(ceo)
-                        else:
-                            c.append(_tet)                
-                    self.current_label.append(c)
-                else:
-                    label[0] = label[0].format("")
-                    self.current_label.append(label)
-                    
-                
-                
-
-
-            
-            self.logger_.log_info("current login info self.current_label{}".format(json.dumps(self.current_label)))
-            for index, label in enumerate(self.current_label):
+        
+            for index, label in enumerate(self.labels):
             
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                if index == self.selected_index :
+                    self.auth_bottom_win.addstr( 2+ index, 4, "[0]", color_pair)
+                else:
+                    self.auth_bottom_win.addstr( 2+ index, 4, "[]", color_pair)
                 self.auth_bottom_win.addstr( 2+ index, 5, label[0], color_pair)
                 self.auth_bottom_win.addstr( 2+ index, 15, label[1], color_pair)
                 self.auth_bottom_win.addstr( 2+ index, 35, label[2], color_pair)
