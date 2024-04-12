@@ -122,6 +122,9 @@ class NovaiguApplication:
                 elif hasattr(self, 'update_password') and self.update_password != None and  self.update_password.update_status ==True :
                     self.update_password.handle_arrow_key(event)
                 
+                elif hasattr(self, 'host_name') and self.host_name != None and  self.host_name.update_status ==True :
+                    self.host_name.handle_arrow_key(event)
+                
                 elif hasattr(self, 'ssh_screen') and self.ssh_screen != None and  self.ssh_screen.update_status ==True :
                     self.ssh_screen.handle_arrow_key(event.name)
                 
@@ -140,6 +143,12 @@ class NovaiguApplication:
                 if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
                     self.configuration_management_screen.handle_arrow_key(event.name)
                 
+                elif hasattr(self, 'host_name') and self.host_name != None and  self.host_name.update_status ==True :
+                    self.host_name.handle_arrow_key(event)
+
+                elif hasattr(self, 'ssh_screen') and self.ssh_screen != None and  self.ssh_screen.update_status ==True :
+                    self.ssh_screen.handle_arrow_key(event.name)
+
                 elif hasattr(self, 'update_password') and self.update_password != None and  self.update_password.update_status ==True :
                     self.update_password.handle_arrow_key(event)
 

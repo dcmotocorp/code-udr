@@ -99,6 +99,7 @@ class HostnameScreen:
 
 
 
+
     def handle_key_event(self, event):
         if event.name == "backspace":
             if len(self.current_hostname) > 0:
@@ -115,6 +116,9 @@ class HostnameScreen:
                 self.hostname_screen = None
                 self.logger_.log_info("Create system config screen ")
                 self.system_config.create_system_configuration()
+
+        elif event.name in ["up","down"]:
+            pass 
 
         elif len(event.name) == 1:
             if  len(self.current_hostname) < 10  :
