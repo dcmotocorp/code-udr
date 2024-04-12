@@ -439,7 +439,7 @@ class NovaiguApplication:
         elif event.name == "tab" :
             if hasattr(self, 'update_password') and self.update_password !=None and current_screen == PASSWORD:
                 self.update_password.handle_key_event(event)
-            elif  hasattr(self, 'authentication_screen') and self.authentication_screen !=None and self.authentication_screen.current_status == "username":
+            elif  hasattr(self, 'authentication_screen') and self.authentication_screen !=None :
                 self.authentication_screen.handle_key_event(event)
             # elif  hasattr(self, 'authentication_screen') and self.authentication_screen !=None and self.authentication_screen.current_status == "password":
             #     self.authentication_screen.current_status = "username"
