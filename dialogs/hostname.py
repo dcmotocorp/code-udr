@@ -64,11 +64,17 @@ class HostnameScreen:
 
         curses.curs_set(1)
         self.hostname_screen.refresh()
-        curses.curs_set(0)
-        
         self.current_hostname = self.system_controller.get_hostname()
-        self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(1))
+        self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
         self.current_password_win.refresh()
+
+
+    def set_cursor_position(self):
+        """Set the cursor position based on the current input and status."""
+
+        self.current_password_win.move(0, len(self.current_hostname))
+        self.current_password_win.refresh()
+
 
 
     def clear(self):
@@ -99,6 +105,7 @@ class HostnameScreen:
                 self.current_password_win.clear()
                 self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(1))
                 self.current_password_win.refresh()
+                self.set_cursor_position()
  
         elif event.name == "enter":
             if len(self.current_hostname) >0:
@@ -112,4 +119,5 @@ class HostnameScreen:
                 self.current_hostname += event.name
                 self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(1))
                 self.current_password_win.refresh()
+                self.set_cursor_position()
             
