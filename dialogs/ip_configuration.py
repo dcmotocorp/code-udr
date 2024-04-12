@@ -13,7 +13,7 @@ class IPConfigurationScreen:
         self.update_status = False
         self.current_seleected_parameter = None
         self.current_selected_label_index = 0
-        self.labels = [OBTAIN_IP_AUTOMATIC.format(""), MANUALLY_IP_AUTOMATIC.format("")]
+        self.labels = [OBTAIN_IP_AUTOMATIC, MANUALLY_IP_AUTOMATIC]
         self.normal_color_pair = curses.color_pair(3) 
         self.selected_color_pair = curses.color_pair(5)
         self.logger_ = UdrLogger()
@@ -53,6 +53,7 @@ class IPConfigurationScreen:
         # Add labels to popup_bottom_win
         for index, label in enumerate(self.labels):
             color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+            self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
             self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
 
 
@@ -98,6 +99,7 @@ class IPConfigurationScreen:
                  self.selected_index = 0
             for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             self.auth_bottom_win.refresh()
             self.setup_network_adaptor_screen() 
@@ -109,12 +111,22 @@ class IPConfigurationScreen:
                  self.selected_index = 1
             for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             self.auth_bottom_win.refresh()
             self.setup_network_adaptor_screen()
-            
+
         elif key.name == "space":
-            pass 
+            self.current_seleected_parameter = self.selected_index
+            for index, label in enumerate(self.labels):
+                color_pair = self.selected_color_pair if index == self.self.current_seleected_parameter else self.normal_color_pair
+                if self.current_seleected_parameter == index:
+                    self.auth_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+                else:
+                    self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
+                self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
+            self.auth_bottom_win.refresh()
+            self.setup_network_adaptor_screen()
             
 
 
