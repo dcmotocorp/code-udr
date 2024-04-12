@@ -105,6 +105,11 @@ class NovaiguApplication:
             current_index= self.system_config.selected_index
             current_field = self.system_config.labels[current_index]
             return current_field
+            
+    def clear_authetication_screen(self):
+        self.authentication_screen.clear_input_field()
+        self.authentication_screen.clear()
+        self.authentication_screen = None
 
     def _on_key_press(self, event):
         
@@ -245,7 +250,7 @@ class NovaiguApplication:
                     try:               
                     
                         self.current_selected = USERNAME_LABEL
-                        # self.clear_authetication_screen()
+                        self.clear_authetication_screen()
                         self.reset_main_screen_color()
                     except Exception as ex:
                         self.logger_.log_info("Exception occure in authetication ssystem on pressing esc") 
