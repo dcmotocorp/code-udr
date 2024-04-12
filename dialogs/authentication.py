@@ -59,7 +59,7 @@ class AuthenticationScreen:
         # Create username input box
         user_input_y = popup_y + popup_top_height + 1
         user_input_x = popup_x + 13
-        self.username_win = curses.newwin(1, 20, user_input_y, user_input_x)
+        self.username_win = curses.newwin(1, 10, user_input_y, user_input_x)
         self.username_win.refresh()
 
         # Print password label
@@ -68,7 +68,7 @@ class AuthenticationScreen:
 
         # Create password input box
         password_input_y = user_input_y + 2
-        self.password_win = curses.newwin(1, 20, password_input_y, user_input_x)
+        self.password_win = curses.newwin(1, 10, password_input_y, user_input_x)
         self.password_win.refresh()
 
         # Set placeholders for username and password fields
