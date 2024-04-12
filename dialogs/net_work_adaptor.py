@@ -2,6 +2,7 @@ import curses
 from logs.udr_logger import UdrLogger
 from dialogs.system_config import SystemConfig
 from constant import KEY_UP,KEY_DOWN,SELECT_MANAGEMENT_NETWORK_SERVICE,OBTAIN_IP_AUTOMATIC,MANUALLY_IP_AUTOMATIC
+from copy import deepcopy
 
 class NetworkAdaptorScreen:
     def __init__(self, screen_height, screen_width,app):
@@ -93,7 +94,12 @@ class NetworkAdaptorScreen:
             if len(self.current_label)>0:
                 data = self.current_label
             else:
-                data = self.labels
+                test_daat = deepcopy(self.labels) 
+                tem = []
+                for test in test_daat:
+                    test[0] = test[0].format("")
+                    tem.append(test)
+                data = tem
 
             for index, label in enumerate(data):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
