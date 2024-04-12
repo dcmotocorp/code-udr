@@ -136,7 +136,7 @@ class UpdatePasswordScreen:
                 self.confirm_password = self.confirm_password[:-1]
                 self.conform_password_win.clear()
                 self.conform_password_win.bkgd(' ', curses.color_pair(2)) 
-                self.conform_password_win.addstr(0, 0, "*" * len(self.new_password), curses.color_pair(1))
+                self.conform_password_win.addstr(0, 0, "*" * len(self.confirm_password), curses.color_pair(1))
                 self.conform_password_win.refresh()
                 self.set_cursor_position()
         
