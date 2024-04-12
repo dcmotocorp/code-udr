@@ -336,6 +336,7 @@ class NovaiguApplication:
                                 self.update_password.clear()
                                 self.reset_system_config_screen()
                                 self.update_password = None
+                                curses.curs_set(0)
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
@@ -350,6 +351,7 @@ class NovaiguApplication:
                             self.host_name.clear()
                             self.reset_system_config_screen()
                             self.host_name = None
+                            curses.curs_set(0)
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
