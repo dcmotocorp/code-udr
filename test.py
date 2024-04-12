@@ -118,12 +118,12 @@ class NovaiguApplication:
         if event.name == KEY_DOWN  :
             try: 
                 
-                
-                
                 if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
                     
                     if hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
                         self.net_work_screen.handle_arrow_key(event)
+                    elif hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
+                        self.ip_config_adaptor.handle_arrow_key(event)
                     else:
                         self.configuration_management_screen.handle_arrow_key(event.name)
                 
@@ -151,6 +151,8 @@ class NovaiguApplication:
                 if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
                     if hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
                         self.net_work_screen.handle_arrow_key(event)
+                    elif hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
+                        self.ip_config_adaptor.handle_arrow_key(event)
                     else:
                         self.configuration_management_screen.handle_arrow_key(event.name)
                 

@@ -91,16 +91,31 @@ class IPConfigurationScreen:
     
     def handle_arrow_key(self, key):
     
-        if key.name == "space":
-            if self.selected_index == 0:
-                 self.selected_index = 1
+        if key.name == "up":
+            if self.selected_index == 1:
+                 self.selected_index = 0
             else:
                  self.selected_index = 0
             for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             self.auth_bottom_win.refresh()
-        self.setup_network_adaptor_screen()
+            self.setup_network_adaptor_screen() 
+
+        elif key.name =="down":
+            if self.selected_index == 0:
+                 self.selected_index = 1
+            else:
+                 self.selected_index = 1
+            for index, label in enumerate(self.labels):
+                color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
+            self.auth_bottom_win.refresh()
+            self.setup_network_adaptor_screen()
+            
+        elif key.name == "space":
+            pass 
+            
 
 
             
