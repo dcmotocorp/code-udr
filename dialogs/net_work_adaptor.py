@@ -14,6 +14,7 @@ class NetworkAdaptorScreen:
         self.current_seleected_parameter = None
         self.current_selected_label_index = 0
         self.labels = [["[{}] N1C1","00.01.D1:F3:55:2D","Connected"],["[{}] N1C2","00.01.D5:F3:55:2D","Connected"],["[{}] N1C3","00.01.D1:F3:55:2D","Connected"]]
+        self.current_label = []
         self.normal_color_pair = curses.color_pair(3) 
         self.selected_color_pair = curses.color_pair(5)
         self.logger_ = UdrLogger()
@@ -109,13 +110,15 @@ class NetworkAdaptorScreen:
             self.auth_bottom_win.refresh()
 
         if key.name == "space":
-            
+            self.current_label = []
             for index, label in enumerate(self.labels):
                 if index == self.selected_index:
                     label[0] = label[0].format("0")
+                self.current_label.append(label)
+
             import json 
-            self.logger_.log_info("current login info {}".format(json.dumps(self.labels)))
-            for index, label in enumerate(self.labels):
+            self.logger_.log_info("current login info {}".format(json.dumps(self.current_label)))
+            for index, label in enumerate(self.current_label):
             
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 if index == self.selected_index:
