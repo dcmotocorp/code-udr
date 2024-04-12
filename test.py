@@ -308,8 +308,8 @@ class NovaiguApplication:
                     if response:
                         try:
                             
-                            self.user_database.default_settings(self.system_controller.get_hostname(), self.authentication_screen.password_input)
-                            self.user_database.update_current_login(self.authentication_screen.username_input)
+                            self.user_data_base.default_settings(self.system_controller.get_hostname(), self.authentication_screen.password_input)
+                            self.user_data_base.update_current_login(self.authentication_screen.username_input)
                             self.username_input = self.authentication_screen.username_input
                             self.password_input = self.authentication_screen.password_input
                             self.authentication_screen. clear_input_field()
