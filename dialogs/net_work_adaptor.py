@@ -13,7 +13,7 @@ class NetworkAdaptorScreen:
         self.update_status = False
         self.current_seleected_parameter = None
         self.current_selected_label_index = 0
-        self.labels = [["[{}] N1C1".format(""),"00.01.D1:F3:55:2D","Connected"],["[{}] N1C2".format(""),"00.01.D5:F3:55:2D","Connected"],["[{}] N1C3".format(""),"00.01.D1:F3:55:2D","Connected"]]
+        self.labels = [["[{}] N1C1","00.01.D1:F3:55:2D","Connected"],["[{}] N1C2","00.01.D5:F3:55:2D","Connected"],["[{}] N1C3","00.01.D1:F3:55:2D","Connected"]]
         self.current_label = []
         self.normal_color_pair = curses.color_pair(3) 
         self.selected_color_pair = curses.color_pair(5)
@@ -55,7 +55,7 @@ class NetworkAdaptorScreen:
         # Add labels to popup_bottom_win
         for index, label in enumerate(self.labels):
             color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
-            self.auth_bottom_win.addstr( 2+ index, 5, label[0], color_pair)
+            self.auth_bottom_win.addstr( 2+ index, 5, label[0].format(""), color_pair)
             self.auth_bottom_win.addstr( 2+ index, 15, label[1], color_pair)
             self.auth_bottom_win.addstr( 2+ index, 35, label[2], color_pair)
 
