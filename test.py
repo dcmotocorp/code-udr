@@ -523,7 +523,8 @@ class NovaiguApplication:
         self.system_config.sc_config_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
         self.system_config.sc_config_top_win.refresh()
         self.system_config.sc_config_bottom_win.refresh()
-        self.system_config.handle_arrow_key("up")
+        self.system_config.handle_arrow_key(refresh=True)
+        
 
     def clear_system_configuration_screen(self):
         self.system_config.system_configuration_screen.clear()
