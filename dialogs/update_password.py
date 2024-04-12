@@ -151,6 +151,9 @@ class UpdatePasswordScreen:
                 self.authentication_screen = None
                 self.system_config.create_system_configuration()
 
+        elif event.name in ["up","down"]:
+            pass 
+        
         elif event.name == "tab":
             if  self.current_status == "current_password":
                 self.current_status = "current_new"
