@@ -18,7 +18,7 @@ from dialogs.net_work_adaptor import NetworkAdaptorScreen
 from dialogs.dns_configuration import DNSScreen
 from logs.udr_logger import UdrLogger
 from  system_controller.systemcontroler import SystemControler
-
+from database import UserDatabase
 
 class NovaiguApplication:
     def __init__(self, stdscr):
@@ -31,6 +31,7 @@ class NovaiguApplication:
         self.update_password = UpdatePasswordScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.host_name = HostnameScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.system_controller  = SystemControler()
+        self.user_data_base = UserDatabase()
         self.setup_windows()
 
     def setup_windows(self):
@@ -283,6 +284,7 @@ class NovaiguApplication:
                 self.password_input = ""
                 self.set_main_screen_black()
                 self.logger_.log_info("open Authentication system")
+                self.user_data_base._init_database()
                 self.authentication_screen = AuthenticationScreen(self.stdscr, self.screen_height, self.screen_width)
                 self.logger_.log_info("Current Authentication system")
         elif event.name == "f11":
@@ -305,6 +307,9 @@ class NovaiguApplication:
                     self.logger_.log_info("authentication resposne {}".format(response))
                     if response:
                         try:
+                            
+                            self.user_database.default_settings(self.system_controller.get_hostname(), self.authentication_screen.password_input)
+                            self.user_database.update_current_login(self.authentication_screen.username_input)
                             self.username_input = self.authentication_screen.username_input
                             self.password_input = self.authentication_screen.password_input
                             self.authentication_screen. clear_input_field()

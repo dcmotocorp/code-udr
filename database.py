@@ -3,8 +3,10 @@ import os
 
 class UserDatabase:
     _instance = None
-    db_location = '/var/db/user_database.db'
-    db_directory = '/var/db'
+    script_path = os.path.abspath(__file__)
+    root_directory = os.path.dirname(script_path)
+    db_location = os.path.join(root_directory,"user_database.db")
+    db_directory = root_directory
 
     def __new__(cls):
         if not cls._instance:
