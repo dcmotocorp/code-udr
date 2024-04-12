@@ -119,7 +119,7 @@ class IPConfigurationScreen:
         elif key.name == "space":
             self.current_seleected_parameter = self.selected_index
             for index, label in enumerate(self.labels):
-                color_pair = self.selected_color_pair if index == self.self.current_seleected_parameter else self.normal_color_pair
+                color_pair = self.selected_color_pair if index == self.current_seleected_parameter else self.normal_color_pair
                 if self.current_seleected_parameter == index:
                     self.auth_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
                 else:
