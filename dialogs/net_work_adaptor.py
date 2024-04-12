@@ -111,7 +111,9 @@ class NetworkAdaptorScreen:
 
         if key.name == "space":
             self.current_label = []
-            for index, label in enumerate(self.labels):
+            from copy import deepcopy
+            test_daat = deepcopy(self.labels) 
+            for index, label in enumerate(test_daat):
                 if index == self.selected_index:
                     label[0] = label[0].format("0")
                 self.current_label.append(label)
