@@ -84,10 +84,10 @@ class NetworkAdaptorScreen:
     def handle_arrow_key(self, key):
         
         if key.name =="up":
-            if self.selected_index == 1:
-                self.selected_index =0 
+            if self.selected_index == 2:
+                self.selected_index =1
             else :
-                 self.selected_index -= 1
+                self.selected_index = self.selected_index - 1
             for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 self.auth_bottom_win.addstr( 2+ index, 5, label[0], color_pair)

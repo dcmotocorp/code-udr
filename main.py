@@ -18,7 +18,7 @@ from dialogs.net_work_adaptor import NetworkAdaptorScreen
 from dialogs.dns_configuration import DNSScreen
 from logs.udr_logger import UdrLogger
 from  system_controller.systemcontroler import SystemControler
-
+from database import UserDatabase
 
 class NovaiguApplication:
     def __init__(self, stdscr):
@@ -31,6 +31,7 @@ class NovaiguApplication:
         self.update_password = UpdatePasswordScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.host_name = HostnameScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.system_controller  = SystemControler()
+        self.user_data_base = UserDatabase()
         self.setup_windows()
 
     def setup_windows(self):
@@ -45,7 +46,7 @@ class NovaiguApplication:
         curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_BLUE)
         curses.init_pair(4, curses.COLOR_BLACK, curses.COLOR_WHITE)
         curses.init_pair(5, curses.COLOR_WHITE, curses.COLOR_BLACK)
-        
+
 
         # Get screen dimensions
         self.screen_height, self.screen_width = self.stdscr.getmaxyx()
@@ -92,6 +93,7 @@ class NovaiguApplication:
         self.bottom_win.addstr(bottom_height - 2, self.screen_width - len("<F12> Shut down/Restart") - 2,
                                 "<F12> Shut down/Restart", curses.A_UNDERLINE)
         self.bottom_win.refresh()
+        curses.curs_set(0)
 
     def create_shut_down_restart_pop_up(self):
         self.logger_.log_info("Shut down and restart pop up")
@@ -105,13 +107,31 @@ class NovaiguApplication:
             current_field = self.system_config.labels[current_index]
             return current_field
 
+    def clear_authetication_screen(self):
+        self.authentication_screen.clear_input_field()
+        self.authentication_screen.clear()
+        self.authentication_screen = None
+
     def _on_key_press(self, event):
         
         current_screen = self.get_current_screen()       
         if event.name == KEY_DOWN  :
             try: 
+                
+                
+                
                 if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
-                    self.configuration_management_screen.handle_arrow_key(event.name)
+                    
+                    if hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
+                        self.net_work_screen.handle_arrow_key(event)
+                    else:
+                        self.configuration_management_screen.handle_arrow_key(event.name)
+                
+                elif hasattr(self, 'update_password') and self.update_password != None and  self.update_password.update_status ==True :
+                    self.update_password.handle_arrow_key(event)
+                
+                elif hasattr(self, 'host_name') and self.host_name != None and  self.host_name.update_status ==True :
+                    self.host_name.handle_arrow_key(event)
                 
                 elif hasattr(self, 'ssh_screen') and self.ssh_screen != None and  self.ssh_screen.update_status ==True :
                     self.ssh_screen.handle_arrow_key(event.name)
@@ -129,11 +149,20 @@ class NovaiguApplication:
         elif event.name == KEY_UP:
             try:
                 if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
-                    self.configuration_management_screen.handle_arrow_key(event.name)
+                    if hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
+                        self.net_work_screen.handle_arrow_key(event)
+                    else:
+                        self.configuration_management_screen.handle_arrow_key(event.name)
                 
+                elif hasattr(self, 'host_name') and self.host_name != None and  self.host_name.update_status ==True :
+                    self.host_name.handle_arrow_key(event)
+
                 elif hasattr(self, 'ssh_screen') and self.ssh_screen != None and  self.ssh_screen.update_status ==True :
                     self.ssh_screen.handle_arrow_key(event.name)
-                
+
+                elif hasattr(self, 'update_password') and self.update_password != None and  self.update_password.update_status ==True :
+                    self.update_password.handle_arrow_key(event)
+
                 elif hasattr(self, 'lock_down_screen') and self.lock_down_screen != None and  self.lock_down_screen.update_status ==True :
                     self.lock_down_screen.handle_arrow_key(event.name)
                 
@@ -234,6 +263,7 @@ class NovaiguApplication:
                         self.system_config.system_configuration_screen.clear()
                         self.system_config.system_configuration_screen = None
                         self.system_config = None
+                        self.clear_authetication_screen()
                         self.reset_main_screen_color()
                     except Exception as ex:
                         self.logger_.log_info("Exception occure in system config on pressing esc")
@@ -244,7 +274,7 @@ class NovaiguApplication:
                     try:               
                     
                         self.current_selected = USERNAME_LABEL
-                        # self.clear_authetication_screen()
+                        self.clear_authetication_screen()
                         self.reset_main_screen_color()
                     except Exception as ex:
                         self.logger_.log_info("Exception occure in authetication ssystem on pressing esc") 
@@ -265,6 +295,7 @@ class NovaiguApplication:
                 self.password_input = ""
                 self.set_main_screen_black()
                 self.logger_.log_info("open Authentication system")
+                self.user_data_base._init_database()
                 self.authentication_screen = AuthenticationScreen(self.stdscr, self.screen_height, self.screen_width)
                 self.logger_.log_info("Current Authentication system")
         elif event.name == "f11":
@@ -280,13 +311,19 @@ class NovaiguApplication:
 
         
         elif event.name == "enter":
-            if hasattr(self, 'authentication_screen'):
+            if hasattr(self, 'authentication_screen') and self.authentication_screen != None  :
                 if (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 )  and not hasattr(self, 'system_config'):
                     self.logger_.log_info("Current username and password match the condition")
                     response = self.system_controller.authenticate(self.authentication_screen.username_input,self.authentication_screen.password_input)
                     self.logger_.log_info("authentication resposne {}".format(response))
                     if response:
                         try:
+                            
+                            try :
+                                self.user_data_base.default_settings(self.system_controller.get_hostname(), self.authentication_screen.password_input)
+                                self.user_data_base.update_current_login(self.authentication_screen.username_input)
+                            except Exception as ex:
+                                self.logger_.log_info("Exception error in database resposne {}".format(str(ex)))
                             self.username_input = self.authentication_screen.username_input
                             self.password_input = self.authentication_screen.password_input
                             self.authentication_screen. clear_input_field()
@@ -318,6 +355,7 @@ class NovaiguApplication:
                                 self.update_password.clear()
                                 self.reset_system_config_screen()
                                 self.update_password = None
+                                curses.curs_set(0)
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
@@ -332,6 +370,7 @@ class NovaiguApplication:
                             self.host_name.clear()
                             self.reset_system_config_screen()
                             self.host_name = None
+                            curses.curs_set(0)
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
@@ -385,8 +424,7 @@ class NovaiguApplication:
                                 self.ip_config_adaptor.clear()
                                 self.ip_config_adaptor = None
                                 self.configuration_management_screen.reset_screen_color()
-                                self.configuration_management_screen.handle_arrow_key("up")                                
-                                # self.configuration_management_screen.reset_screen_color()
+                                self.configuration_management_screen.refresh_screen()
 
                             else:      
                                 self.configuration_management_screen.set_sytem_config_screen_dark()
@@ -400,7 +438,7 @@ class NovaiguApplication:
                                 self.net_work_screen.clear()
                                 self.net_work_screen = None
                                 self.configuration_management_screen.reset_screen_color()
-                                self.configuration_management_screen.handle_arrow_key("up")                                
+                                self.configuration_management_screen.refresh_screen()                                
                                 
                             else:      
                                 self.configuration_management_screen.set_sytem_config_screen_dark()
@@ -413,7 +451,7 @@ class NovaiguApplication:
                                 self.dns_screen.clear()
                                 self.dns_screen = None
                                 self.configuration_management_screen.reset_screen_color()
-                                self.configuration_management_screen.handle_arrow_key("up")                                
+                                self.configuration_management_screen.refresh_screen()                                
                                 
                             else:      
                                 self.configuration_management_screen.set_sytem_config_screen_dark()
@@ -434,15 +472,14 @@ class NovaiguApplication:
                         self.host_name = HostnameScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
             else:
                 self.current_selected = USERNAME_LABEL
-                self.set_main_screen_black()
+                # self.set_main_screen_black()
 
         elif event.name == "tab" :
             if hasattr(self, 'update_password') and self.update_password !=None and current_screen == PASSWORD:
                 self.update_password.handle_key_event(event)
-            elif  hasattr(self, 'authentication_screen') and self.authentication_screen !=None and self.authentication_screen.current_status == "username":
-                self.authentication_screen.current_status = "password"
-            elif  hasattr(self, 'authentication_screen') and self.authentication_screen !=None and self.authentication_screen.current_status == "password":
-                self.authentication_screen.current_status = "username"
+            elif  hasattr(self, 'authentication_screen') and self.authentication_screen !=None :
+                self.authentication_screen.handle_key_event(event)
+
 
         elif event.name == "backspace":
             if hasattr(self, 'update_password') and self.update_password !=None and  self.update_password.update_status == True and current_screen == PASSWORD:
@@ -462,24 +499,19 @@ class NovaiguApplication:
 
         elif event.name == "space":
             if hasattr(self, 'ssh_screen') and self.ssh_screen !=None and self.ssh_screen.update_status == True and current_screen == SSH:  
-                self.logger_.log_info("272 ssh screen {}".format(event.name))
                 self.ssh_screen.handle_arrow_key(event)
                 
             elif hasattr(self, 'lock_down_screen') and self.lock_down_screen !=None and self.lock_down_screen.update_status == True and current_screen == LOCK_DOWN_MODE:  
-                self.logger_.log_info("276 ssh screen {}".format(event.name))
                 self.lock_down_screen.handle_arrow_key(event)
             
             elif   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
                 selected_index = self.configuration_management_screen.selected_index
                 selected_label = self.configuration_management_screen.labels[selected_index]
                 if hasattr(self, 'ip_config_adaptor') and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True and selected_label == IP_CONFIGURATION:  
-                    self.logger_.log_info("349 ssh screen {}".format(event.name))
                     self.ip_config_adaptor.handle_arrow_key(event)
                 elif hasattr(self, 'net_work_screen') and self.net_work_screen !=None and self.net_work_screen.update_status == True and selected_label == NETWORK_ADAPTOR:  
-                    self.logger_.log_info("349 ssh screen {}".format(event.name))
                     self.net_work_screen.handle_arrow_key(event) 
                 elif hasattr(self, 'dns_screen') and self.dns_screen !=None and self.dns_screen.update_status == True and selected_label == DNS_SERVER:  
-                    self.logger_.log_info("349 ssh screen {}".format(event.name))
                     self.dns_screen.handle_arrow_key(event)
 
                     
@@ -505,7 +537,8 @@ class NovaiguApplication:
         self.system_config.sc_config_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
         self.system_config.sc_config_top_win.refresh()
         self.system_config.sc_config_bottom_win.refresh()
-        self.system_config.handle_arrow_key("up")
+        self.system_config.refreash_command()
+        
 
     def clear_system_configuration_screen(self):
         self.system_config.system_configuration_screen.clear()
