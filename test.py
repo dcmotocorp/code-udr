@@ -117,8 +117,15 @@ class NovaiguApplication:
         current_screen = self.get_current_screen()       
         if event.name == KEY_DOWN  :
             try: 
+                
+                
+                
                 if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
-                    self.configuration_management_screen.handle_arrow_key(event.name)
+                    
+                    if selected_label ==  NETWORK_ADAPTOR and  hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
+                        self.net_work_screen.handle_arrow_key(event)
+                    else:
+                        self.configuration_management_screen.handle_arrow_key(event.name)
                 
                 elif hasattr(self, 'update_password') and self.update_password != None and  self.update_password.update_status ==True :
                     self.update_password.handle_arrow_key(event)
@@ -142,7 +149,10 @@ class NovaiguApplication:
         elif event.name == KEY_UP:
             try:
                 if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
-                    self.configuration_management_screen.handle_arrow_key(event.name)
+                    if selected_label ==  NETWORK_ADAPTOR and  hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
+                        self.net_work_screen.handle_arrow_key(event)
+                    else:
+                        self.configuration_management_screen.handle_arrow_key(event.name)
                 
                 elif hasattr(self, 'host_name') and self.host_name != None and  self.host_name.update_status ==True :
                     self.host_name.handle_arrow_key(event)

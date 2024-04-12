@@ -13,7 +13,7 @@ class NetworkAdaptorScreen:
         self.update_status = False
         self.current_seleected_parameter = None
         self.current_selected_label_index = 0
-        self.labels = [["[ ] N1C1","00.01.D1:F3:55:2D","Connected"],["[ ] N1C2","00.01.D5:F3:55:2D","Connected"],["[ ] N1C3","00.01.D1:F3:55:2D","Connected"]]
+        self.labels = [["[{}] N1C1","00.01.D1:F3:55:2D","Connected"],["[{}] N1C2","00.01.D5:F3:55:2D","Connected"],["[{}] N1C3","00.01.D1:F3:55:2D","Connected"]]
         self.normal_color_pair = curses.color_pair(3) 
         self.selected_color_pair = curses.color_pair(5)
         self.logger_ = UdrLogger()
@@ -82,10 +82,22 @@ class NetworkAdaptorScreen:
         return self.current_ssh
     
     def handle_arrow_key(self, key):
-    
-        if key.name == "space":
-            if len(self.labels)-1 == self.selected_index:
+        
+        if key.name =="up":
+            if self.selected_index == 1:
                 self.selected_index =0 
+            else :
+                 self.selected_index -= 1
+            for index, label in enumerate(self.labels):
+                color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                self.auth_bottom_win.addstr( 2+ index, 5, label[0], color_pair)
+                self.auth_bottom_win.addstr( 2+ index, 15, label[1], color_pair)
+                self.auth_bottom_win.addstr( 2+ index, 35, label[2], color_pair)
+            self.auth_bottom_win.refresh()
+        
+        elif key.name =="down":
+            if len(self.labels)-1 == self.selected_index:
+                self.selected_index =len(self.labels)-1
             else :
                  self.selected_index += 1
             for index, label in enumerate(self.labels):
@@ -94,7 +106,19 @@ class NetworkAdaptorScreen:
                 self.auth_bottom_win.addstr( 2+ index, 15, label[1], color_pair)
                 self.auth_bottom_win.addstr( 2+ index, 35, label[2], color_pair)
             self.auth_bottom_win.refresh()
-        self.setup_network_adaptor_screen()
+
+        if key.name == "space":
+            
+            for index, label in enumerate(self.labels):
+                color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                if index == self.selected_index:
+                    self.auth_bottom_win.addstr( 2+ index, 5, label[0].format("0"), color_pair)
+                else:
+                    self.auth_bottom_win.addstr( 2+ index, 5, label[0].format(""), color_pair)
+                self.auth_bottom_win.addstr( 2+ index, 15, label[1], color_pair)
+                self.auth_bottom_win.addstr( 2+ index, 35, label[2], color_pair)
+            self.auth_bottom_win.refresh()
+            self.setup_network_adaptor_screen()
 
 
             
