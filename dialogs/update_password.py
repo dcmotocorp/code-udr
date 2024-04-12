@@ -60,7 +60,7 @@ class UpdatePasswordScreen:
         # Create username input box
         user_input_y = popup_y + popup_top_height + 1
         user_input_x = popup_x + 21
-        self.current_password_win = curses.newwin(1, 20, user_input_y, user_input_x)
+        self.current_password_win = curses.newwin(1, 10, user_input_y, user_input_x)
         self.current_password_win.refresh()
 
         # Print password label
@@ -72,23 +72,15 @@ class UpdatePasswordScreen:
 
         # Create password input box
         password_input_y = user_input_y + 2
-        self.new_password_win = curses.newwin(1, 20, password_input_y, user_input_x)
+        self.new_password_win = curses.newwin(1, 10, password_input_y, user_input_x)
         self.new_password_win.refresh()
 
 
         #conform password 
         conform_password_input_y = password_input_y +2 
-        self.conform_password_win = curses.newwin(1, 20, conform_password_input_y, user_input_x)
+        self.conform_password_win = curses.newwin(1, 10, conform_password_input_y, user_input_x)
         self.conform_password_win.refresh()
 
-
-        # Set placeholders for username and password fields
-        username_placeholder = "Enter username"
-        password_placeholder = "Enter password"
-        self.current_password_win.addstr(0, 0, username_placeholder, curses.color_pair(3))
-        self.new_password_win.addstr(0, 0, password_placeholder, curses.color_pair(3))
-        self.current_password_win.refresh()
-        self.new_password_win.refresh()
 
         curses.curs_set(1)
         self.authentication_screen.refresh()
