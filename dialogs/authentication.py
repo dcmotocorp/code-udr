@@ -166,13 +166,13 @@ class AuthenticationScreen:
         elif len(event.name) == 1:
             
             char_ = self.cehck_shift_char(event.name)
-            if  self.current_status == "username" and len(self.username_input) < 20  :
+            if  self.current_status == "username" and len(self.username_input) < 10  :
                 self.username_input += char_
                 if hasattr(self, 'username_win') and self.username_win != None:
                     self.username_win.addstr(0, 0, self.username_input, curses.color_pair(2))
                     self.username_win.refresh()
                     self.set_cursor_position()
-            if  self.current_status == "password" and  len(self.password_input) < 20  :
+            if  self.current_status == "password" and  len(self.password_input) < 10  :
                 self.password_input += char_
                 if hasattr(self, 'password_win') and self.password_win != None:
                     self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(2))
