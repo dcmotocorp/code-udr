@@ -60,7 +60,7 @@ class UpdatePasswordScreen:
         # Create username input box
         user_input_y = popup_y + popup_top_height + 1
         user_input_x = popup_x + 21
-        self.current_password_win = curses.newwin(1, 11, user_input_y, user_input_x)
+        self.current_password_win = curses.newwin(1, 20, user_input_y, user_input_x)
         self.current_password_win.refresh()
 
         # Print password label
@@ -72,13 +72,13 @@ class UpdatePasswordScreen:
 
         # Create password input box
         password_input_y = user_input_y + 2
-        self.new_password_win = curses.newwin(1, 11, password_input_y, user_input_x)
+        self.new_password_win = curses.newwin(1, 20, password_input_y, user_input_x)
         self.new_password_win.refresh()
 
 
         #conform password 
         conform_password_input_y = password_input_y +2 
-        self.conform_password_win = curses.newwin(1, 11, conform_password_input_y, user_input_x)
+        self.conform_password_win = curses.newwin(1, 20, conform_password_input_y, user_input_x)
         self.conform_password_win.refresh()
 
 
@@ -165,19 +165,19 @@ class UpdatePasswordScreen:
 
         elif len(event.name) == 1:
             
-            if hasattr(self, 'current_password_win') and self.current_password_win != None and  self.current_status == "current_password" and len(self.current_password) < 10  :
+            if hasattr(self, 'current_password_win') and self.current_password_win != None and  self.current_status == "current_password" and len(self.current_password) < 19  :
                 self.current_password += event.name
                 self.current_password_win.addstr(0, 0, self.current_password, curses.color_pair(1))
                 self.current_password_win.refresh()
                 self.set_cursor_position()
                 
-            elif hasattr(self, 'new_password_win') and self.new_password_win != None and self.current_status == "current_new" and  len(self.new_password) < 10  :
+            elif hasattr(self, 'new_password_win') and self.new_password_win != None and self.current_status == "current_new" and  len(self.new_password) < 19  :
                 self.new_password += event.name
                 self.new_password_win.addstr(0, 0, "*" * len(self.new_password), curses.color_pair(1))
                 self.new_password_win.refresh()
                 self.set_cursor_position()
 
-            elif  hasattr(self, 'conform_password_win') and self.conform_password_win != None and self.current_status == "conform_new" and len(self.confirm_password) < 10:
+            elif  hasattr(self, 'conform_password_win') and self.conform_password_win != None and self.current_status == "conform_new" and len(self.confirm_password) < 19:
                 self.confirm_password += event.name
                 self.conform_password_win.addstr(0, 0, "*" * len(self.confirm_password), curses.color_pair(1))
                 self.conform_password_win.refresh()

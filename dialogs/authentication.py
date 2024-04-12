@@ -59,7 +59,7 @@ class AuthenticationScreen:
         # Create username input box
         user_input_y = popup_y + popup_top_height + 1
         user_input_x = popup_x + 13
-        self.username_win = curses.newwin(1, 11, user_input_y, user_input_x)
+        self.username_win = curses.newwin(1, 20, user_input_y, user_input_x)
         self.username_win.refresh()
 
         # Print password label
@@ -68,7 +68,7 @@ class AuthenticationScreen:
 
         # Create password input box
         password_input_y = user_input_y + 2
-        self.password_win = curses.newwin(1, 11, password_input_y, user_input_x)
+        self.password_win = curses.newwin(1, 20, password_input_y, user_input_x)
         self.password_win.refresh()
 
     
@@ -158,13 +158,13 @@ class AuthenticationScreen:
             self.shift_status = True 
         elif len(event.name) == 1:
             char_ = self.cehck_shift_char(event.name)
-            if  self.current_status == "username" and len(self.username_input) < 10  :
+            if  self.current_status == "username" and len(self.username_input) < 19  :
                 self.username_input += char_
                 if hasattr(self, 'username_win') and self.username_win != None:
                     self.username_win.addstr(0, 0, self.username_input, curses.color_pair(2))
                     self.username_win.refresh()
                     self.set_cursor_position()
-            if  self.current_status == "password" and  len(self.password_input) < 10  :
+            if  self.current_status == "password" and  len(self.password_input) < 19  :
                 self.password_input += char_
                 if hasattr(self, 'password_win') and self.password_win != None:
                     self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(2))
