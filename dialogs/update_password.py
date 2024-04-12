@@ -118,23 +118,31 @@ class UpdatePasswordScreen:
     def get_password_input(self):
         return self.new_password
 
+
+    
+
     def handle_key_event(self, event):
         if event.name == "backspace":
-            if self.current_status == "current_password"  and  len(self.current_password) > 0:
+            if self.current_status == "current_password_win"  and  len(self.current_password) > 0:
                 self.current_password = self.current_password[:-1]
                 self.current_password_win.clear()
                 self.current_password_win.addstr(0, 0, self.current_password, curses.color_pair(1))
                 self.current_password_win.refresh()
+                self.set_cursor_position()
+
             elif self.current_status == "current_new" and  len(self.new_password) > 0:
                 self.new_password = self.new_password[:-1]
                 self.new_password_win.clear()
                 self.new_password_win.addstr(0, 0, "*" * len(self.new_password), curses.color_pair(1))
                 self.new_password_win.refresh()
+                self.set_cursor_position()
+                
             elif self.current_status == "conform_new" and len(self.confirm_password) > 0:
                 self.confirm_password = self.confirm_password[:-1]
                 self.conform_password_win.clear()
                 self.conform_password_win.addstr(0, 0, "*" * len(self.new_password), curses.color_pair(1))
                 self.conform_password_win.refresh()
+                self.set_cursor_position()
         
         elif event.name == "enter":
             if len(self.current_password) >0 or len(self.new_password) >0:
@@ -145,10 +153,13 @@ class UpdatePasswordScreen:
         elif event.name == "tab":
             if  self.current_status == "current_password":
                 self.current_status = "current_new"
+                self.set_cursor_position()
             elif self.current_status == "current_new":
                 self.current_status = "conform_new"
+                self.set_cursor_position()
             elif self.current_status == "conform_new":
                 self.current_status = "current_password"
+                self.set_cursor_position()
 
         elif len(event.name) == 1:
             
@@ -156,12 +167,38 @@ class UpdatePasswordScreen:
                 self.current_password += event.name
                 self.current_password_win.addstr(0, 0, self.current_password, curses.color_pair(1))
                 self.current_password_win.refresh()
+                self.set_cursor_position()
+                
             elif hasattr(self, 'new_password_win') and self.new_password_win != None and self.current_status == "current_new" and  len(self.new_password) < 10  :
                 self.new_password += event.name
                 self.new_password_win.addstr(0, 0, "*" * len(self.new_password), curses.color_pair(1))
                 self.new_password_win.refresh()
+                self.set_cursor_position()
+
             elif  hasattr(self, 'conform_password_win') and self.conform_password_win != None and self.current_status == "conform_new" and len(self.confirm_password) < 10:
                 self.confirm_password += event.name
                 self.conform_password_win.addstr(0, 0, "*" * len(self.confirm_password), curses.color_pair(1))
                 self.conform_password_win.refresh()
+                self.set_cursor_position()
+
+    def set_cursor_position(self):
+        """Set the cursor position based on the current input and status."""
+
+        if self.current_status == "current_password":
+            self.current_password_win.move(0, len(self.current_password))
+            self.current_password_win.refresh()
+        
+        elif self.current_status == "password":
+
+            self.new_password_win.move(0, len(self.new_password))
+            self.new_password_win.refresh()
+        
+        elif self.current_status == "conform_new":
+
+            self.conform_password_win.move(0, len(self.confirm_password))
+            self.conform_password_win.refresh()
+        
+        
+        
+
                  
