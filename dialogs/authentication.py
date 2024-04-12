@@ -151,9 +151,11 @@ class AuthenticationScreen:
         elif event.name == "tab":
             if  self.current_status == "username":
                 self.current_status = "password"
+                self.set_cursor_position()
             elif self.current_status == "password":
                 self.current_status = "username"
-            self.set_cursor_position()
+                self.set_cursor_position()
+            
         elif event.name == "shift":
             self.shift_status = True 
 
