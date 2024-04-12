@@ -86,15 +86,13 @@ class AuthenticationScreen:
     def set_cursor_position(self):
         """Set the cursor position based on the current input and status."""
         if self.current_status == "username":
-            # Move the cursor to the end of the current username input
-            self.logger_.log_info("AFTER PRESS TAB")
-            self.username_win.move(0, len(self.username_input))
-            self.username_win.refresh()
+            if hasattr(self, 'username_win') and self.username_win != None:
+                self.username_win.move(0, len(self.username_input))
+                self.username_win.refresh()
         elif self.current_status == "password":
-            self.logger_.log_info("AFTER PRESS TAB")
-            # Move the cursor to the end of the current password input
-            self.password_win.move(0, len(self.password_input))
-            self.password_win.refresh()
+            if hasattr(self, 'password_win') and self.password_win != None:
+                self.password_win.move(0, len(self.password_input))
+                self.password_win.refresh()
 
     def clear(self):
         
