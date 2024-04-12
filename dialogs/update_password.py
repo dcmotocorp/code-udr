@@ -154,9 +154,11 @@ class UpdatePasswordScreen:
             if  self.current_status == "current_password":
                 self.current_status = "current_new"
                 self.set_cursor_position()
+            
             elif self.current_status == "current_new":
                 self.current_status = "conform_new"
                 self.set_cursor_position()
+
             elif self.current_status == "conform_new":
                 self.current_status = "current_password"
                 self.set_cursor_position()
@@ -188,7 +190,7 @@ class UpdatePasswordScreen:
             self.current_password_win.move(0, len(self.current_password))
             self.current_password_win.refresh()
         
-        elif self.current_status == "password":
+        elif self.current_status == "current_new":
 
             self.new_password_win.move(0, len(self.new_password))
             self.new_password_win.refresh()
