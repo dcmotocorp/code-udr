@@ -136,7 +136,7 @@ class NetworkAdaptorScreen:
             self.current_label = []
             
             test_daat = self.labels 
-            
+            self.logger_.log_info("current login info self.selected_index{}".format(self.selected_index))
             for index, label in enumerate(test_daat):
                 if index == self.selected_index:
                     label[0] = label[0].format("0")
