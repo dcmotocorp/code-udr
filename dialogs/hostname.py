@@ -83,6 +83,7 @@ class HostnameScreen:
             self.hostname_screen.clear()
             self.hostname_screen.refresh()
             self.hostname_screen = None
+            curses.curs_set(0)
 
 
     def clear_input_field(self):
