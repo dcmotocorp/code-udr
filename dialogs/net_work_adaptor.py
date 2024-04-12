@@ -118,11 +118,12 @@ class NetworkAdaptorScreen:
             self.auth_bottom_win.refresh()
 
         if key.name == "space":
-        
+            
+            self.current_selected_label_index = self.selected_index
             for index, label in enumerate(self.labels):
             
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
-                if index == self.selected_index :
+                if index == self.current_selected_label_index :
                     self.auth_bottom_win.addstr( 2+ index, 4, "[0]", color_pair)
                 else:
                     self.auth_bottom_win.addstr( 2+ index, 4, "[]", color_pair)
