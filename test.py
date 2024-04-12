@@ -122,7 +122,7 @@ class NovaiguApplication:
                 
                 if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
                     
-                    if selected_label ==  NETWORK_ADAPTOR and  hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
+                    if hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
                         self.net_work_screen.handle_arrow_key(event)
                     else:
                         self.configuration_management_screen.handle_arrow_key(event.name)
@@ -149,7 +149,7 @@ class NovaiguApplication:
         elif event.name == KEY_UP:
             try:
                 if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
-                    if selected_label ==  NETWORK_ADAPTOR and  hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
+                    if hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
                         self.net_work_screen.handle_arrow_key(event)
                     else:
                         self.configuration_management_screen.handle_arrow_key(event.name)
