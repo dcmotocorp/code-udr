@@ -134,18 +134,21 @@ class NetworkAdaptorScreen:
 
         if key.name == "space":
             self.current_label = []
-            from copy import deepcopy
-            test_daat = deepcopy(self.labels) 
+            
+            test_daat = self.labels 
+            data = []
             for index, label in enumerate(test_daat):
                 if index == self.selected_index:
                     label[0] = label[0].format("0")
                 else:
                     label[0] = label[0].format("")
-                self.current_label.append(label)
+                data.append(label)
+                
+
 
             
-            self.logger_.log_info("current login info {}".format(json.dumps(self.current_label)))
-            for index, label in enumerate(self.current_label):
+            self.logger_.log_info("current login info {}".format(json.dumps(data)))
+            for index, label in enumerate(data):
             
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 self.auth_bottom_win.addstr( 2+ index, 5, label[0], color_pair)
