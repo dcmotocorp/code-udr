@@ -129,7 +129,7 @@ class NetworkAdaptorScreen:
                 self.auth_bottom_win.addstr( 2+ index, 15, label[1], color_pair)
                 self.auth_bottom_win.addstr( 2+ index, 35, label[2], color_pair)
             self.auth_bottom_win.refresh()
-            self.setup_network_adaptor_screen()
+            # self.setup_network_adaptor_screen()
 
 
             
