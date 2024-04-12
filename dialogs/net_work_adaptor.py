@@ -123,10 +123,7 @@ class NetworkAdaptorScreen:
             for index, label in enumerate(self.current_label):
             
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
-                if index == self.selected_index:
-                    self.auth_bottom_win.addstr( 2+ index, 5, label[0].format("0"), color_pair)
-                else:
-                    self.auth_bottom_win.addstr( 2+ index, 5, label[0].format(""), color_pair)
+                self.auth_bottom_win.addstr( 2+ index, 5, label[0], color_pair)
                 self.auth_bottom_win.addstr( 2+ index, 15, label[1], color_pair)
                 self.auth_bottom_win.addstr( 2+ index, 35, label[2], color_pair)
             self.auth_bottom_win.refresh()
