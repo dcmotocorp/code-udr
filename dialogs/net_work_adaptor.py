@@ -95,7 +95,7 @@ class NetworkAdaptorScreen:
             if len(self.current_label)>0:
                 data = self.current_label
             else:
-                test_daat = deepcopy(self.labels) 
+                test_daat = self.labels 
                 tem = []
                 for test in test_daat:
                     test[0] = test[0].format("")
@@ -118,7 +118,7 @@ class NetworkAdaptorScreen:
             if len(self.current_label)>0:
                 data = self.current_label    
             else:
-                test_daat = deepcopy(self.labels) 
+                test_daat = self.labels 
                 tem = []
                 for test in test_daat:
                     test[0] = test[0].format("")
