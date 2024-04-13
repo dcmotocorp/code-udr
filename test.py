@@ -341,12 +341,14 @@ class NovaiguApplication:
                     self.logger_.log_info("authentication resposne {}".format(response))
                     if response:
                         try:
-                            
-                            try :
-                                
+                            try :                                
                                 check_username = self.user_data_base.get_user_details(self.authentication_screen.username_input)
                                 if not check_username:
                                     self.user_data_base.add_user(self.authentication_screen.username_input, self.authentication_screen.password_input)
+                                
+                                self.user_data_base.update_current_login(self.authentication_screen.username_input)
+                                
+
                                 # self.user_data_base.update_current_login(self.authentication_screen.username_input)
                             except Exception as ex:
                                 self.logger_.log_info("Exception error in database resposne {}".format(str(ex)))
@@ -369,6 +371,7 @@ class NovaiguApplication:
                                 check_username = self.user_data_base.get_user_details(self.authentication_screen.username_input)
                                 if not check_username:
                                     self.user_data_base.add_user(self.authentication_screen.username_input, self.authentication_screen.password_input)
+                                self.user_data_base.update_current_login(self.authentication_screen.username_input)
                                 # self.user_data_base.update_current_login(self.authentication_screen.username_input)
                             except Exception as ex:
                                 self.logger_.log_info("Exception error in database resposne {}".format(str(ex)))
@@ -382,8 +385,12 @@ class NovaiguApplication:
                 
                 elif current_screen == PASSWORD:
                     if  hasattr(self, 'update_password')  and self.update_password !=None  and self.update_password.update_status == True  :
-                        if self.update_password.current_password == self.password_input: 
-                            self.logger_.log_info("self.username_input {} == self.password_input{}".format(self.username_input,self.password_input,self.update_password.new_password))
+                        
+                        current_user_name = self.user_data_base.get_current_login()
+                        response = self.system_controller.authenticate(current_user_name,self.update_password.current_password)
+                        if response:
+                        # if self.update_password.current_password == self.password_input: 
+                            self.logger_.log_info("self.username_input {} == self.password_input{}".format(self.username_input,self.password_input))
                             status = self.system_controller.change_password(self.username_input,self.password_input,self.update_password.new_password)
                             if status:
                                 self.user_data_base.change_password(self.username_input,self.update_password.new_password)

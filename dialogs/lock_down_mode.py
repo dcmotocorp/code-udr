@@ -3,6 +3,7 @@ from logs.udr_logger import UdrLogger
 from dialogs.system_config import SystemConfig
 from constant import KEY_UP,KEY_DOWN
 import warnings
+from data.database import UserDatabase
 
 warnings.filterwarnings("ignore")
 class LockdownModeScreen:
@@ -17,6 +18,7 @@ class LockdownModeScreen:
         self.normal_color_pair = curses.color_pair(3) 
         self.selected_color_pair = curses.color_pair(5)
         self.logger_ = UdrLogger()
+        self.user_data_base = UserDatabase()
         self.selected_index= 0
         self.current_label_head = None
         self.get_default_setting()
