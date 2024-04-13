@@ -362,17 +362,20 @@ class NovaiguApplication:
                             pass 
                 elif  (len(self.authentication_screen.username_input) > 0 and len(self.authentication_screen.password_input) > 0 )  and  hasattr(self, 'system_config') and self.system_config == None:
                     try:
-                        try:
-                            check_username = self.user_data_base.get_user_details(self.authentication_screen.username_input)
-                            if not check_username:
-                                self.user_data_base.add_user(self.authentication_screen.username_input, self.authentication_screen.password_input)
-                            # self.user_data_base.update_current_login(self.authentication_screen.username_input)
-                        except Exception as ex:
-                            self.logger_.log_info("Exception error in database resposne {}".format(str(ex)))
-                        self.authentication_screen.clear_input_field()
-                        self.system_config = SystemConfig(self.stdscr.getmaxyx()[0], self.stdscr.getmaxyx()[1], self)
-                        self.system_config.create_system_configuration()
-                        self.system_config.update_password_screen = True 
+                        response = self.system_controller.authenticate(self.authentication_screen.username_input,self.authentication_screen.password_input)
+                        self.logger_.log_info("authentication resposne {}".format(response))
+                        if response:
+                            try:
+                                check_username = self.user_data_base.get_user_details(self.authentication_screen.username_input)
+                                if not check_username:
+                                    self.user_data_base.add_user(self.authentication_screen.username_input, self.authentication_screen.password_input)
+                                # self.user_data_base.update_current_login(self.authentication_screen.username_input)
+                            except Exception as ex:
+                                self.logger_.log_info("Exception error in database resposne {}".format(str(ex)))
+                            self.authentication_screen.clear_input_field()
+                            self.system_config = SystemConfig(self.stdscr.getmaxyx()[0], self.stdscr.getmaxyx()[1], self)
+                            self.system_config.create_system_configuration()
+                            self.system_config.update_password_screen = True 
                     except Exception as ex:
                         self.logger_.log_info("Exception while creating to config screen {}".format(ex))
 
