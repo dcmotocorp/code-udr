@@ -5,6 +5,7 @@ from constant import KEY_UP,KEY_DOWN,CONFIGURE_MANAGEMENT_NETWORK_SERVICE,OBTAIN
 from system_controller.systemcontroler import SystemControler
 import warnings
 import json 
+from database import UserDatabases
 
 warnings.filterwarnings("ignore")
 
@@ -27,12 +28,13 @@ class IPConfigurationScreen:
         self.ip_address = "192.168.1.1"
         self.sub_mask =  "192.168.1.1"
         self.gate_Way =  "192.168.1.1"
+        self.user_data_base = UserDatabase()
         self.get_default_Setting()
         self.set_data()
         self.setup_network_adaptor_screen()
 
     def get_default_Setting(self):
-        data =  self.system_controller.get_default_settings()
+        data =  self.user_data_base.get_default_settings()
         self.logger_.log_info("data totla {}".format(json.dumps(data)))
 
     def set_data(self):
