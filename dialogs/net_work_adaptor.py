@@ -28,8 +28,12 @@ class NetworkAdaptorScreen:
 
     def get_data_from_source(self):
         data = self.system_controller.get_management_interface_details()
-        self.logger_.log_info("==========data from the interface {}".format(json.dumps(data))) 
         self.set_source_data(data)
+    
+    def set_network_data(self):
+        self.system_controller.set_management_interface("test")
+        
+         
        
     def set_source_data(self,data):
         resposne_data = []

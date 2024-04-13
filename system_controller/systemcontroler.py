@@ -1167,3 +1167,30 @@ Mask={mask}"""
                 })
 
         return interface_states
+    
+    def get_ipv4_address(self, interface):
+        with IPRoute() as ipr:
+            addresses = ipr.get_addr(label=interface, family=2)
+            if addresses:
+                return addresses[0].get_attr('IFA_ADDRESS')
+
+    def set_management_interface(self, interface):
+        try:
+            ip_address = self.get_ipv4_address(interface=interface)
+            print(ip_address)
+            if ip_address:
+                with IPRoute() as ipr:
+                    # Find the index of the specified interface
+                    index = ipr.link_lookup(ifname=interface)[0]
+                    print(f"this is index {index}")
+
+                    # Set the specified interface as the primary interface
+                    ipr.link('set', index=index, state='up')
+                    ipr.route('del', dst='default')
+                    ipr.route('add', dst='default', gateway=ip_address)
+        except Exception as e:
+            return False, f"error {str(e)}"
+
+        # Check if the command executed successfully
+        
+        return True, "Primary interface changed"
