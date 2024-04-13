@@ -2,6 +2,7 @@ import curses
 from logs.udr_logger import UdrLogger
 from dialogs.system_config import SystemConfig
 from constant import KEY_UP,KEY_DOWN,CONFIGURE_MANAGEMENT_NETWORK_SERVICE,OBTAIN_IP_AUTOMATIC,MANUALLY_IP_AUTOMATIC,MANUALLY_DNS_AUTOMATIC,OBTAIN_DNS_AUTOMATIC
+from system_controller.systemcontroler import SystemControler
 
 class DNSScreen:
     def __init__(self, screen_height, screen_width,app):
@@ -18,9 +19,17 @@ class DNSScreen:
         self.selected_color_pair = curses.color_pair(5)
         self.logger_ = UdrLogger()
         self.selected_index= 0
+        self.system_controller = SystemControler()
         self.primary = "192.168.1.1"
         self.secondary =  "192.168.1.1"
+        self.get_dns_priomary_secondary()
         self.setup_network_adaptor_screen()
+
+    def get_dns_priomary_secondary(self):
+        primary,secondary = self.system_controller.get_dns_configuration_linux()
+        self.primary =primary
+        self.secondary = secondary
+
 
     def setup_network_adaptor_screen(self):
         auth_screen_height = 15
