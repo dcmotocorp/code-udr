@@ -312,9 +312,8 @@ class SystemControler:
 
             # Enable SSH
             subprocess.run(["sudo", "service", "ssh", "start"])
-
-    
         except Exception as e:
+            self.logger_.log_info("Exception occure in exit lock down {}".format(str(ex)))
             pass 
     
     def lock_screen_linux(self):
