@@ -375,6 +375,7 @@ class NovaiguApplication:
                                 self.reset_system_config_screen()
                                 self.update_password = None
                                 curses.curs_set(0)
+                                
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
@@ -398,18 +399,21 @@ class NovaiguApplication:
                 elif current_screen == SSH:
                      
                     if   hasattr(self, 'ssh_screen')  and self.ssh_screen !=None  and self.ssh_screen.update_status == True  :
-                        
-                        selected_value = self.ssh_screen.current_label_head
-                        if selected_value:
-                            if selected_value == 0:
-                                self.system_controller.enable_ssh()
-                            else:
-                                self.system_controller.disable_ssh()    
+                        try:
+                            selected_value = self.ssh_screen.current_label_head
+                            
+                            if selected_value:
+                                if selected_value == 0:
+                                    self.system_controller.enable_ssh()
+                                else:
+                                    self.system_controller.disable_ssh()    
                             self.system_config.active_status = True
                             self.system_config.update_password_screen = False 
                             self.ssh_screen.clear()
                             self.reset_system_config_screen()
                             self.ssh_screen = None
+                        except Exception as ex:
+                            self.logger_.log_info("Exception occure while cleaning ssh screen  {}".format(str(ex)))
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
@@ -423,11 +427,11 @@ class NovaiguApplication:
                                 self.system_controller.enable_lockdown_mode()
                             else:
                                 self.system_controller.exit_lockdown_mode()
-                            self.system_config.active_status = True
-                            self.system_config.update_password_screen = False 
-                            self.lock_down_screen.clear()
-                            self.reset_system_config_screen()
-                            self.lock_down_screen = None
+                        self.system_config.active_status = True
+                        self.system_config.update_password_screen = False 
+                        self.lock_down_screen.clear()
+                        self.reset_system_config_screen()
+                        self.lock_down_screen = None
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
