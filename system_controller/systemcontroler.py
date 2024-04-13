@@ -303,15 +303,16 @@ class SystemControler:
             # subprocess.run(["sudo", "iptables-restore", "-c", "/etc/iptables/rules.v4"])
 
             # Enable all network interfaces
-            interfaces = self.get_default_interface()
-            for interface in interfaces:
-                subprocess.run(["sudo", "ip", "link", "set", interface, "up"])
+            interface= self.get_default_interface()
+        
+            subprocess.run(["sudo", "ip", "link", "set", interface, "up"])
 
             # Enable outgoing traffic
             # subprocess.run(["sudo", "iptables", "-D", "OUTPUT", "-j", "DROP"])
 
             # Enable SSH
             subprocess.run(["sudo", "service", "ssh", "start"])
+
         except Exception as e:
             self.logger_.log_info("Exception occure in exit lock down {}".format(str(ex)))
             pass 
