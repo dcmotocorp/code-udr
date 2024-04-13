@@ -335,7 +335,7 @@ class NovaiguApplication:
         
         elif event.name == "enter":
             if hasattr(self, 'authentication_screen') and self.authentication_screen != None  :
-                if (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 )  and not hasattr(self, 'system_config'):
+                if (len(self.authentication_screen.username_input) > 0 and len(self.authentication_screen.password_input) > 0 )  and not hasattr(self, 'system_config'):
                     self.logger_.log_info("Current username and password match the condition")
                     response = self.system_controller.authenticate(self.authentication_screen.username_input,self.authentication_screen.password_input)
                     self.logger_.log_info("authentication resposne {}".format(response))
@@ -360,7 +360,7 @@ class NovaiguApplication:
                         except Exception as ex:
                             self.logger_.log_info("Exception while switching to config screen {}".format(ex))
                             pass 
-                elif  (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 )  and  hasattr(self, 'system_config') and self.system_config == None:
+                elif  (len(self.authentication_screen.username_input) > 0 and len(self.authentication_screen.password_input) > 0 )  and  hasattr(self, 'system_config') and self.system_config == None:
                     try:
                         try:
                             check_username = self.user_data_base.get_user_details(self.authentication_screen.username_input)
