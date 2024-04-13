@@ -414,9 +414,11 @@ class NovaiguApplication:
                             
                             if selected_value:
                                 if selected_value == 0:
+                                    self.logger_.log_info("ssh screen username {}".format(self.username_input))
                                     self.user_data_base.update_user_settings(self.username_input,ssh_enable=True)
                                     self.system_controller.enable_ssh()
                                 else:
+                                    self.logger_.log_info("ssh screen username else {}".format(self.username_input))
                                     self.user_data_base.update_user_settings(self.username_input,ssh_enable=False)
                                     self.system_controller.disable_ssh()    
                             self.system_config.active_status = True
@@ -438,9 +440,11 @@ class NovaiguApplication:
                         selected_value = self.lock_down_screen.current_label_head
                         if selected_value:
                             if selected_value == 0:
+                                self.logger_.log_info("lock down screen username {}".format(self.username_input))
                                 self.user_data_base.update_user_settings(self.username_input,is_lockdown=True)
                                 self.system_controller.enable_lockdown_mode()
                             else:
+                                self.logger_.log_info("lock down screen username else {}".format(self.username_input))
                                 self.user_data_base.update_user_settings(self.username_input,is_lockdown=False)
                                 self.system_controller.exit_lockdown_mode()
                         self.system_config.active_status = True

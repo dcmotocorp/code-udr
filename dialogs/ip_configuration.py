@@ -40,6 +40,8 @@ class IPConfigurationScreen:
         self.logger_.log_info("data totla {}".format(json.dumps(data)))
         self.logger_.log_info("data totla {}".format(json.dumps(users)))
 
+
+
     def set_data(self):
         ip,mask,gate_way= self.system_controller.get_network_info_su_de()
         self.ip_address = ip 
