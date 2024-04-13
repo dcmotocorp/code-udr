@@ -37,8 +37,13 @@ class IPConfigurationScreen:
     def get_default_Setting(self):
         data =  self.user_data_base.get_user_settings(self.app.username_input)
         users = self.user_data_base.select_all_users()
-        self.logger_.log_info("data totla {}".format(json.dumps(data)))
-        self.logger_.log_info("data totla {}".format(json.dumps(users)))
+        
+        if data and len(data) >0:
+            if data[0] ==0:
+                self.current_selected_label_index = data[0]    
+            elif data[0] ==1:
+                self.current_selected_label_index = data[0]
+
 
 
 
