@@ -135,8 +135,7 @@ class IPConfigurationScreen:
     def handle_arrow_key(self, key):
     
         if key.name == "up":
-            if self.current_seleected_parameter ==1:
-                self.set_up_in_address_field()
+            
             if self.selected_index == 1:
                  self.selected_index = 0
             else:
@@ -152,11 +151,13 @@ class IPConfigurationScreen:
 
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             self.auth_bottom_win.refresh()
-            # self.setup_network_adaptor_screen() 
-
-        elif key.name =="down":
             if self.current_seleected_parameter ==1:
                 self.set_up_in_address_field()
+            else:
+                self.setup_network_adaptor_screen() 
+
+        elif key.name =="down":
+            
             if self.selected_index == 0:
                  self.selected_index = 1
             else:
@@ -171,7 +172,10 @@ class IPConfigurationScreen:
             
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             self.auth_bottom_win.refresh()
-            # self.setup_network_adaptor_screen()
+            if self.current_seleected_parameter ==1:
+                self.set_up_in_address_field()
+            else:
+                self.setup_network_adaptor_screen()
 
         elif key.name == "space":
             self.current_seleected_parameter = self.selected_index
