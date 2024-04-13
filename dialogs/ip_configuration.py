@@ -4,6 +4,7 @@ from dialogs.system_config import SystemConfig
 from constant import KEY_UP,KEY_DOWN,CONFIGURE_MANAGEMENT_NETWORK_SERVICE,OBTAIN_IP_AUTOMATIC,MANUALLY_IP_AUTOMATIC
 from system_controller.systemcontroler import SystemControler
 import warnings
+import json 
 
 warnings.filterwarnings("ignore")
 
@@ -26,8 +27,13 @@ class IPConfigurationScreen:
         self.ip_address = "192.168.1.1"
         self.sub_mask =  "192.168.1.1"
         self.gate_Way =  "192.168.1.1"
+        self.get_default_Setting()
         self.set_data()
         self.setup_network_adaptor_screen()
+
+    def get_default_Setting(self):
+        data =  self.system_controller.get_default_settings()
+        self.logger_.log_info("data totla {}".format(json.dumps(data)))
 
     def set_data(self):
         ip,mask,gate_way= self.system_controller.get_network_info_su_de()
