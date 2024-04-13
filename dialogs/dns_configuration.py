@@ -13,7 +13,7 @@ class DNSScreen:
         self.update_status = False
         self.current_seleected_parameter = None
         self.current_selected_label_index = 0
-        self.labels = [OBTAIN_DNS_AUTOMATIC.format(""), MANUALLY_DNS_AUTOMATIC.format("")]
+        self.labels = [OBTAIN_DNS_AUTOMATIC, MANUALLY_DNS_AUTOMATIC]
         self.normal_color_pair = curses.color_pair(3) 
         self.selected_color_pair = curses.color_pair(5)
         self.logger_ = UdrLogger()
@@ -52,6 +52,10 @@ class DNSScreen:
         # Add labels to popup_bottom_win
         for index, label in enumerate(self.labels):
             color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+            if index == self.current_selected_label_index:
+                    self.auth_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+            else:
+                self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
             self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
 
 
@@ -87,17 +91,49 @@ class DNSScreen:
         return self.current_ssh
     
     def handle_arrow_key(self, key):
-    
-        if key.name == "space":
-            if self.selected_index == 0:
-                 self.selected_index = 1
+        if key.name== "up":
+            if self.selected_index == 1:
+                 self.selected_index = 0
             else:
                  self.selected_index = 0
             for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                if index == self.current_selected_label_index:
+                    self.auth_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+                else:
+                    self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             self.auth_bottom_win.refresh()
-        self.setup_network_adaptor_screen()
+            self.setup_network_adaptor_screen()
+            
+        elif key.name =="down":
+            if self.selected_index == 0:
+                 self.selected_index = 1
+            else:
+                 self.selected_index = 1
+            for index, label in enumerate(self.labels):
+                color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                if index == self.current_selected_label_index:
+                    self.auth_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+                else:
+                    self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
+                self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
+            self.auth_bottom_win.refresh()
+            self.setup_network_adaptor_screen() 
+    
+        elif key.name == "space":
+            self.current_selected_label_index = self.selected_index
+            for index, label in enumerate(self.labels):
+                color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                if index == self.current_selected_label_index:
+                    self.auth_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+                else:
+                    self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
+                self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
+            self.auth_bottom_win.refresh()
+            self.setup_network_adaptor_screen() 
+
+            
 
 
             

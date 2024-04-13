@@ -124,6 +124,8 @@ class NovaiguApplication:
                         self.net_work_screen.handle_arrow_key(event)
                     elif hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
                         self.ip_config_adaptor.handle_arrow_key(event)
+                    elif hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
+                        self.dns_screen.handle_arrow_key(event)
                     else:
                         self.configuration_management_screen.handle_arrow_key(event.name)
                 
@@ -153,6 +155,8 @@ class NovaiguApplication:
                         self.net_work_screen.handle_arrow_key(event)
                     elif hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
                         self.ip_config_adaptor.handle_arrow_key(event)
+                    elif hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
+                        self.dns_screen.handle_arrow_key(event)
                     else:
                         self.configuration_management_screen.handle_arrow_key(event.name)
                 
