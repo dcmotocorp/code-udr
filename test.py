@@ -411,14 +411,13 @@ class NovaiguApplication:
                     if   hasattr(self, 'ssh_screen')  and self.ssh_screen !=None  and self.ssh_screen.update_status == True  :
                         try:
                             selected_value = self.ssh_screen.current_label_head
-                            
+                            self.logger_.log_info("ssh screen username {} selected_value {}".format(self.username_input,selected_value))
                             if selected_value:
                                 if selected_value == 0:
-                                    self.logger_.log_info("ssh screen username {}".format(self.username_input))
+                                    
                                     self.user_data_base.update_user_settings(self.username_input,ssh_enable=True)
                                     self.system_controller.enable_ssh()
                                 else:
-                                    self.logger_.log_info("ssh screen username else {}".format(self.username_input))
                                     self.user_data_base.update_user_settings(self.username_input,ssh_enable=False)
                                     self.system_controller.disable_ssh()    
                             self.system_config.active_status = True
