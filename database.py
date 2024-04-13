@@ -20,7 +20,6 @@ class UserDatabase:
 
         # Create the directory if it doesn't exist
         if not os.path.exists(self.db_directory):
-            print(f"creating director {self.db_directory}")
             os.makedirs(self.db_directory)
 
             # Set read and write permissions to the directory
@@ -115,10 +114,8 @@ class UserDatabase:
 
         if result:
             hostname, password = result
-            print(f"Hostname: {hostname}, Password: {password}")
             return hostname, password
         else:
-            print("No data found.")
             return None, None
 
 
@@ -217,8 +214,7 @@ class UserDatabase:
         connection = sqlite3.connect(self.db_location)
         cursor = connection.cursor()
 
-        print(f"Type of username: {type(username)}")  # Add this line for debugging
-
+        
         # Check if the user exists
         cursor.execute('SELECT 1 FROM user_settings WHERE username = ?', (username,))
         user_exists = cursor.fetchone() is not None
