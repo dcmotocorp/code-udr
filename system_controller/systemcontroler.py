@@ -671,7 +671,7 @@ class SystemControler:
 
             return []
     
-    def set_dns_servers(self, ip_address, primary_dns, secondary_dns):
+    def set_dns_servers(self, primary_dns, secondary_dns):
         try:
             # Linux command to set DNS servers
             command = f"sudo nmcli connection modify 'Wired connection 1' ipv4.dns '{primary_dns} {secondary_dns}'"

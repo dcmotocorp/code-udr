@@ -240,7 +240,8 @@ class NovaiguApplication:
                                 self.ip_config_adaptor.set_manually_ip() 
                             elif self.ip_config_adaptor.current_selected_label_index ==0:
                                 self.ip_config_adaptor.set_ip_address_automatic()
-                            
+                            else:
+                                pass 
                             self.ip_config_adaptor.clear()
                             self.ip_config_adaptor = None
                             self.configuration_management_screen.reset_screen_color()
@@ -254,6 +255,13 @@ class NovaiguApplication:
                             self.configuration_management_screen.handle_arrow_key("up")
                         
                         elif selected_label ==  DNS_SERVER and  hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
+                            
+                            if self.dns_screen.current_selected_label_index ==1:
+                                self.dns_screen.set_manually_dns()
+                            elif self.dns_screen.current_selected_label_index==0:
+                                self.dns_screen.set_auto_dns()
+                            else:
+                                pass 
                             self.dns_screen.clear()
                             self.dns_screen = None
                             self.configuration_management_screen.reset_screen_color()

@@ -29,7 +29,12 @@ class DNSScreen:
         primary,secondary = self.system_controller.get_dns_configuration_linux()
         self.primary =primary
         self.secondary = secondary
-
+    
+    def set_auto_dns(self):
+        self.system_controller.set_dns_auto_assign()
+    
+    def set_manually_dns(self):
+        self.system_controller.set_dns_servers(self.primary,self.secondary)
 
     def setup_network_adaptor_screen(self):
         auth_screen_height = 15
