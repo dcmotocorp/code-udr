@@ -272,9 +272,8 @@ class SystemControler:
             # Disable all network interfaces
             interfaces = self.get_default_interface()
             
-            for interface in interfaces:
-                self.reset_ip_down_interface(interface=interface)
-                subprocess.run(["sudo", "ip", "link", "set", interface, "down"])
+            self.reset_ip_down_interface(interface=interface)
+            subprocess.run(["sudo", "ip", "link", "set", interface, "down"])
 
             # Save iptables rules to a file
             # subprocess.run(["sudo", "iptables-save"], stdout=subprocess.PIPE, check=True, text=True, input="").stdout > "/etc/iptables/rules.v4"
