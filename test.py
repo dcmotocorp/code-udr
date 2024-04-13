@@ -409,10 +409,10 @@ class NovaiguApplication:
                             
                             if selected_value:
                                 if selected_value == 0:
-                                    self.user_data_base.update_user_settings(ssh_enable=True)
+                                    self.user_data_base.update_user_settings(self.username_input,ssh_enable=True)
                                     self.system_controller.enable_ssh()
                                 else:
-                                    self.user_data_base.update_user_settings(ssh_enable=False)
+                                    self.user_data_base.update_user_settings(self.username_input,ssh_enable=False)
                                     self.system_controller.disable_ssh()    
                             self.system_config.active_status = True
                             self.system_config.update_password_screen = False 
@@ -433,10 +433,10 @@ class NovaiguApplication:
                         selected_value = self.lock_down_screen.current_label_head
                         if selected_value:
                             if selected_value == 0:
-                                self.user_data_base.update_user_settings(is_lockdown=True)
+                                self.user_data_base.update_user_settings(self.username_input,is_lockdown=True)
                                 self.system_controller.enable_lockdown_mode()
                             else:
-                                self.user_data_base.update_user_settings(is_lockdown=False)
+                                self.user_data_base.update_user_settings(self.username_input,is_lockdown=False)
                                 self.system_controller.exit_lockdown_mode()
                         self.system_config.active_status = True
                         self.system_config.update_password_screen = False 
@@ -456,9 +456,9 @@ class NovaiguApplication:
                         if selected_label ==  IP_CONFIGURATION:
                             if hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
                                 if self.ip_config_adaptor.current_selected_label_index ==0:
-                                    self.user_data_base.update_user_settings(ip_manual=False) 
+                                    self.user_data_base.update_user_settings(self.username_input,ip_manual=False) 
                                 elif self.ip_config_adaptor.current_selected_label_index ==1:
-                                    self.user_data_base.update_user_settings(ip_manual=True)
+                                    self.user_data_base.update_user_settings(self.username_input,ip_manual=True)
                                 self.ip_config_adaptor.clear()
                                 self.ip_config_adaptor = None
                                 self.configuration_management_screen.reset_screen_color()
@@ -488,9 +488,9 @@ class NovaiguApplication:
                         elif  selected_label ==  DNS_SERVER:
                             if hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
                                 if self.dns_screen.current_selected_label_index ==0:
-                                    self.user_data_base.update_user_settings(dns_manual=False)
+                                    self.user_data_base.update_user_settings(self.username_input,dns_manual=False)
                                 elif self.dns_screen.current_selected_label_index ==1:
-                                    self.user_data_base.update_user_settings(dns_manual=True)                                
+                                    self.user_data_base.update_user_settings(self.username_input,dns_manual=True)                                
                                 self.dns_screen.clear()
                                 self.dns_screen = None
                                 self.configuration_management_screen.reset_screen_color()
