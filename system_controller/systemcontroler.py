@@ -297,7 +297,7 @@ class SystemControler:
         except Exception as e:
             pass 
 
-    def exit_lockdown_mode(self, user_name):
+    def exit_lockdown_mode(self):
         try:
             # Load iptables rules from the file
             # subprocess.run(["sudo", "iptables-restore", "-c", "/etc/iptables/rules.v4"])
