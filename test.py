@@ -343,8 +343,8 @@ class NovaiguApplication:
                         try:
                             
                             try :
-                                self.user_data_base.default_settings(self.system_controller.get_hostname(), self.authentication_screen.password_input)
-                                self.user_data_base.update_current_login(self.authentication_screen.username_input)
+                                self.user_data_base.add_user(self.authentication_screen.username_input, self.authentication_screen.password_input)
+                                # self.user_data_base.update_current_login(self.authentication_screen.username_input)
                             except Exception as ex:
                                 self.logger_.log_info("Exception error in database resposne {}".format(str(ex)))
                             self.username_input = self.authentication_screen.username_input
@@ -359,7 +359,12 @@ class NovaiguApplication:
                             pass 
                 elif  (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 )  and  hasattr(self, 'system_config') and self.system_config == None:
                     try:
-                        self.authentication_screen. clear_input_field()
+                        try:
+                            self.user_data_base.add_user(self.authentication_screen.username_input, self.authentication_screen.password_input)
+                            # self.user_data_base.update_current_login(self.authentication_screen.username_input)
+                        except Exception as ex:
+                            self.logger_.log_info("Exception error in database resposne {}".format(str(ex)))
+                        self.authentication_screen.clear_input_field()
                         self.system_config = SystemConfig(self.stdscr.getmaxyx()[0], self.stdscr.getmaxyx()[1], self)
                         self.system_config.create_system_configuration()
                         self.system_config.update_password_screen = True 
