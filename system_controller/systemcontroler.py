@@ -270,7 +270,7 @@ class SystemControler:
     def enable_lockdown_mode(self, user_name=None):
         try:
             # Disable all network interfaces
-            interfaces = self.get_default_interface()
+            interface = self.get_default_interface()
             
             self.reset_ip_down_interface(interface=interface)
             subprocess.run(["sudo", "ip", "link", "set", interface, "down"])
