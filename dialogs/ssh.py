@@ -60,9 +60,9 @@ class SSHScreen:
         auth_top_win.addstr(label_y, label_x, label_text, curses.color_pair(4))
         
         if self.current_label_head == 1:
-            values = ["[ ] enable", "[0] disable"]
-        elif self.current_label_head == 0:
             values = ["[0] enable", "[ ] disable"]
+        elif self.current_label_head == 0:
+            values = ["[ ] enable", "[0] disable"]
         else:
             values = ["[ ] enable", "[ ] disable"]
 
