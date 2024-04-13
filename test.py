@@ -1,5 +1,9 @@
 import curses
 import keyboard
+import warnings
+
+# Suppress all warnings
+warnings.filterwarnings("ignore")
 
 from utils import shutdown_computer, get_ip_address, restart_computer
 from constant import SYSTEM_CONFIG_LABEL, PASSWORD_LABEL, USERNAME_LABEL, NOVAIGU_HTTP_LABEL, \

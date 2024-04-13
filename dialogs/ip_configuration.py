@@ -3,7 +3,10 @@ from logs.udr_logger import UdrLogger
 from dialogs.system_config import SystemConfig
 from constant import KEY_UP,KEY_DOWN,CONFIGURE_MANAGEMENT_NETWORK_SERVICE,OBTAIN_IP_AUTOMATIC,MANUALLY_IP_AUTOMATIC
 from system_controller.systemcontroler import SystemControler
+import warnings
 
+# Suppress all warnings
+warnings.filterwarnings("ignore")
 class IPConfigurationScreen:
     def __init__(self, screen_height, screen_width,app):
         self.app = app

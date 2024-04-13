@@ -1,7 +1,10 @@
 import curses
 from logs.udr_logger import UdrLogger
 from dialogs.system_config import SystemConfig
+import warnings
 
+# Suppress all warnings
+warnings.filterwarnings("ignore")
 
 class AuthenticationScreen:
     def __init__(self, stdscr, screen_height, screen_width):
