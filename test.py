@@ -249,14 +249,14 @@ class NovaiguApplication:
                             self.ip_config_adaptor.clear()
                             self.ip_config_adaptor = None
                             self.configuration_management_screen.reset_screen_color()
-                            self.configuration_management_screen.handle_arrow_key("up")
+                            self.configuration_management_screen.refresh_screen()
 
                         elif selected_label ==  NETWORK_ADAPTOR and  hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
                             
                             self.net_work_screen.clear()
                             self.net_work_screen = None
                             self.configuration_management_screen.reset_screen_color()
-                            self.configuration_management_screen.handle_arrow_key("up")
+                            self.configuration_management_screen.refresh_screen()
                         
                         elif selected_label ==  DNS_SERVER and  hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
                             
@@ -269,7 +269,7 @@ class NovaiguApplication:
                             self.dns_screen.clear()
                             self.dns_screen = None
                             self.configuration_management_screen.reset_screen_color()
-                            self.configuration_management_screen.handle_arrow_key("up")
+                            self.configuration_management_screen.refresh_screen()
                     
                         else:
                             
