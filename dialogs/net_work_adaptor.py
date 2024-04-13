@@ -33,8 +33,6 @@ class NetworkAdaptorScreen:
     def set_network_data(self):
         self.system_controller.set_management_interface("test")
         
-         
-       
     def set_source_data(self,data):
         resposne_data = []
         for __data in data:

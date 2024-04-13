@@ -51,6 +51,19 @@ class IPConfigurationScreen:
         self.sub_mask = mask
         self.gate_Way = gate_way
 
+    def set_up_in_address_field(self):
+        # ad ip config 
+        ip_adrress_label = "IP Address :      [ {}        ]".format(self.ip_address)
+        self.auth_bottom_win.addstr(5, 8, ip_adrress_label, curses.color_pair(3))
+
+        mask_adrress_label = "Subnet Mask :     [ {}     ]".format(self.sub_mask)
+        self.auth_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
+
+        getway_label = "Default Getway :  [ {}         ]".format(self.gate_Way)
+        self.auth_bottom_win.addstr(7, 8, getway_label, curses.color_pair(3))
+         
+        auth_top_win.refresh()
+    
     def setup_network_adaptor_screen(self):
         auth_screen_height = 15
         auth_screen_width = 50
@@ -99,15 +112,6 @@ class IPConfigurationScreen:
         label_text_bottom_enter_ok = "<Enter> Ok"
         self.auth_bottom_win.addstr(9, 23, label_text_bottom_enter_ok, curses.color_pair(3))
         
-        # ad ip config 
-        ip_adrress_label = "IP Address :      [ {}        ]".format(self.ip_address)
-        self.auth_bottom_win.addstr(5, 8, ip_adrress_label, curses.color_pair(3))
-
-        mask_adrress_label = "Subnet Mask :     [ {}     ]".format(self.sub_mask)
-        self.auth_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
-
-        getway_label = "Default Getway :  [ {}         ]".format(self.gate_Way)
-        self.auth_bottom_win.addstr(7, 8, getway_label, curses.color_pair(3))
 
     
         auth_top_win.refresh()
@@ -168,6 +172,8 @@ class IPConfigurationScreen:
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 if self.current_seleected_parameter == index:
                     self.auth_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+                    if self.current_seleected_parameter ==1:
+                        self.set_up_in_address_field()
                 else:
                     self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
