@@ -62,7 +62,7 @@ class IPConfigurationScreen:
         getway_label = "Default Getway :  [ {}         ]".format(self.gate_Way)
         self.auth_bottom_win.addstr(7, 8, getway_label, curses.color_pair(3))
          
-        auth_top_win.refresh()
+        self.auth_top_win.refresh()
     
     def setup_network_adaptor_screen(self):
         auth_screen_height = 15
@@ -76,19 +76,19 @@ class IPConfigurationScreen:
         popup_bottom_height = auth_screen_height - popup_top_height
 
         # Create windows for each partition within the pop-up window
-        auth_top_win = self.hostname_screen.subwin(popup_top_height, auth_screen_width, popup_y, popup_x)
+        self.auth_top_win = self.hostname_screen.subwin(popup_top_height, auth_screen_width, popup_y, popup_x)
         self.auth_bottom_win = self.hostname_screen.subwin(popup_bottom_height, auth_screen_width,
                                                              popup_y + popup_top_height, popup_x)
 
         # Set background colors for each partition within the pop-up window
-        auth_top_win.bkgd(' ', curses.color_pair(1))  # Yellow background
+        self.auth_top_win.bkgd(' ', curses.color_pair(1))  # Yellow background
         self.auth_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
 
 
-        # Add label to auth_top_win
+        # Add label to self.auth_top_win
         label_x = (auth_screen_width - len(CONFIGURE_MANAGEMENT_NETWORK_SERVICE)) // 2
         label_y = (popup_top_height - 1) // 2  # Center vertically
-        auth_top_win.addstr(label_y, label_x, CONFIGURE_MANAGEMENT_NETWORK_SERVICE, curses.color_pair(4))
+        self.auth_top_win.addstr(label_y, label_x, CONFIGURE_MANAGEMENT_NETWORK_SERVICE, curses.color_pair(4))
         
 
         # Add labels to popup_bottom_win
@@ -114,7 +114,7 @@ class IPConfigurationScreen:
         
 
     
-        auth_top_win.refresh()
+        self.auth_top_win.refresh()
         self.auth_bottom_win.refresh()
 
     def set_manually_ip(self):
