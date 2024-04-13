@@ -19,7 +19,18 @@ class LockdownModeScreen:
         self.logger_ = UdrLogger()
         self.selected_index= 0
         self.current_label_head = None
+        self.get_default_setting()
         self.setup_lockdown_screen()
+
+    def get_default_setting(self):
+        data =  self.user_data_base.get_user_settings(self.app.username_input)
+        users = self.user_data_base.select_all_users()
+    
+        if data and len(data) >0:
+            if data[2] ==0:
+                self.current_label_head = data[2]    
+            elif data[2] ==1:
+                self.current_label_head = data[2]
 
     def setup_lockdown_screen(self):
         auth_screen_height = 10
@@ -48,8 +59,15 @@ class LockdownModeScreen:
         auth_top_win.addstr(label_y, label_x, label_text, curses.color_pair(4))
         
 
+        if self.current_label_head == 1:
+            values = ["[0] enable", "[ ] disable"]
+        elif self.current_label_head == 0:
+            values = ["[ ] enable", "[0] disable"]
+        else:
+            values = ["[ ] enable", "[ ] disable"]
+
         # Add labels to popup_bottom_win
-        for index, label in enumerate(self.labels):
+        for index, label in enumerate(values):
             color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
             self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
 
