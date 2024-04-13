@@ -22,7 +22,7 @@ from dialogs.net_work_adaptor import NetworkAdaptorScreen
 from dialogs.dns_configuration import DNSScreen
 from logs.udr_logger import UdrLogger
 from  system_controller.systemcontroler import SystemControler
-from database import UserDatabase
+from data.database import UserDatabase
 
 class NovaiguApplication:
     def __init__(self, stdscr):

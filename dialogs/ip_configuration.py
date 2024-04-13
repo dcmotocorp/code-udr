@@ -5,7 +5,7 @@ from constant import KEY_UP,KEY_DOWN,CONFIGURE_MANAGEMENT_NETWORK_SERVICE,OBTAIN
 from system_controller.systemcontroler import SystemControler
 import warnings
 import json 
-from ..database import UserDatabase
+from data.database import UserDatabase
 
 
 warnings.filterwarnings("ignore")
