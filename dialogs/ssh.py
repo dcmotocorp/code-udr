@@ -2,6 +2,8 @@ import curses
 from logs.udr_logger import UdrLogger
 from dialogs.system_config import SystemConfig
 from constant import KEY_UP,KEY_DOWN
+from data.database import UserDatabase
+
 
 class SSHScreen:
     def __init__(self, screen_height, screen_width,app):
@@ -16,8 +18,20 @@ class SSHScreen:
         self.selected_color_pair = curses.color_pair(5)
         self.logger_ = UdrLogger()
         self.selected_index= 0
+        self.user_data_base = UserDatabase()
         self.current_label_head = None
+        self.get_default_setting()
         self.setup_hostname_screen()
+    
+    def get_default_setting(self):
+        data =  self.user_data_base.get_user_settings(self.app.username_input)
+        users = self.user_data_base.select_all_users()
+    
+        if data and len(data) >0:
+            if data[1] ==0:
+                self.current_label_head = data[1]    
+            elif data[1] ==1:
+                self.current_label_head = data[1]
 
     def setup_hostname_screen(self):
         auth_screen_height = 10

@@ -40,11 +40,7 @@ class IPConfigurationScreen:
         
         self.logger_.log_info("==========data {}".format(json.dumps(data)))
         self.logger_.log_info("==========users {}".format(json.dumps(users)))
-        if data and len(data) >0:
-            if data[0] ==0:
-                self.current_seleected_parameter = data[0]    
-            elif data[0] ==1:
-                self.current_seleected_parameter = data[0]
+
 
 
 
