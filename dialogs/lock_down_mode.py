@@ -2,7 +2,9 @@ import curses
 from logs.udr_logger import UdrLogger
 from dialogs.system_config import SystemConfig
 from constant import KEY_UP,KEY_DOWN
+import warnings
 
+warnings.filterwarnings("ignore")
 class LockdownModeScreen:
     def __init__(self, screen_height, screen_width,app):
         self.app = app

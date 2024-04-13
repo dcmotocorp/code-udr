@@ -5,8 +5,8 @@ from constant import KEY_UP,KEY_DOWN,CONFIGURE_MANAGEMENT_NETWORK_SERVICE,OBTAIN
 from system_controller.systemcontroler import SystemControler
 import warnings
 
-# Suppress all warnings
 warnings.filterwarnings("ignore")
+
 class IPConfigurationScreen:
     def __init__(self, screen_height, screen_width,app):
         self.app = app

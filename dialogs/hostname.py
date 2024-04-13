@@ -2,7 +2,9 @@ import curses
 from logs.udr_logger import UdrLogger
 from dialogs.system_config import SystemConfig
 from  system_controller.systemcontroler import SystemControler
+import warnings
 
+warnings.filterwarnings("ignore")
 
 class HostnameScreen:
     def __init__(self, screen_height, screen_width,app):
