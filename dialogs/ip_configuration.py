@@ -36,7 +36,9 @@ class IPConfigurationScreen:
 
     def get_default_Setting(self):
         data =  self.user_data_base.get_default_settings()
+        users = self.user_data_base.select_all_users()
         self.logger_.log_info("data totla {}".format(json.dumps(data)))
+        self.logger_.log_info("data totla {}".format(json.dumps(users)))
 
     def set_data(self):
         ip,mask,gate_way= self.system_controller.get_network_info_su_de()
