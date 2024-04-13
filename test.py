@@ -373,6 +373,7 @@ class NovaiguApplication:
                             self.logger_.log_info("self.username_input {} == self.password_input{}".format(self.username_input,self.password_input,self.update_password.new_password))
                             status = self.system_controller.change_password(self.username_input,self.password_input,self.update_password.new_password)
                             if status:
+                                self.user_data_base.change_password(self.username_input,self.update_password.new_password)
                                 self.system_config.active_status = True
                                 self.system_config.update_password_screen = False 
                                 self.update_password.clear()
@@ -408,8 +409,10 @@ class NovaiguApplication:
                             
                             if selected_value:
                                 if selected_value == 0:
+                                    self.user_data_base.update_user_settings(ssh_enable=True)
                                     self.system_controller.enable_ssh()
                                 else:
+                                    self.user_data_base.update_user_settings(ssh_enable=False)
                                     self.system_controller.disable_ssh()    
                             self.system_config.active_status = True
                             self.system_config.update_password_screen = False 
@@ -423,13 +426,17 @@ class NovaiguApplication:
                         self.system_config.set_sytem_config_screen_dark()
                         self.ssh_screen = SSHScreen(self.screen_height, self.screen_width,self)
                         self.ssh_screen.update_status = True 
+                
+                
                 elif current_screen == LOCK_DOWN_MODE:
                     if   hasattr(self, 'lock_down_screen')  and self.lock_down_screen !=None  and self.lock_down_screen.update_status == True  :
                         selected_value = self.lock_down_screen.current_label_head
                         if selected_value:
                             if selected_value == 0:
+                                self.user_data_base.update_user_settings(is_lockdown=True)
                                 self.system_controller.enable_lockdown_mode()
                             else:
+                                self.user_data_base.update_user_settings(is_lockdown=False)
                                 self.system_controller.exit_lockdown_mode()
                         self.system_config.active_status = True
                         self.system_config.update_password_screen = False 
@@ -448,6 +455,10 @@ class NovaiguApplication:
                         selected_label = self.configuration_management_screen.labels[selected_index]
                         if selected_label ==  IP_CONFIGURATION:
                             if hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
+                                if self.ip_config_adaptor.current_selected_label_index ==0:
+                                    self.user_data_base.update_user_settings(ip_manual=False) 
+                                elif self.ip_config_adaptor.current_selected_label_index ==1:
+                                    self.user_data_base.update_user_settings(ip_manual=True)
                                 self.ip_config_adaptor.clear()
                                 self.ip_config_adaptor = None
                                 self.configuration_management_screen.reset_screen_color()
@@ -467,6 +478,7 @@ class NovaiguApplication:
                                 self.configuration_management_screen.reset_screen_color()
                                 self.configuration_management_screen.refresh_screen()                                
                                 
+                                
                             else:      
                                 self.configuration_management_screen.set_sytem_config_screen_dark()
                                 self.net_work_screen = NetworkAdaptorScreen(self.screen_height, self.screen_width,self)
@@ -475,6 +487,10 @@ class NovaiguApplication:
 
                         elif  selected_label ==  DNS_SERVER:
                             if hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
+                                if self.dns_screen.current_selected_label_index ==0:
+                                    self.user_data_base.update_user_settings(dns_manual=False)
+                                elif self.dns_screen.current_selected_label_index ==1:
+                                    self.user_data_base.update_user_settings(dns_manual=True)                                
                                 self.dns_screen.clear()
                                 self.dns_screen = None
                                 self.configuration_management_screen.reset_screen_color()
