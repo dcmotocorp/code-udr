@@ -343,7 +343,10 @@ class NovaiguApplication:
                         try:
                             
                             try :
-                                self.user_data_base.add_user(self.authentication_screen.username_input, self.authentication_screen.password_input)
+                                
+                                check_username = self.user_data_base.get_user_details(self.authentication_screen.username_input)
+                                if not check_username:
+                                    self.user_data_base.add_user(self.authentication_screen.username_input, self.authentication_screen.password_input)
                                 # self.user_data_base.update_current_login(self.authentication_screen.username_input)
                             except Exception as ex:
                                 self.logger_.log_info("Exception error in database resposne {}".format(str(ex)))
@@ -360,7 +363,9 @@ class NovaiguApplication:
                 elif  (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 )  and  hasattr(self, 'system_config') and self.system_config == None:
                     try:
                         try:
-                            self.user_data_base.add_user(self.authentication_screen.username_input, self.authentication_screen.password_input)
+                            check_username = self.user_data_base.get_user_details(self.authentication_screen.username_input)
+                            if not check_username:
+                                self.user_data_base.add_user(self.authentication_screen.username_input, self.authentication_screen.password_input)
                             # self.user_data_base.update_current_login(self.authentication_screen.username_input)
                         except Exception as ex:
                             self.logger_.log_info("Exception error in database resposne {}".format(str(ex)))
