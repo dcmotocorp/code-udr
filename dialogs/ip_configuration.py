@@ -40,9 +40,9 @@ class IPConfigurationScreen:
         
         if data and len(data) >0:
             if data[0] ==0:
-                self.current_selected_label_index = data[0]    
+                self.current_seleected_parameter = data[0]    
             elif data[0] ==1:
-                self.current_selected_label_index = data[0]
+                self.current_seleected_parameter = data[0]
 
 
 
