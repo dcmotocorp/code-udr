@@ -12,7 +12,7 @@ class DNSScreen:
         self.autheticated_parameter = True
         self.update_status = False
         self.current_seleected_parameter = None
-        self.current_selected_label_index = 0
+        self.current_selected_label_index = None
         self.labels = [OBTAIN_DNS_AUTOMATIC, MANUALLY_DNS_AUTOMATIC]
         self.normal_color_pair = curses.color_pair(3) 
         self.selected_color_pair = curses.color_pair(5)
