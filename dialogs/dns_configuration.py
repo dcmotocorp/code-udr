@@ -216,7 +216,7 @@ class DNSScreen:
                 self.secondary = self.secondary[:-1]
                 self.secondary_change.clear()
                 self.secondary_change.bkgd(' ', curses.color_pair(2)) 
-                self.secondary_change.addstr(0, 0, self.sub_mask, curses.color_pair(1))
+                self.secondary_change.addstr(0, 0, self.secondary, curses.color_pair(1))
                 self.secondary_change.refresh()
                 # self.set_cursor_position()
         
