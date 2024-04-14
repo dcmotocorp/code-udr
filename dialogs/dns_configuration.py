@@ -182,6 +182,8 @@ class DNSScreen:
             else:
                 self.setup_network_adaptor_screen()
     
+        
+        
         elif key.name == "space":
             self.current_selected_label_index = self.selected_index
             for index, label in enumerate(self.labels):
@@ -196,6 +198,27 @@ class DNSScreen:
                 self.set_up_in_address_field()
             else:
                 self.setup_network_adaptor_screen() 
+        elif key.name == "tab":
+            if self.input_current_index_status=="prim":
+                self.input_current_index_status="seco"
+            elif self.input_current_index_status=="seco":
+                self.input_current_index_status="prim"
+        elif key.name == "backspace":
+            if self.input_current_index_status=="prim" and len(self.primary)>0:
+                self.primary = self.primary[:-1]
+                self.primary_change.clear()
+                self.primary_change.bkgd(' ', curses.color_pair(2)) 
+                self.primary_change.addstr(0, 0, self.primary, curses.color_pair(1))
+                self.primary_change.refresh()
+                # self.set_cursor_position()
+            
+            if self.input_current_index_status=="seco" and len(self.secondary)>0:
+                self.secondary = self.secondary[:-1]
+                self.secondary_change.clear()
+                self.secondary_change.bkgd(' ', curses.color_pair(2)) 
+                self.secondary_change.addstr(0, 0, self.sub_mask, curses.color_pair(1))
+                self.secondary_change.refresh()
+                # self.set_cursor_position()
         
         elif len(key.name) == 1:
             self.logger_.log_info("=inside========ip logegr key name {}".format(key.name))
