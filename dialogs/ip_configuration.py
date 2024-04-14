@@ -114,7 +114,7 @@ class IPConfigurationScreen:
         curses.curs_set(1)
         
 
-        self.in_config.addstr(0, 1, "test", curses.color_pair(0))
+        self.in_config.addstr(0, 1, "test", curses.color_pair(1))
         self.in_config.refresh()
         # self.auth_top_win.refresh()
         # self.auth_bottom_win.refresh()
