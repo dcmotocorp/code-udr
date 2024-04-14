@@ -128,7 +128,6 @@ class DNSScreen:
         if self.current_seleected_parameter ==1:
                 self.set_up_in_address_field()
 
-    
         auth_top_win.refresh()
         self.auth_bottom_win.refresh()
 
@@ -157,6 +156,7 @@ class DNSScreen:
             self.auth_bottom_win.refresh()
             if self.current_seleected_parameter ==1:
                 self.set_up_in_address_field()
+                self.auth_bottom_win.refresh()
             else:
                 self.setup_network_adaptor_screen()
             
@@ -175,6 +175,7 @@ class DNSScreen:
             self.auth_bottom_win.refresh()
             if self.current_seleected_parameter ==1:
                 self.set_up_in_address_field()
+                self.auth_bottom_win.refresh()
             else:
                 self.setup_network_adaptor_screen()
     
@@ -187,9 +188,10 @@ class DNSScreen:
                 else:
                     self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
-            self.auth_bottom_win.refresh()
+            
             if self.current_seleected_parameter ==1:
                 self.set_up_in_address_field()
+                self.auth_bottom_win.refresh()
             else:
                 self.setup_network_adaptor_screen() 
 
