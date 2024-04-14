@@ -124,7 +124,7 @@ class DNSScreen:
 
         label_text_bottom_enter_ok = "<Enter> Ok"
         self.auth_bottom_win.addstr(9, 23, label_text_bottom_enter_ok, curses.color_pair(3))
-        if self.current_seleected_parameter ==1:
+        if self.current_selected_label_index ==1:
             self.set_up_in_address_field()
 
         auth_top_win.refresh()
@@ -155,7 +155,7 @@ class DNSScreen:
                     self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             self.auth_bottom_win.refresh()
-            if self.current_seleected_parameter ==1:
+            if self.current_selected_label_index ==1:
                 self.set_up_in_address_field()
             else:
                 self.setup_network_adaptor_screen()
@@ -173,7 +173,7 @@ class DNSScreen:
                     self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             self.auth_bottom_win.refresh()
-            if self.current_seleected_parameter ==1:
+            if self.current_selected_label_index ==1:
                 self.set_up_in_address_field()
             else:
                 self.setup_network_adaptor_screen()
@@ -188,7 +188,7 @@ class DNSScreen:
                     self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             
-            if self.current_seleected_parameter ==1:
+            if self.current_selected_label_index ==1:
                 self.set_up_in_address_field()
             else:
                 self.setup_network_adaptor_screen() 
