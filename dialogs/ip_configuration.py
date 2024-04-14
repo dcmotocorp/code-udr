@@ -122,7 +122,7 @@ class IPConfigurationScreen:
         self.sub_mask_change.bkgd(' ', curses.color_pair(2))
         self.sub_mask_change.refresh()
     
-        self.sub_mask_change.addstr(0, 0, self.ip_address, curses.color_pair(2))
+        self.sub_mask_change.addstr(0, 0, self.sub_mask, curses.color_pair(2))
         self.sub_mask_change.refresh()
 
         #gate_Way
