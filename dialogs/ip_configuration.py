@@ -186,6 +186,7 @@ class IPConfigurationScreen:
         return self.current_ssh
     
     def handle_arrow_key(self, key):
+        self.logger_.log_info("==========ip logegr key name {}".format(key.name))
     
         if key.name == "up":
             
@@ -256,6 +257,7 @@ class IPConfigurationScreen:
             
         
         elif len(key.name) == 1:
+            self.logger_.log_info("=inside========ip logegr key name {}".format(key.name))
             if self.input_current_index_status=="ip" and len(self.ip_address)<15:
                 self.ip_address +=key.name
                 self.in_address_change.addstr(0, 0, self.ip_address, curses.color_pair(1))
