@@ -317,17 +317,17 @@ class IPConfigurationScreen:
 
         elif len(key.name) == 1:
             self.logger_.log_info("=inside========ip logegr key name {}".format(key.name))
-            if self.input_current_index_status=="ip" and len(self.ip_address)<15:
+            if   hasattr(self, 'in_address_change') and self.in_address_change !=None and self.input_current_index_status=="ip" and len(self.ip_address)<15:
                 self.ip_address +=key.name
                 self.in_address_change.addstr(0, 0, self.ip_address, curses.color_pair(1))
                 self.in_address_change.refresh()
             
-            elif self.input_current_index_status=="sub_mask" and len(self.sub_mask)<15:
+            elif  hasattr(self, 'sub_mask_change') and self.sub_mask_change !=None and self.input_current_index_status=="sub_mask" and len(self.sub_mask)<15:
                 self.sub_mask +=key.name
                 self.sub_mask_change.addstr(0, 0, self.sub_mask, curses.color_pair(1))
                 self.sub_mask_change.refresh()
 
-            elif self.input_current_index_status=="gate_way" and len(self.gate_Way)<15:
+            elif hasattr(self, 'gate_Way_change') and self.gate_Way_change !=None and self.input_current_index_status=="gate_way" and len(self.gate_Way)<15:
                 self.gate_Way +=key.name
                 self.gate_Way_change.addstr(0, 0, self.gate_Way, curses.color_pair(1))
                 self.gate_Way_change.refresh()
