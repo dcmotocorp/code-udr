@@ -135,7 +135,7 @@ class IPConfigurationScreen:
         self.ip_address_win.refresh()
         
         curses.curs_set(1)
-        self.ip_address_win.addstr(0,0,self.sub_mask, curses.color_pair(3))
+        self.ip_address_win.addstr(0,0,"this", curses.color_pair(3))
         self.ip_address_win.refresh()
 
         self.auth_top_win.refresh()
