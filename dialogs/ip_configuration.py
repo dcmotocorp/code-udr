@@ -114,10 +114,7 @@ class IPConfigurationScreen:
     
         self.in_address_change.addstr(0, 0, self.ip_address, curses.color_pair(2))
         self.in_address_change.refresh()
-        self.set_cursor_position()
-
-
-
+        
         #set mask 
         user_input_y +=1 
         self.sub_mask_change = curses.newwin(1, 16, user_input_y, user_input_x)
@@ -136,6 +133,7 @@ class IPConfigurationScreen:
     
         self.gate_Way_change.addstr(0, 0, self.gate_Way, curses.color_pair(2))
         self.gate_Way_change.refresh()
+        self.set_cursor_position()
         
 
 
