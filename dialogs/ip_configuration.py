@@ -65,10 +65,11 @@ class IPConfigurationScreen:
         in_win_height = popup_y + popup_top_height +5
         ip_input_x = popup_x + 6
         self.ip_address_win = curses.newwin(1, 15,in_win_height , ip_input_x)
-        
+        self.ip_address_win.refresh()
         ip_adrress_label = "IP Address :"
         self.ip_address_win.addstr(0,0, ip_adrress_label, curses.color_pair(0))
         self.ip_address_win.refresh()
+
         mask_adrress_label = "Subnet Mask :     [ {}     ]".format(self.sub_mask)
         self.auth_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
 
