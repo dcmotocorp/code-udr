@@ -77,6 +77,9 @@ class DNSScreen:
         mask_adrress_label = "Secondary DNS Server :[         ]"
         self.auth_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
         self.auth_bottom_win.refresh()
+        self.create_update_dns_address()
+    
+    
         
     def setup_network_adaptor_screen(self):
         auth_screen_height = 15
