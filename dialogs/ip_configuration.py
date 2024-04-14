@@ -108,7 +108,7 @@ class IPConfigurationScreen:
         curses.curs_set(1)
         
 
-        self.in_config.addstr(0, 1, "test", curses.color_pair(1))
+        self.in_config.addstr(0, 10, "test", curses.color_pair(1))
         self.in_config.refresh()
 
         self.auth_top_win = self.hostname_screen.subwin(popup_top_height, auth_screen_width, popup_y, popup_x)
