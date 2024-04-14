@@ -122,19 +122,17 @@ class IPConfigurationScreen:
             self.ip_bottom_win.addstr( 2+ index, 5, label, color_pair)
         
         
-        
-        username_label = "Hostname :  ["
-        self.ip_bottom_win.addstr(1, 1, username_label, curses.color_pair(3))
 
-        end_bracket_user = "]"
-        self.ip_bottom_win.addstr(1, 35, end_bracket_user, curses.color_pair(3))
 
-        # Add label to popup_bottom_win
+         # Add label to popup_bottom_win
+        label_text_bottom_esc = "<Space> Selection"
+        self.ip_bottom_win.addstr(9, 1, label_text_bottom_esc, curses.color_pair(3))
+
         label_text_bottom_esc = "<Esc> Cancel"
-        self.ip_bottom_win.addstr(5, 25, label_text_bottom_esc, curses.color_pair(3))
+        self.ip_bottom_win.addstr(9, 36, label_text_bottom_esc, curses.color_pair(3))
 
         label_text_bottom_enter_ok = "<Enter> Ok"
-        self.ip_bottom_win.addstr(5, 11, label_text_bottom_enter_ok, curses.color_pair(3))
+        self.ip_bottom_win.addstr(9, 23, label_text_bottom_enter_ok, curses.color_pair(3))
 
         # Create username input box
         user_input_y = popup_y + popup_top_height + 1
