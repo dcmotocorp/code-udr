@@ -93,52 +93,13 @@ class IPConfigurationScreen:
         # Calculate dimensions for the two partitions within the pop-up window
         popup_top_height = max(int(0.3 * auth_screen_height), 1)
         popup_bottom_height = auth_screen_height - popup_top_height
-
-        # Create windows for each partition within the pop-up window
-        self.auth_top_win = self.hostname_screen.subwin(popup_top_height, auth_screen_width, popup_y, popup_x)
-        self.auth_bottom_win = self.hostname_screen.subwin(popup_bottom_height, auth_screen_width,
-                                                             popup_y + popup_top_height, popup_x)
-
-        # Set background colors for each partition within the pop-up window
-        self.auth_top_win.bkgd(' ', curses.color_pair(1))  # Yellow background
-        self.auth_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
-
-
-        # Add label to self.auth_top_win
-        label_x = (auth_screen_width - len(CONFIGURE_MANAGEMENT_NETWORK_SERVICE)) // 2
-        label_y = (popup_top_height - 1) // 2  # Center vertically
-        self.auth_top_win.addstr(label_y, label_x, CONFIGURE_MANAGEMENT_NETWORK_SERVICE, curses.color_pair(4))
         
-
-        # Add labels to popup_bottom_win
-        for index, label in enumerate(self.labels):
-            color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
-            if self.current_seleected_parameter == index:
-                    self.auth_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
-            else:
-                self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
-
-            self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
-
-
-        # Add label to popup_bottom_win
-        label_text_bottom_esc = "<Space> Selection"
-        self.auth_bottom_win.addstr(9, 1, label_text_bottom_esc, curses.color_pair(3))
-
-        label_text_bottom_esc = "<Esc> Cancel"
-        self.auth_bottom_win.addstr(9, 36, label_text_bottom_esc, curses.color_pair(3))
-
-        label_text_bottom_enter_ok = "<Enter> Ok"
-        self.auth_bottom_win.addstr(9, 23, label_text_bottom_enter_ok, curses.color_pair(3))
-        
-        self.in_config = curses.newwin(1, 20, popup_y + popup_top_height+4, user_input_x+10)
+        self.in_config = curses.newwin(1, 20, popup_y + popup_top_height, popup_x+5)
         self.in_config.refresh()
         
         curses.curs_set(1)
         
-        self.auth_top_win.refresh()
-        self.auth_bottom_win.refresh()
-        
+
         self.in_config.addstr(0, 1, "test", curses.color_pair(3))
         self.in_config.refresh()
 
