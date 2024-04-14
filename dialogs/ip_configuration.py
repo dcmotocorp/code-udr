@@ -49,6 +49,7 @@ class IPConfigurationScreen:
 
     def set_data(self):
         ip,mask,gate_way= self.system_controller.get_network_info_su_de()
+        self.logger_.log_info("==========ip,mask,gate_way {}{}{}".format(ip,mask,gate_way))
         self.ip_address = ip 
         self.sub_mask = mask
         self.gate_Way = gate_way
