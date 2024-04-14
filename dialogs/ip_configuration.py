@@ -106,30 +106,8 @@ class IPConfigurationScreen:
         self.auth_top_win.addstr(label_y, label_x, CONFIGURE_MANAGEMENT_NETWORK_SERVICE, curses.color_pair(4))
         
 
-        # Add labels to popup_bottom_win
-        for index, label in enumerate(self.labels):
-            color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
-            if self.current_seleected_parameter == index:
-                    self.auth_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
-            else:
-                self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
-
-            self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
-
-
-        # Add label to popup_bottom_win
-        label_text_bottom_esc = "<Space> Selection"
-        self.auth_bottom_win.addstr(9, 1, label_text_bottom_esc, curses.color_pair(3))
-
-        label_text_bottom_esc = "<Esc> Cancel"
-        self.auth_bottom_win.addstr(9, 36, label_text_bottom_esc, curses.color_pair(3))
-
-        label_text_bottom_enter_ok = "<Enter> Ok"
-        self.auth_bottom_win.addstr(9, 23, label_text_bottom_enter_ok, curses.color_pair(3))
-        
-
         mask_adrress_label = "Subnet Mask :"
-        self.auth_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
+        self.auth_bottom_win.addstr(2, 8, mask_adrress_label, curses.color_pair(3))
         ip_input_x = popup_x + 1
         self.ip_address_win = curses.newwin(1, 15,popup_y + popup_top_height+7, ip_input_x)
         self.ip_address_win.refresh()
