@@ -56,7 +56,7 @@ class IPConfigurationScreen:
         # ad ip config 
         self.ip_address_win = curses.newwin(1, 15, 5, 8)
         
-        ip_adrress_label = "IP Address :      [ {}        ]".format(self.ip_address)
+        ip_adrress_label = "IP Address :      [{}]".format(self.ip_address)
         self.ip_address_win.addstr(0,0, ip_adrress_label, curses.color_pair(3))
 
         mask_adrress_label = "Subnet Mask :     [ {}     ]".format(self.sub_mask)
