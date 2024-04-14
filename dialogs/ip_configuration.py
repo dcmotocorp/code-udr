@@ -29,6 +29,7 @@ class IPConfigurationScreen:
         self.ip_address = "192.168.1.1"
         self.sub_mask =  "192.168.1.1"
         self.gate_Way =  "192.168.1.1"
+        self.input_current_index_status="ip"
         self.user_data_base = UserDatabase()
         self.get_default_Setting()
         self.set_data()
@@ -53,8 +54,10 @@ class IPConfigurationScreen:
 
     def set_up_in_address_field(self):
         # ad ip config 
+        self.ip_address_win = curses.newwin(1, 15, 5, 8)
+        
         ip_adrress_label = "IP Address :      [ {}        ]".format(self.ip_address)
-        self.auth_bottom_win.addstr(5, 8, ip_adrress_label, curses.color_pair(3))
+        self.ip_address_win.addstr(0,0, ip_adrress_label, curses.color_pair(3))
 
         mask_adrress_label = "Subnet Mask :     [ {}     ]".format(self.sub_mask)
         self.auth_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
@@ -192,6 +195,10 @@ class IPConfigurationScreen:
                         self.set_up_in_address_field()
             else:
                 self.setup_network_adaptor_screen()
+
+        elif len(event.name) == 1:
+            if self.input_current_index_status=="ip":
+                self.ip_address =1
             
 
 
