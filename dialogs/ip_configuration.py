@@ -76,6 +76,10 @@ class IPConfigurationScreen:
         getway_label = "Default Getway :  [ {}         ]".format(self.gate_Way)
         self.auth_bottom_win.addstr(7, 8, getway_label, curses.color_pair(3))
          
+
+        
+
+
         self.auth_bottom_win.refresh()
 
     
@@ -127,10 +131,19 @@ class IPConfigurationScreen:
         label_text_bottom_enter_ok = "<Enter> Ok"
         self.auth_bottom_win.addstr(9, 23, label_text_bottom_enter_ok, curses.color_pair(3))
         
-
-    
+        self.in_config = curses.newwin(1, 20, popup_y + popup_top_height+4, user_input_x+10)
+        self.in_config.refresh()
+        
+        curses.curs_set(1)
+        
         self.auth_top_win.refresh()
         self.auth_bottom_win.refresh()
+        
+        self.in_config.addstr(0, 1, "test", curses.color_pair(3))
+        self.in_config.refresh()
+
+    
+        
 
     def set_manually_ip(self):
         self.system_controller.set_ip_configuration_manual(self.ip_address,self.sub_mask,self.gate_Way)
