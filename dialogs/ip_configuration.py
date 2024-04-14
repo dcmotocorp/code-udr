@@ -131,7 +131,7 @@ class IPConfigurationScreen:
         mask_adrress_label = "Subnet Mask :"
         self.auth_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
         ip_input_x = popup_x + 1
-        self.ip_address_win = curses.newwin(1, 15,popup_y + popup_top_height+2, ip_input_x)
+        self.ip_address_win = curses.newwin(1, 15,popup_y + popup_top_height+7, ip_input_x)
         self.ip_address_win.refresh()
 
         self.ip_address_win.addstr(0,0,self.sub_mask, curses.color_pair(3))
