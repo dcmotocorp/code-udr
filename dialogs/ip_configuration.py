@@ -78,7 +78,9 @@ class IPConfigurationScreen:
          
         self.ip_bottom_win.refresh()
 
-    def create_curen(self):
+        self.create_update_ip_address()
+
+    def create_update_ip_address(self):
         ip_screen_height = 15
         ip_screen_width = 50
         popup_y = (self.screen_height - ip_screen_height // 2) // 2
@@ -91,12 +93,11 @@ class IPConfigurationScreen:
         
         user_input_y = popup_y + popup_top_height + 1
         user_input_x = popup_x + 15
-        self.current_password_win = curses.newwin(1, 20, user_input_y, user_input_x)
-        self.current_password_win.refresh()
-
-        self.current_hostname = self.system_controller.get_hostname()
-        self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
-        self.current_password_win.refresh()
+        self.in_address_change = curses.newwin(1, 20, user_input_y, user_input_x)
+        self.in_address_change.refresh()
+    
+        self.in_address_change.addstr(0, 0, self.ip_address, curses.color_pair(2))
+        self.in_address_change.refresh()
 
     
     def setup_network_adaptor_screen(self):
@@ -162,7 +163,7 @@ class IPConfigurationScreen:
         # self.current_hostname = self.system_controller.get_hostname()
         # self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
         # self.current_password_win.refresh()
-        self.create_curen()
+        # self.create_curen()
     
         
 
