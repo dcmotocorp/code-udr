@@ -78,6 +78,14 @@ class IPConfigurationScreen:
          
         self.ip_bottom_win.refresh()
 
+    def create_curen(self):
+        self.current_password_win = curses.newwin(1, 20, user_input_y, user_input_x)
+        self.current_password_win.refresh()
+
+        self.current_hostname = self.system_controller.get_hostname()
+        self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
+        self.current_password_win.refresh()
+
     
     def setup_network_adaptor_screen(self):
         ip_screen_height = 15
@@ -130,30 +138,18 @@ class IPConfigurationScreen:
         self.ip_bottom_win.addstr(9, 23, label_text_bottom_enter_ok, curses.color_pair(3))
 
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         # Create username input box
         user_input_y = popup_y + popup_top_height + 1
         user_input_x = popup_x + 15
-        self.current_password_win = curses.newwin(1, 20, user_input_y, user_input_x)
-        self.current_password_win.refresh()
-        
+        # self.current_password_win = curses.newwin(1, 20, user_input_y, user_input_x)
+        # self.current_password_win.refresh()
+        self.create_curen()
 
         curses.curs_set(1)
         self.hostname_screen.refresh()
-        self.current_hostname = self.system_controller.get_hostname()
-        self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
-        self.current_password_win.refresh()
+        # self.current_hostname = self.system_controller.get_hostname()
+        # self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
+        # self.current_password_win.refresh()
     
         
 
