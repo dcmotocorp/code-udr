@@ -127,10 +127,6 @@ class DNSScreen:
         self.auth_bottom_win.addstr(9, 23, label_text_bottom_enter_ok, curses.color_pair(3))
         if self.current_seleected_parameter ==1:
                 self.set_up_in_address_field()
-        else:
-            self.setup_network_adaptor_screen()
-        
-
 
     
         auth_top_win.refresh()
