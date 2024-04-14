@@ -95,14 +95,14 @@ class IPConfigurationScreen:
         popup_bottom_height = auth_screen_height - popup_top_height
         
         
-         # Create windows for each partition within the pop-up window
-        self.auth_top_win = self.hostname_screen.subwin(popup_top_height, auth_screen_width, popup_y, popup_x)
-        self.auth_bottom_win = self.hostname_screen.subwin(popup_bottom_height, auth_screen_width,
-                                                             popup_y + popup_top_height, popup_x)
+        #  # Create windows for each partition within the pop-up window
+        # self.auth_top_win = self.hostname_screen.subwin(popup_top_height, auth_screen_width, popup_y, popup_x)
+        # self.auth_bottom_win = self.hostname_screen.subwin(popup_bottom_height, auth_screen_width,
+        #                                                      popup_y + popup_top_height, popup_x)
 
-        # Set background colors for each partition within the pop-up window
-        self.auth_top_win.bkgd(' ', curses.color_pair(1))  # Yellow background
-        self.auth_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
+        # # Set background colors for each partition within the pop-up window
+        # self.auth_top_win.bkgd(' ', curses.color_pair(1))  # Yellow background
+        # self.auth_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
 
         
         
@@ -116,8 +116,8 @@ class IPConfigurationScreen:
 
         self.in_config.addstr(0, 1, "test", curses.color_pair(0))
         self.in_config.refresh()
-        self.auth_top_win.refresh()
-        self.auth_bottom_win.refresh()
+        # self.auth_top_win.refresh()
+        # self.auth_bottom_win.refresh()
     
         
 
