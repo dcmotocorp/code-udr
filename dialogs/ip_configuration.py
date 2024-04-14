@@ -62,8 +62,8 @@ class IPConfigurationScreen:
         popup_bottom_height = auth_screen_height - popup_top_height
 
 
-        in_win_height = popup_y + popup_top_height +10
-        ip_input_x = popup_x + 15
+        in_win_height = popup_y + popup_top_height +5
+        ip_input_x = popup_x + 6
         self.ip_address_win = curses.newwin(1, 15,in_win_height , ip_input_x)
         
         ip_adrress_label = "IP Address :"
