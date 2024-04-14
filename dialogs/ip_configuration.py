@@ -114,6 +114,7 @@ class IPConfigurationScreen:
     
         self.in_address_change.addstr(0, 0, self.ip_address, curses.color_pair(2))
         self.in_address_change.refresh()
+        self.set_cursor_position()
 
 
 
