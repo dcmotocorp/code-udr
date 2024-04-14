@@ -103,6 +103,30 @@ class IPConfigurationScreen:
         self.in_address_change.addstr(0, 0, self.ip_address, curses.color_pair(2))
         self.in_address_change.refresh()
 
+
+
+        #set mask 
+        user_input_y +=1 
+        self.sub_mask_change = curses.newwin(1, 16, user_input_y, user_input_x)
+        self.sub_mask_change.bkgd(' ', curses.color_pair(2))
+        self.sub_mask_change.refresh()
+    
+        self.sub_mask_change.addstr(0, 0, self.ip_address, curses.color_pair(2))
+        self.sub_mask_change.refresh()
+
+        #gate_Way
+
+        user_input_y +=1 
+        self.gate_Way_change = curses.newwin(1, 16, user_input_y, user_input_x)
+        self.gate_Way_change.bkgd(' ', curses.color_pair(2))
+        self.gate_Way_change.refresh()
+    
+        self.gate_Way_change.addstr(0, 0, self.gate_Way, curses.color_pair(2))
+        self.gate_Way_change.refresh()
+        
+
+
+
     
     def setup_network_adaptor_screen(self):
         ip_screen_height = 15
@@ -256,13 +280,30 @@ class IPConfigurationScreen:
                 self.in_address_change.addstr(0, 0, self.ip_address, curses.color_pair(1))
                 self.in_address_change.refresh()
             
-        
+        elif key.name == "tab":
+            if self.input_current_index_status=="ip":
+                self.input_current_index_status = "sub_mask"
+            elif self.input_current_index_status == "sub_mask":
+                self.input_current_index_status = "gate_way"
+            elif self.input_current_index_status == "gate_way":
+                self.input_current_index_status="ip"
+
         elif len(key.name) == 1:
             self.logger_.log_info("=inside========ip logegr key name {}".format(key.name))
             if self.input_current_index_status=="ip" and len(self.ip_address)<15:
                 self.ip_address +=key.name
                 self.in_address_change.addstr(0, 0, self.ip_address, curses.color_pair(1))
                 self.in_address_change.refresh()
+            
+            elif self.input_current_index_status=="sub_mask" and len(self.sub_mask)<15:
+                self.sub_mask +=key.name
+                self.sub_mask_change.addstr(0, 0, self.sub_mask, curses.color_pair(1))
+                self.sub_mask_change.refresh()
+
+            elif self.input_current_index_status=="gate_way" and len(self.gate_Way)<15:
+                self.gate_Way +=key.name
+                self.gate_Way_change.addstr(0, 0, self.ip_address, curses.color_pair(1))
+                self.gate_Way_change.refresh()
 
             
 
