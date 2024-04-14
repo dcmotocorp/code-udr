@@ -4,6 +4,7 @@ from dialogs.system_config import SystemConfig
 from constant import KEY_UP,KEY_DOWN,CONFIGURE_MANAGEMENT_NETWORK_SERVICE,OBTAIN_IP_AUTOMATIC,MANUALLY_IP_AUTOMATIC,MANUALLY_DNS_AUTOMATIC,OBTAIN_DNS_AUTOMATIC
 from system_controller.systemcontroler import SystemControler
 import warnings
+from data.database import UserDatabase
 
 warnings.filterwarnings("ignore")
 class DNSScreen:
@@ -21,12 +22,25 @@ class DNSScreen:
         self.selected_color_pair = curses.color_pair(5)
         self.logger_ = UdrLogger()
         self.selected_index= 0
+        self.user_data_base = UserDatabase()
         self.system_controller = SystemControler()
         self.primary = "192.168.1.1"
         self.secondary =  "192.168.1.1"
         self.input_current_index_status = "prim"
+        self.get_default_Setting()
         self.get_dns_priomary_secondary()
         self.setup_network_adaptor_screen()
+
+    
+    def get_default_Setting(self):
+        data =  self.user_data_base.get_user_settings(self.app.username_input)
+        users = self.user_data_base.select_all_users()
+
+        if data and len(data) >0 :
+            if data[3] ==0:
+                self.current_selected_label_index = data[3]    
+            elif data[3] ==1:
+                self.current_selected_label_index = data[3]
 
     def create_update_dns_address(self):
         ip_screen_height = 15

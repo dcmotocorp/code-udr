@@ -50,7 +50,8 @@ class SSHScreen:
                                                              popup_y + popup_top_height, popup_x)
 
         # Set background colors for each partition within the pop-up window
-        auth_top_win.bkgd(' ', curses.color_pair(1))  # Yellow background
+        auth_top_win.bkgd(' ', curses.
+        color_pair(1))  # Yellow background
         self.auth_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
 
         # Add label to auth_top_win
