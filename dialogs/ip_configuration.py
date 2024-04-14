@@ -73,10 +73,10 @@ class IPConfigurationScreen:
 
 
 
-        mask_adrress_label = "Subnet Mask :     [ {}     ]".format(self.sub_mask)
+        mask_adrress_label = "Subnet Mask :     [      ]"
         self.ip_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
 
-        getway_label = "Default Getway :  [ {}         ]".format(self.gate_Way)
+        getway_label = "Default Getway :  [          ]"
         self.ip_bottom_win.addstr(7, 8, getway_label, curses.color_pair(3))
          
         self.ip_bottom_win.refresh()
