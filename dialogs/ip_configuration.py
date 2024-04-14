@@ -67,8 +67,11 @@ class IPConfigurationScreen:
         ip_input_x = popup_x + 6
 
 
-        mask_adrress_label = "IP Address :     [ {}     ]".format(self.sub_mask)
-        self.ip_bottom_win.addstr(5, 8, mask_adrress_label, curses.color_pair(3))
+        ip_adrress_label = "IP Address : "
+        self.ip_bottom_win.addstr(5, 8, ip_adrress_label, curses.color_pair(3))
+
+
+
 
         mask_adrress_label = "Subnet Mask :     [ {}     ]".format(self.sub_mask)
         self.ip_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
@@ -91,7 +94,7 @@ class IPConfigurationScreen:
         popup_top_height = max(int(0.3 * ip_screen_height), 1)
         popup_bottom_height = ip_screen_height - popup_top_height
         
-        user_input_y = popup_y + popup_top_height + 1
+        user_input_y = popup_y + popup_top_height + 5
         user_input_x = popup_x + 15
         self.in_address_change = curses.newwin(1, 20, user_input_y, user_input_x)
         self.in_address_change.refresh()
