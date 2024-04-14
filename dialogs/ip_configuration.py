@@ -116,6 +116,7 @@ class IPConfigurationScreen:
         self.auth_top_win.refresh()
         self.auth_bottom_win.refresh()
         self.in_config.refresh()
+        curses.curs_set(1)
     
         
 
