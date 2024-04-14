@@ -79,6 +79,18 @@ class IPConfigurationScreen:
         self.ip_bottom_win.refresh()
 
     def create_curen(self):
+        ip_screen_height = 15
+        ip_screen_width = 50
+        popup_y = (self.screen_height - ip_screen_height // 2) // 2
+        popup_x = (self.screen_width - ip_screen_width) // 2
+        self.hostname_screen = curses.newwin(ip_screen_height, ip_screen_width, popup_y, popup_x)
+
+        # Calculate dimensions for the two partitions within the pop-up window
+        popup_top_height = max(int(0.3 * ip_screen_height), 1)
+        popup_bottom_height = ip_screen_height - popup_top_height
+        
+        user_input_y = popup_y + popup_top_height + 1
+        user_input_x = popup_x + 15
         self.current_password_win = curses.newwin(1, 20, user_input_y, user_input_x)
         self.current_password_win.refresh()
 
@@ -143,13 +155,14 @@ class IPConfigurationScreen:
         user_input_x = popup_x + 15
         # self.current_password_win = curses.newwin(1, 20, user_input_y, user_input_x)
         # self.current_password_win.refresh()
-        self.create_curen()
+        
 
         curses.curs_set(1)
         self.hostname_screen.refresh()
         # self.current_hostname = self.system_controller.get_hostname()
         # self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
         # self.current_password_win.refresh()
+        self.create_curen()
     
         
 
