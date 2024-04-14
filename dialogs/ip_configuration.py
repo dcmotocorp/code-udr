@@ -54,12 +54,12 @@ class IPConfigurationScreen:
 
     def set_up_in_address_field(self):
         # ad ip config 
-        auth_screen_height = 15
-        auth_screen_width = 50
-        popup_y = (self.screen_height - auth_screen_height // 2) // 2
-        popup_x = (self.screen_width - auth_screen_width) // 2
-        popup_top_height = max(int(0.3 * auth_screen_height), 1)
-        popup_bottom_height = auth_screen_height - popup_top_height
+        ip_screen_height = 15
+        ip_screen_width = 50
+        popup_y = (self.screen_height - ip_screen_height // 2) // 2
+        popup_x = (self.screen_width - ip_screen_width) // 2
+        popup_top_height = max(int(0.3 * ip_screen_height), 1)
+        popup_bottom_height = ip_screen_height - popup_top_height
 
 
         in_win_height = popup_y + popup_top_height +5
@@ -71,56 +71,56 @@ class IPConfigurationScreen:
         self.ip_address_win.refresh()
 
         mask_adrress_label = "Subnet Mask :     [ {}     ]".format(self.sub_mask)
-        self.auth_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
+        self.ip_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
 
         getway_label = "Default Getway :  [ {}         ]".format(self.gate_Way)
-        self.auth_bottom_win.addstr(7, 8, getway_label, curses.color_pair(3))
+        self.ip_bottom_win.addstr(7, 8, getway_label, curses.color_pair(3))
          
 
         
 
 
-        self.auth_bottom_win.refresh()
+        self.ip_bottom_win.refresh()
 
     
     def setup_network_adaptor_screen(self):
-        auth_screen_height = 10
-        auth_screen_width = 40
-        popup_y = (self.screen_height - auth_screen_height // 2) // 2
-        popup_x = (self.screen_width - auth_screen_width) // 2
-        self.hostname_screen = curses.newwin(auth_screen_height, auth_screen_width, popup_y, popup_x)
+        ip_screen_height = 15
+        ip_screen_width = 50
+        popup_y = (self.screen_height - ip_screen_height // 2) // 2
+        popup_x = (self.screen_width - ip_screen_width) // 2
+        self.hostname_screen = curses.newwin(ip_screen_height, ip_screen_width, popup_y, popup_x)
 
         # Calculate dimensions for the two partitions within the pop-up window
-        popup_top_height = max(int(0.3 * auth_screen_height), 1)
-        popup_bottom_height = auth_screen_height - popup_top_height
+        popup_top_height = max(int(0.3 * ip_screen_height), 1)
+        popup_bottom_height = ip_screen_height - popup_top_height
 
         # Create windows for each partition within the pop-up window
-        auth_top_win = self.hostname_screen.subwin(popup_top_height, auth_screen_width, popup_y, popup_x)
-        auth_bottom_win = self.hostname_screen.subwin(popup_bottom_height, auth_screen_width,
+        ip_top_win = self.hostname_screen.subwin(popup_top_height, ip_screen_width, popup_y, popup_x)
+        ip_bottom_win = self.hostname_screen.subwin(popup_bottom_height, ip_screen_width,
                                                              popup_y + popup_top_height, popup_x)
 
         # Set background colors for each partition within the pop-up window
-        auth_top_win.bkgd(' ', curses.color_pair(1))  # Yellow background
-        auth_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
+        ip_top_win.bkgd(' ', curses.color_pair(1))  # Yellow background
+        ip_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
 
-        # Add label to auth_top_win
+        # Add label to ip_top_win
         label_text = "Configure Hostname"
-        label_x = (auth_screen_width - len(label_text)) // 2
+        label_x = (ip_screen_width - len(label_text)) // 2
         label_y = (popup_top_height - 1) // 2  # Center vertically
-        auth_top_win.addstr(label_y, label_x, label_text, curses.color_pair(4))
+        ip_top_win.addstr(label_y, label_x, label_text, curses.color_pair(4))
 
         username_label = "Hostname :  ["
-        auth_bottom_win.addstr(1, 1, username_label, curses.color_pair(3))
+        ip_bottom_win.addstr(1, 1, username_label, curses.color_pair(3))
 
         end_bracket_user = "]"
-        auth_bottom_win.addstr(1, 35, end_bracket_user, curses.color_pair(3))
+        ip_bottom_win.addstr(1, 35, end_bracket_user, curses.color_pair(3))
 
         # Add label to popup_bottom_win
         label_text_bottom_esc = "<Esc> Cancel"
-        auth_bottom_win.addstr(5, 25, label_text_bottom_esc, curses.color_pair(3))
+        ip_bottom_win.addstr(5, 25, label_text_bottom_esc, curses.color_pair(3))
 
         label_text_bottom_enter_ok = "<Enter> Ok"
-        auth_bottom_win.addstr(5, 11, label_text_bottom_enter_ok, curses.color_pair(3))
+        ip_bottom_win.addstr(5, 11, label_text_bottom_enter_ok, curses.color_pair(3))
 
         # Create username input box
         user_input_y = popup_y + popup_top_height + 1
@@ -163,14 +163,14 @@ class IPConfigurationScreen:
             for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 if self.current_seleected_parameter == index:
-                    self.auth_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+                    self.ip_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
                 else:
-                    self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
+                    self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
                 
  
 
-                self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
-            self.auth_bottom_win.refresh()
+                self.ip_bottom_win.addstr(2 + index, 5, label, color_pair)
+            self.ip_bottom_win.refresh()
             if self.current_seleected_parameter ==1:
                 self.set_up_in_address_field()
             else:
@@ -185,13 +185,13 @@ class IPConfigurationScreen:
             for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 if self.current_seleected_parameter == index:
-                    self.auth_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+                    self.ip_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
     
                 else:
-                    self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
+                    self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
             
-                self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
-            self.auth_bottom_win.refresh()
+                self.ip_bottom_win.addstr(2 + index, 5, label, color_pair)
+            self.ip_bottom_win.refresh()
             if self.current_seleected_parameter ==1:
                 self.set_up_in_address_field()
             else:
@@ -202,12 +202,12 @@ class IPConfigurationScreen:
             for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 if self.current_seleected_parameter == index:
-                    self.auth_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+                    self.ip_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
                     
                 else:
-                    self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
-            self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
-            self.auth_bottom_win.refresh()
+                    self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
+            self.ip_bottom_win.addstr(2 + index, 5, label, color_pair)
+            self.ip_bottom_win.refresh()
             if self.current_seleected_parameter ==1:
                         self.set_up_in_address_field()
             else:
