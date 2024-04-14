@@ -74,11 +74,10 @@ class DNSScreen:
         # ad ip config 
         ip_adrress_label = "Primary DNS Server :  [           ]"
         self.auth_bottom_win.addstr(5, 8, ip_adrress_label, curses.color_pair(3))
-
         mask_adrress_label = "Secondary DNS Server :[         ]"
         self.auth_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
-
-    
+        self.auth_bottom_win.refresh()
+        
     def setup_network_adaptor_screen(self):
         auth_screen_height = 15
         auth_screen_width = 50
@@ -126,10 +125,12 @@ class DNSScreen:
         label_text_bottom_enter_ok = "<Enter> Ok"
         self.auth_bottom_win.addstr(9, 23, label_text_bottom_enter_ok, curses.color_pair(3))
         if self.current_seleected_parameter ==1:
-                self.set_up_in_address_field()
+            self.set_up_in_address_field()
 
         auth_top_win.refresh()
         self.auth_bottom_win.refresh()
+        curses.curs_set(1)
+        self.hostname_screen.refresh()
 
     def clear(self):
         if hasattr(self, 'hostname_screen') and self.hostname_screen != None:
@@ -156,7 +157,6 @@ class DNSScreen:
             self.auth_bottom_win.refresh()
             if self.current_seleected_parameter ==1:
                 self.set_up_in_address_field()
-                self.auth_bottom_win.refresh()
             else:
                 self.setup_network_adaptor_screen()
             
@@ -175,7 +175,6 @@ class DNSScreen:
             self.auth_bottom_win.refresh()
             if self.current_seleected_parameter ==1:
                 self.set_up_in_address_field()
-                self.auth_bottom_win.refresh()
             else:
                 self.setup_network_adaptor_screen()
     
@@ -191,7 +190,6 @@ class DNSScreen:
             
             if self.current_seleected_parameter ==1:
                 self.set_up_in_address_field()
-                self.auth_bottom_win.refresh()
             else:
                 self.setup_network_adaptor_screen() 
 
