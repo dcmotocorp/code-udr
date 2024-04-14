@@ -27,8 +27,8 @@ class DNSScreen:
         self.primary = "192.168.1.1"
         self.secondary =  "192.168.1.1"
         self.input_current_index_status = "prim"
-        self.get_default_Setting()
         self.get_dns_priomary_secondary()
+        self.get_default_Setting()
         self.setup_network_adaptor_screen()
 
     
