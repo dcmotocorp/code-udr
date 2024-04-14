@@ -246,6 +246,15 @@ class IPConfigurationScreen:
             else:
                 self.setup_network_adaptor_screen()
 
+        elif event.name == "backspace":
+            if self.input_current_index_status=="ip" and len(self.ip_address)>0:
+                self.ip_address = self.ip_address[:-1]
+                self.in_address_change.clear()
+                self.in_address_change.bkgd(' ', curses.color_pair(2)) 
+                self.in_address_change.addstr(0, 0, self.ip_address, curses.color_pair(1))
+                self.in_address_change.refresh()
+            
+        
         elif len(event.name) == 1:
             if self.input_current_index_status=="ip":
                 self.ip_address =1

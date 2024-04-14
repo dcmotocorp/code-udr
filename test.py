@@ -556,6 +556,10 @@ class NovaiguApplication:
             elif hasattr(self, 'host_name') and self.host_name !=None and self.host_name.update_status == True and current_screen == HOSTNAME:
                 self.host_name.handle_key_event(event)            
             
+            elif   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
+                if hasattr(self, 'ip_config_adaptor') and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True and selected_label == IP_CONFIGURATION:  
+                    self.ip_config_adaptor.handle_arrow_key(event)
+
 
             if self.current_selected == USERNAME_LABEL:
                 self.username_input = self.authentication_screen.get_username_input()
