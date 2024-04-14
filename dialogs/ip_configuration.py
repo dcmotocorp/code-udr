@@ -134,6 +134,9 @@ class IPConfigurationScreen:
         self.ip_address_win = curses.newwin(1, 15,popup_y + popup_top_height+2, ip_input_x)
         self.ip_address_win.refresh()
 
+        self.ip_address_win.addnstr(1,1,self.sub_mask)
+        self.ip_address_win.refresh()
+
         self.auth_top_win.refresh()
         self.auth_bottom_win.refresh()
 
