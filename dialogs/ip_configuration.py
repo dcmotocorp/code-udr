@@ -255,9 +255,12 @@ class IPConfigurationScreen:
                 self.in_address_change.refresh()
             
         
-        elif len(event.name) == 1:
-            if self.input_current_index_status=="ip":
-                self.ip_address =1
+        elif len(key.name) == 1:
+            if self.input_current_index_status=="ip" and len(self.ip_address)<15:
+                self.ip_address +=key.name
+                self.in_address_change.addstr(0, 0, self.ip_address, curses.color_pair(1))
+                self.in_address_change.refresh()
+
             
 
 
