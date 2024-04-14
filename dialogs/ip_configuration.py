@@ -65,23 +65,18 @@ class IPConfigurationScreen:
 
         in_win_height = popup_y + popup_top_height +5
         ip_input_x = popup_x + 6
-        self.ip_address_win = curses.newwin(1, 15,in_win_height , ip_input_x)
-        self.ip_address_win.refresh()
-        ip_adrress_label = "IP Address :"
-        self.ip_address_win.addstr(0,0, ip_adrress_label, curses.color_pair(0))
-        self.ip_address_win.refresh()
+
+
+        mask_adrress_label = "IP Address :     [ {}     ]".format(self.sub_mask)
+        self.ip_bottom_win.addstr(5, 8, mask_adrress_label, curses.color_pair(3))
 
         mask_adrress_label = "Subnet Mask :     [ {}     ]".format(self.sub_mask)
-        self.self.ip_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
+        self.ip_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
 
         getway_label = "Default Getway :  [ {}         ]".format(self.gate_Way)
-        self.self.ip_bottom_win.addstr(7, 8, getway_label, curses.color_pair(3))
+        self.ip_bottom_win.addstr(7, 8, getway_label, curses.color_pair(3))
          
-
-        
-
-
-        self.self.ip_bottom_win.refresh()
+        self.ip_bottom_win.refresh()
 
     
     def setup_network_adaptor_screen(self):
@@ -134,6 +129,19 @@ class IPConfigurationScreen:
         label_text_bottom_enter_ok = "<Enter> Ok"
         self.ip_bottom_win.addstr(9, 23, label_text_bottom_enter_ok, curses.color_pair(3))
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         # Create username input box
         user_input_y = popup_y + popup_top_height + 1
         user_input_x = popup_x + 15
@@ -175,14 +183,14 @@ class IPConfigurationScreen:
             for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 if self.current_seleected_parameter == index:
-                    self.self.ip_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+                    self.ip_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
                 else:
-                    self.self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
+                    self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
                 
  
 
-                self.self.ip_bottom_win.addstr(2 + index, 5, label, color_pair)
-            self.self.ip_bottom_win.refresh()
+                self.ip_bottom_win.addstr(2 + index, 5, label, color_pair)
+            self.ip_bottom_win.refresh()
             if self.current_seleected_parameter ==1:
                 self.set_up_in_address_field()
             else:
@@ -197,13 +205,13 @@ class IPConfigurationScreen:
             for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 if self.current_seleected_parameter == index:
-                    self.self.ip_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+                    self.ip_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
     
                 else:
-                    self.self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
+                    self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
             
-                self.self.ip_bottom_win.addstr(2 + index, 5, label, color_pair)
-            self.self.ip_bottom_win.refresh()
+                self.ip_bottom_win.addstr(2 + index, 5, label, color_pair)
+            self.ip_bottom_win.refresh()
             if self.current_seleected_parameter ==1:
                 self.set_up_in_address_field()
             else:
@@ -214,12 +222,12 @@ class IPConfigurationScreen:
             for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 if self.current_seleected_parameter == index:
-                    self.self.ip_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+                    self.ip_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
                     
                 else:
-                    self.self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
-            self.self.ip_bottom_win.addstr(2 + index, 5, label, color_pair)
-            self.self.ip_bottom_win.refresh()
+                    self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
+            self.ip_bottom_win.addstr(2 + index, 5, label, color_pair)
+            self.ip_bottom_win.refresh()
             if self.current_seleected_parameter ==1:
                         self.set_up_in_address_field()
             else:
