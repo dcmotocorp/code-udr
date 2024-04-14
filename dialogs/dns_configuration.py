@@ -201,8 +201,10 @@ class DNSScreen:
         elif key.name == "tab":
             if self.input_current_index_status=="prim":
                 self.input_current_index_status="seco"
+                self.set_cursor_position()
             elif self.input_current_index_status=="seco":
                 self.input_current_index_status="prim"
+                self.set_cursor_position()
         elif key.name == "backspace":
             if self.input_current_index_status=="prim" and len(self.primary)>0:
                 self.primary = self.primary[:-1]
@@ -210,7 +212,7 @@ class DNSScreen:
                 self.primary_change.bkgd(' ', curses.color_pair(2)) 
                 self.primary_change.addstr(0, 0, self.primary, curses.color_pair(1))
                 self.primary_change.refresh()
-                # self.set_cursor_position()
+                self.set_cursor_position()
             
             if self.input_current_index_status=="seco" and len(self.secondary)>0:
                 self.secondary = self.secondary[:-1]
@@ -218,7 +220,7 @@ class DNSScreen:
                 self.secondary_change.bkgd(' ', curses.color_pair(2)) 
                 self.secondary_change.addstr(0, 0, self.secondary, curses.color_pair(1))
                 self.secondary_change.refresh()
-                # self.set_cursor_position()
+                self.set_cursor_position()
         
         elif len(key.name) == 1:
             self.logger_.log_info("=inside========ip logegr key name {}".format(key.name))
@@ -226,17 +228,23 @@ class DNSScreen:
                 self.primary +=key.name
                 self.primary_change.addstr(0, 0, self.primary, curses.color_pair(1))
                 self.primary_change.refresh()
-                # self.set_cursor_position()
+                self.set_cursor_position()
             
             elif  hasattr(self, 'secondary_change') and self.secondary_change !=None and self.input_current_index_status=="seco" and len(self.secondary)<15:
                 self.secondary +=key.name
                 self.secondary_change.addstr(0, 0, self.secondary, curses.color_pair(1))
                 self.secondary_change.refresh()
-                # self.set_cursor_position()
+                self.set_cursor_position()
 
-           
-
-            
+    def set_cursor_position(self):
+        """Set the cursor position based on the current input and status."""
+        if  hasattr(self, 'primary_change') and self.primary_change !=None and self.input_current_index_status=="prim":
+            self.primary_change.move(0, len(self.primary))
+            self.primary_change.refresh()
+        
+        elif  hasattr(self, 'secondary_change') and self.secondary_change !=None and self.input_current_index_status=="seco":       
+            self.secondary_change.move(0, len(self.secondary))
+            self.secondary_change.refresh()
 
 
             
