@@ -80,8 +80,20 @@ class IPConfigurationScreen:
         self.ip_bottom_win.addstr(7, 8, getway_label, curses.color_pair(3))
          
         self.ip_bottom_win.refresh()
-
         self.create_update_ip_address()
+
+    def clear_input_fields(self):
+        
+        if hasattr(self, 'in_address_change') and self.in_address_change !=None:
+            self.in_address_change.clear()
+            self.in_address_change = None
+        if hasattr(self, 'sub_mask_change') and self.sub_mask_change !=None:
+            self.sub_mask_change.clear()
+            self.sub_mask_change = None 
+        if hasattr(self, 'gate_Way_change') and self.gate_Way_change !=None:
+            self.gate_Way_change.clear()
+            self.gate_Way_change = None 
+
 
     def create_update_ip_address(self):
         ip_screen_height = 15
