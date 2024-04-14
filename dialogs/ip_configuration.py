@@ -133,7 +133,8 @@ class IPConfigurationScreen:
         ip_input_x = popup_x + 1
         self.ip_address_win = curses.newwin(1, 15,popup_y + popup_top_height+7, ip_input_x)
         self.ip_address_win.refresh()
-
+        
+        curses.curs_set(1)
         self.ip_address_win.addstr(0,0,self.sub_mask, curses.color_pair(3))
         self.ip_address_win.refresh()
 
