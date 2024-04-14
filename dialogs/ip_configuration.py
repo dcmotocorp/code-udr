@@ -108,7 +108,7 @@ class IPConfigurationScreen:
         
         
         
-        self.in_config = curses.newwin(1, 20, popup_y + popup_top_height, popup_x+5)
+        self.in_config = curses.newwin(1, 20, popup_y + popup_top_height, popup_x+15)
         self.in_config.refresh()
         
         curses.curs_set(1)
