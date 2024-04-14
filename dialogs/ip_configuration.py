@@ -54,27 +54,27 @@ class IPConfigurationScreen:
 
     def set_up_in_address_field(self):
         # ad ip config 
-        auth_screen_height = 15
-        auth_screen_width = 50
-        popup_y = (self.screen_height - auth_screen_height // 2) // 2
-        popup_x = (self.screen_width - auth_screen_width) // 2
-        popup_top_height = max(int(0.3 * auth_screen_height), 1)
-        popup_bottom_height = auth_screen_height - popup_top_height
+        # auth_screen_height = 15
+        # auth_screen_width = 50
+        # popup_y = (self.screen_height - auth_screen_height // 2) // 2
+        # popup_x = (self.screen_width - auth_screen_width) // 2
+        # popup_top_height = max(int(0.3 * auth_screen_height), 1)
+        # popup_bottom_height = auth_screen_height - popup_top_height
 
 
-        in_win_height = popup_y + popup_top_height +2
-        ip_input_x = popup_x + 1
-        self.ip_address_win = curses.newwin(1, 15,in_win_height , ip_input_x)
-        self.ip_address_win.refresh()
-        ip_adrress_label = "IP Address :"
-        self.ip_address_win.addstr(0,0, ip_adrress_label, curses.color_pair(3))
-        self.ip_address_win.refresh()
+        # in_win_height = popup_y + popup_top_height +2
+        # ip_input_x = popup_x + 1
+        # self.ip_address_win = curses.newwin(1, 15,in_win_height , ip_input_x)
+        # self.ip_address_win.refresh()
+        # ip_adrress_label = "IP Address :"
+        # self.ip_address_win.addstr(0,0, ip_adrress_label, curses.color_pair(3))
+        # self.ip_address_win.refresh()
 
-        mask_adrress_label = "Subnet Mask :     [ {}     ]".format(self.sub_mask)
-        self.auth_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
+        # mask_adrress_label = "Subnet Mask :     [ {}     ]".format(self.sub_mask)
+        # self.auth_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
 
-        getway_label = "Default Getway :  [ {}         ]".format(self.gate_Way)
-        self.auth_bottom_win.addstr(7, 8, getway_label, curses.color_pair(3))
+        # getway_label = "Default Getway :  [ {}         ]".format(self.gate_Way)
+        # self.auth_bottom_win.addstr(7, 8, getway_label, curses.color_pair(3))
          
         self.auth_bottom_win.refresh()
 
@@ -128,7 +128,9 @@ class IPConfigurationScreen:
         self.auth_bottom_win.addstr(9, 23, label_text_bottom_enter_ok, curses.color_pair(3))
         
 
-    
+        mask_adrress_label = "Subnet Mask :     [ {}     ]".format(self.sub_mask)
+        self.auth_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
+
         self.auth_top_win.refresh()
         self.auth_bottom_win.refresh()
 
