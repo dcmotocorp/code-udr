@@ -282,6 +282,7 @@ class IPConfigurationScreen:
             if self.current_seleected_parameter ==1:
                         self.set_up_in_address_field()
             else:
+                self.clear_input_fields()
                 self.setup_network_adaptor_screen()
 
         elif key.name == "backspace":
