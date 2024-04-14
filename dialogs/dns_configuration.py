@@ -24,6 +24,7 @@ class DNSScreen:
         self.system_controller = SystemControler()
         self.primary = "192.168.1.1"
         self.secondary =  "192.168.1.1"
+        self.input_current_index_status = "prim"
         self.get_dns_priomary_secondary()
         self.setup_network_adaptor_screen()
 
@@ -195,6 +196,22 @@ class DNSScreen:
                 self.set_up_in_address_field()
             else:
                 self.setup_network_adaptor_screen() 
+        
+        elif len(key.name) == 1:
+            self.logger_.log_info("=inside========ip logegr key name {}".format(key.name))
+            if   hasattr(self, 'primary_change') and self.primary_change !=None and self.input_current_index_status=="prim" and len(self.primary)<15:
+                self.primary +=key.name
+                self.primary_change.addstr(0, 0, self.ip_address, curses.color_pair(1))
+                self.primary_change.refresh()
+                # self.set_cursor_position()
+            
+            elif  hasattr(self, 'secondary_change') and self.secondary_change !=None and self.input_current_index_status=="seco" and len(self.secondary)<15:
+                self.secondary +=key.name
+                self.secondary_change.addstr(0, 0, self.secondary, curses.color_pair(1))
+                self.subsecondary_change_mask_change.refresh()
+                # self.set_cursor_position()
+
+           
 
             
 
