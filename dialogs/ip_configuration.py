@@ -10,6 +10,7 @@ from data.database import UserDatabase
 
 warnings.filterwarnings("ignore")
 
+
 class IPConfigurationScreen:
     def __init__(self, screen_height, screen_width,app):
         self.app = app
@@ -104,11 +105,24 @@ class IPConfigurationScreen:
         ip_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
 
         # Add label to ip_top_win
-        label_text = "Configure Hostname"
-        label_x = (ip_screen_width - len(label_text)) // 2
-        label_y = (popup_top_height - 1) // 2  # Center vertically
-        ip_top_win.addstr(label_y, label_x, label_text, curses.color_pair(4))
 
+        label_x = (ip_screen_width - len(CONFIGURE_MANAGEMENT_NETWORK_SERVICE)) // 2
+        label_y = (popup_top_height - 1) // 2  # Center vertically
+        ip_top_win.addstr(label_y, label_x, CONFIGURE_MANAGEMENT_NETWORK_SERVICE, curses.color_pair(4))
+
+        
+         # Add labels to popup_bottom_win
+        for index, label in enumerate(self.labels):
+            color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+            if self.current_seleected_parameter == index:
+                    self.ip_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+            else:
+                self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
+
+            self.ip_bottom_win.addstr( 2+ index, 5, label, color_pair)
+        
+        
+        
         username_label = "Hostname :  ["
         ip_bottom_win.addstr(1, 1, username_label, curses.color_pair(3))
 
