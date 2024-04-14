@@ -594,14 +594,15 @@ class NovaiguApplication:
                 self.update_password.handle_key_event(event)
             elif hasattr(self, 'host_name') and self.host_name !=None and self.host_name.update_status == True and current_screen == HOSTNAME:
                 self.host_name.handle_key_event(event)
-            elif hasattr(self, 'authentication_screen') and self.authentication_screen !=None:
-                self.authentication_screen.handle_key_event(event)
-            
             elif   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
                 selected_index = self.configuration_management_screen.selected_index
                 selected_label = self.configuration_management_screen.labels[selected_index]
                 if hasattr(self, 'ip_config_adaptor') and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True and selected_label == IP_CONFIGURATION:  
                     self.ip_config_adaptor.handle_arrow_key(event)
+            
+            elif hasattr(self, 'authentication_screen') and self.authentication_screen !=None:
+                self.authentication_screen.handle_key_event(event)
+            
             
             else:
                 pass 
