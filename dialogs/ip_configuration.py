@@ -96,7 +96,7 @@ class IPConfigurationScreen:
         
         user_input_y = popup_y + popup_top_height + 5
         user_input_x = popup_x + 30
-        self.in_address_change = curses.newwin(1, len(self.ip_address)+1, user_input_y, user_input_x)
+        self.in_address_change = curses.newwin(1, 16, user_input_y, user_input_x)
         self.in_address_change.refresh()
     
         self.in_address_change.addstr(0, 0, self.ip_address, curses.color_pair(2))
