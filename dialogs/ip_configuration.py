@@ -222,6 +222,21 @@ class IPConfigurationScreen:
     def get_username_input(self):
         return self.current_ssh
     
+    def set_cursor_position(self):
+        """Set the cursor position based on the current input and status."""
+        if   hasattr(self, 'in_address_change') and self.in_address_change !=None and self.input_current_index_status=="ip":
+            self.in_address_change.move(0, len(self.ip_address))
+            self.in_address_change.refresh()
+        
+        elif  hasattr(self, 'sub_mask_change') and self.sub_mask_change !=None and self.input_current_index_status=="sub_mask":       
+            self.sub_mask_change.move(0, len(self.sub_mask))
+            self.sub_mask_change.refresh()
+
+        elif hasattr(self, 'gate_Way_change') and self.gate_Way_change !=None and self.input_current_index_status=="gate_way":
+            self.gate_Way_change.move(0, len(self.gate_Way))
+            self.gate_Way_change.refresh()
+      
+
     def handle_arrow_key(self, key):
         self.logger_.log_info("==========ip logegr key name {}".format(key.name))
     
@@ -292,6 +307,7 @@ class IPConfigurationScreen:
                 self.in_address_change.bkgd(' ', curses.color_pair(2)) 
                 self.in_address_change.addstr(0, 0, self.ip_address, curses.color_pair(1))
                 self.in_address_change.refresh()
+                self.set_cursor_position()
             
             if self.input_current_index_status=="sub_mask" and len(self.sub_mask)>0:
                 self.sub_mask = self.sub_mask[:-1]
@@ -299,21 +315,28 @@ class IPConfigurationScreen:
                 self.sub_mask_change.bkgd(' ', curses.color_pair(2)) 
                 self.sub_mask_change.addstr(0, 0, self.sub_mask, curses.color_pair(1))
                 self.sub_mask_change.refresh()
+                self.set_cursor_position()
+
             if self.input_current_index_status=="gate_way" and len(self.gate_Way)>0:
                 self.gate_Way = self.gate_Way[:-1]
                 self.gate_Way_change.clear()
                 self.gate_Way_change.bkgd(' ', curses.color_pair(2)) 
                 self.gate_Way_change.addstr(0, 0, self.gate_Way, curses.color_pair(1))
                 self.gate_Way_change.refresh()
+                self.set_cursor_position()
 
             
         elif key.name == "tab":
             if self.input_current_index_status=="ip":
                 self.input_current_index_status = "sub_mask"
+                self.set_cursor_position()
             elif self.input_current_index_status == "sub_mask":
                 self.input_current_index_status = "gate_way"
+                self.set_cursor_position()
+
             elif self.input_current_index_status == "gate_way":
                 self.input_current_index_status="ip"
+                self.set_cursor_position()
 
         elif len(key.name) == 1:
             self.logger_.log_info("=inside========ip logegr key name {}".format(key.name))
@@ -321,16 +344,19 @@ class IPConfigurationScreen:
                 self.ip_address +=key.name
                 self.in_address_change.addstr(0, 0, self.ip_address, curses.color_pair(1))
                 self.in_address_change.refresh()
+                self.set_cursor_position()
             
             elif  hasattr(self, 'sub_mask_change') and self.sub_mask_change !=None and self.input_current_index_status=="sub_mask" and len(self.sub_mask)<15:
                 self.sub_mask +=key.name
                 self.sub_mask_change.addstr(0, 0, self.sub_mask, curses.color_pair(1))
                 self.sub_mask_change.refresh()
+                self.set_cursor_position()
 
             elif hasattr(self, 'gate_Way_change') and self.gate_Way_change !=None and self.input_current_index_status=="gate_way" and len(self.gate_Way)<15:
                 self.gate_Way +=key.name
                 self.gate_Way_change.addstr(0, 0, self.gate_Way, curses.color_pair(1))
                 self.gate_Way_change.refresh()
+                self.set_cursor_position()
 
             
 
