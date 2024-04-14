@@ -211,6 +211,7 @@ class IPConfigurationScreen:
         self.system_controller.set_ip_configuration_manual(self.ip_address,self.sub_mask,self.gate_Way)
          
     def set_ip_address_automatic(self):
+        self.set_data()
         self.system_controller.setup_ip_configuration(self.ip_address,self.sub_mask,self.gate_Way)
         
     def clear(self):
