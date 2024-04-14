@@ -27,17 +27,58 @@ class DNSScreen:
         self.get_dns_priomary_secondary()
         self.setup_network_adaptor_screen()
 
+    def create_update_dns_address(self):
+        ip_screen_height = 15
+        ip_screen_width = 50
+        popup_y = (self.screen_height - ip_screen_height // 2) // 2
+        popup_x = (self.screen_width - ip_screen_width) // 2
+        
+        # Calculate dimensions for the two partitions within the pop-up window
+        popup_top_height = max(int(0.3 * ip_screen_height), 1)
+        popup_bottom_height = ip_screen_height - popup_top_height
+        
+        user_input_y = popup_y + popup_top_height + 5
+        user_input_x = popup_x + 30
+        self.primary_change = curses.newwin(1, 16, user_input_y, user_input_x)
+        self.primary_change.bkgd(' ', curses.color_pair(2))
+        self.primary_change.refresh()
+    
+        self.primary_change.addstr(0, 0, self.primary, curses.color_pair(2))
+        self.primary_change.refresh()
+        
+        #set mask 
+        user_input_y +=1 
+        self.secondary_change = curses.newwin(1, 16, user_input_y, user_input_x)
+        self.secondary_change.bkgd(' ', curses.color_pair(2))
+        self.secondary_change.refresh()
+    
+        self.secondary_change.addstr(0, 0, self.secondary, curses.color_pair(2))
+        self.secondary_change.refresh()
+
+        
+        
+    
     def get_dns_priomary_secondary(self):
         primary,secondary = self.system_controller.get_dns_configuration_linux()
         self.primary =primary
         self.secondary = secondary
     
     def set_auto_dns(self):
+        self.get_dns_priomary_secondary()
         self.system_controller.set_dns_auto_assign()
     
     def set_manually_dns(self):
         self.system_controller.set_dns_servers(self.primary,self.secondary)
 
+    def set_up_in_address_field(self):
+        # ad ip config 
+        ip_adrress_label = "Primary DNS Server :  [           ]"
+        self.auth_bottom_win.addstr(5, 8, ip_adrress_label, curses.color_pair(3))
+
+        mask_adrress_label = "Secondary DNS Server :[         ]"
+        self.auth_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
+
+    
     def setup_network_adaptor_screen(self):
         auth_screen_height = 15
         auth_screen_width = 50
@@ -84,13 +125,11 @@ class DNSScreen:
 
         label_text_bottom_enter_ok = "<Enter> Ok"
         self.auth_bottom_win.addstr(9, 23, label_text_bottom_enter_ok, curses.color_pair(3))
+        if self.current_seleected_parameter ==1:
+                self.set_up_in_address_field()
+        else:
+            self.setup_network_adaptor_screen()
         
-        # ad ip config 
-        ip_adrress_label = "Primary DNS Server :  [ {}     ]".format(self.primary)
-        self.auth_bottom_win.addstr(5, 8, ip_adrress_label, curses.color_pair(3))
-
-        mask_adrress_label = "Secondary DNS Server :[ {}     ]".format(self.secondary)
-        self.auth_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
 
 
     
@@ -120,7 +159,10 @@ class DNSScreen:
                     self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             self.auth_bottom_win.refresh()
-            self.setup_network_adaptor_screen()
+            if self.current_seleected_parameter ==1:
+                self.set_up_in_address_field()
+            else:
+                self.setup_network_adaptor_screen()
             
         elif key.name =="down":
             if self.selected_index == 0:
@@ -135,7 +177,10 @@ class DNSScreen:
                     self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             self.auth_bottom_win.refresh()
-            self.setup_network_adaptor_screen() 
+            if self.current_seleected_parameter ==1:
+                self.set_up_in_address_field()
+            else:
+                self.setup_network_adaptor_screen()
     
         elif key.name == "space":
             self.current_selected_label_index = self.selected_index
@@ -147,7 +192,10 @@ class DNSScreen:
                     self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             self.auth_bottom_win.refresh()
-            self.setup_network_adaptor_screen() 
+            if self.current_seleected_parameter ==1:
+                self.set_up_in_address_field()
+            else:
+                self.setup_network_adaptor_screen() 
 
             
 
