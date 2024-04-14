@@ -94,16 +94,6 @@ class IPConfigurationScreen:
         popup_top_height = max(int(0.3 * auth_screen_height), 1)
         popup_bottom_height = auth_screen_height - popup_top_height
         
-    
-        
-        self.in_config = curses.newwin(1, 20, popup_y + popup_top_height, popup_x+10)
-        self.in_config.refresh()
-        
-
-        self.in_config.addstr(0, 10, "test", curses.color_pair(1))
-        self.in_config.refresh()
-
-
         self.hostname_screen = curses.newwin(auth_screen_height, auth_screen_width, popup_y, popup_x)
 
         self.auth_top_win = self.hostname_screen.subwin(popup_top_height, auth_screen_width, popup_y, popup_x)
@@ -113,9 +103,19 @@ class IPConfigurationScreen:
         # Set background colors for each partition within the pop-up window
         self.auth_top_win.bkgd(' ', curses.color_pair(1))  # Yellow background
         self.auth_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
+        
+        self.in_config = curses.newwin(1, 20, popup_y + popup_top_height, popup_x+10)
+        self.in_config.refresh()
+        
+
+        self.in_config.addstr(0, 10, "test", curses.color_pair(1))
+        self.in_config.refresh()
+
+
+        
         self.auth_top_win.refresh()
         self.auth_bottom_win.refresh()
-        self.in_config.refresh()
+        
         curses.curs_set(1)
     
         
