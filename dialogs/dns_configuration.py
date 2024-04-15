@@ -39,9 +39,9 @@ class DNSScreen:
 
         if data and len(data) >0 :
             if data[3] ==0:
-                self.current_selected_label_index = data[3]    
+                self.current_selected_label_index = 1   
             elif data[3] ==1:
-                self.current_selected_label_index = data[3]
+                self.current_selected_label_index = 0
 
     
     def create_update_dns_address(self):
@@ -87,6 +87,7 @@ class DNSScreen:
         primary,secondary = self.system_controller.get_dns_configuration_linux()
         self.primary =primary
         self.secondary = secondary
+        self.logger_.log_info(" primary and secondaru ip {} {}".format(self.primary,self.secondary))
     
     def set_auto_dns(self):
         self.get_dns_priomary_secondary()
