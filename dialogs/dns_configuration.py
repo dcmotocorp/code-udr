@@ -71,7 +71,15 @@ class DNSScreen:
         self.secondary_change.refresh()
 
         
+    def clear_input_fields(self):
         
+        if hasattr(self, 'primary_change') and self.primary_change !=None:
+            self.primary_change.clear()
+            self.primary_change = None
+        if hasattr(self, 'secondary_change') and self.secondary_change !=None:
+            self.secondary_change.clear()
+            self.secondary_change = None 
+           
     
     def get_dns_priomary_secondary(self):
         primary,secondary = self.system_controller.get_dns_configuration_linux()
@@ -145,6 +153,8 @@ class DNSScreen:
         if self.current_selected_label_index ==1:
             self.set_up_in_address_field()
             self.set_cursor_position()
+        else:
+            self.clear_input_fields()
 
         auth_top_win.refresh()
         self.auth_bottom_win.refresh()
