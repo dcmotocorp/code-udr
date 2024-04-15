@@ -498,6 +498,7 @@ class NovaiguApplication:
 
                         elif  selected_label ==  NETWORK_ADAPTOR:
                             if hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
+                                self.net_work_screen.set_network_data()
                                 self.net_work_screen.clear()
                                 self.net_work_screen = None
                                 self.configuration_management_screen.reset_screen_color()

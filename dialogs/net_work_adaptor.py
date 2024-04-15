@@ -31,7 +31,8 @@ class NetworkAdaptorScreen:
         self.set_source_data(data)
     
     def set_network_data(self):
-        self.system_controller.set_management_interface("test")
+        inetrface = self.get_current_interface()
+        self.system_controller.set_management_interface(inetrface)
         
     def set_source_data(self,data):
         resposne_data = []
@@ -42,6 +43,12 @@ class NetworkAdaptorScreen:
             tem_list.append(__data.get('state'))
             resposne_data.append(tem_list) 
         self.labels = resposne_data
+    
+    def get_current_interface(self):
+        current_index = self.current_selected_label_index
+        cselected_list = self.labels[current_index]
+        return cselected_list[0]
+
     
     def setup_network_adaptor_screen(self):
         auth_screen_height = 15
