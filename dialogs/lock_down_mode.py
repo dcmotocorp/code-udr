@@ -21,6 +21,7 @@ class LockdownModeScreen:
         self.user_data_base = UserDatabase()
         self.selected_index= 0
         self.current_label_head = None
+        self.starting_state = True 
         self.get_default_setting()
         self.setup_lockdown_screen()
 
@@ -73,7 +74,15 @@ class LockdownModeScreen:
             color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
             self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
 
-
+        if self.current_label_head is not None and self.starting_state == True :
+            self.starting_state =False
+            for index, label in enumerate(values):
+                if self.current_label_head == index:
+                    color_pair = self.selected_index
+                else:
+                    color_pair = self.normal_color_pair
+            self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
+            
         # Add label to popup_bottom_win
         label_text_bottom_esc = "<Space> Selection"
         self.auth_bottom_win.addstr(5, 1, label_text_bottom_esc, curses.color_pair(3))
