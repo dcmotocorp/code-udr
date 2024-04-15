@@ -163,6 +163,10 @@ class DNSScreen:
         # else:
         #     self.clear_input_fields()
         self.set_cursor_position()
+        if self.current_selected_label_index ==1:
+            self.set_up_in_address_field()
+            self.set_cursor_position()
+
     def clear(self):
         if hasattr(self, 'hostname_screen') and self.hostname_screen != None:
             self.hostname_screen.clear()
