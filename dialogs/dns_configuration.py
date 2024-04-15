@@ -84,7 +84,7 @@ class DNSScreen:
            
     
     def get_dns_priomary_secondary(self):
-        primary,secondary = self.system_controller.get_dns_configuration_linux()
+        primary,secondary = self.system_controller.get_dns()
         self.primary =primary
         self.secondary = secondary
         self.logger_.log_info(" primary and secondaru ip {} {}".format(self.primary,self.secondary))
