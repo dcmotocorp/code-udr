@@ -623,6 +623,9 @@ class NovaiguApplication:
             elif hasattr(self, 'lock_down_screen') and self.lock_down_screen !=None and self.lock_down_screen.update_status == True and current_screen == LOCK_DOWN_MODE:  
                 self.lock_down_screen.handle_arrow_key(event)
             
+            elif hasattr(self, 'reset_screen') and self.reset_screen !=None and self.reset_screen.update_status == True and current_screen == RESET_SYSTEM_CONFIG:  
+                self.reset_screen.handle_arrow_key(event)
+            
             elif   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
                 selected_index = self.configuration_management_screen.selected_index
                 selected_label = self.configuration_management_screen.labels[selected_index]
