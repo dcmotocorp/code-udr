@@ -146,6 +146,8 @@ class NovaiguApplication:
                 elif hasattr(self, 'lock_down_screen') and self.lock_down_screen != None and  self.lock_down_screen.update_status ==True :
                     self.lock_down_screen.handle_arrow_key(event.name)
                 
+                elif hasattr(self, 'reset_screen') and self.reset_screen !=None and self.reset_screen.update_status == True and current_screen == RESET_SYSTEM_CONFIG:  
+                    self.reset_screen.handle_arrow_key(event)
                 elif  hasattr(self, 'system_config') and self.system_config != None and self.system_config.active_status ==True :
                     self.system_config.handle_arrow_key(event.name)
             
@@ -171,6 +173,9 @@ class NovaiguApplication:
                 elif hasattr(self, 'ssh_screen') and self.ssh_screen != None and  self.ssh_screen.update_status ==True :
                     self.ssh_screen.handle_arrow_key(event.name)
 
+                elif hasattr(self, 'reset_screen') and self.reset_screen !=None and self.reset_screen.update_status == True and current_screen == RESET_SYSTEM_CONFIG:  
+                    self.reset_screen.handle_arrow_key(event)
+                
                 elif hasattr(self, 'update_password') and self.update_password != None and  self.update_password.update_status ==True :
                     self.update_password.handle_arrow_key(event)
 
