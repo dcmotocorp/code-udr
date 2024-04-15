@@ -42,6 +42,7 @@ class DNSScreen:
             elif data[3] ==1:
                 self.current_selected_label_index = data[3]
 
+    
     def create_update_dns_address(self):
         ip_screen_height = 15
         ip_screen_width = 50
@@ -150,17 +151,18 @@ class DNSScreen:
 
         label_text_bottom_enter_ok = "<Enter> Ok"
         self.auth_bottom_win.addstr(9, 23, label_text_bottom_enter_ok, curses.color_pair(3))
-        if self.current_selected_label_index ==1:
-            self.set_up_in_address_field()
-            self.set_cursor_position()
-        else:
-            self.clear_input_fields()
+        
 
         auth_top_win.refresh()
         self.auth_bottom_win.refresh()
         curses.curs_set(1)
         self.hostname_screen.refresh()
-
+        # if self.current_selected_label_index ==1:
+        #     self.set_up_in_address_field()
+        #     self.set_cursor_position()
+        # else:
+        #     self.clear_input_fields()
+        self.set_cursor_position()
     def clear(self):
         if hasattr(self, 'hostname_screen') and self.hostname_screen != None:
             self.hostname_screen.clear()
