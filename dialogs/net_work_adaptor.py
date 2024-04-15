@@ -28,6 +28,7 @@ class NetworkAdaptorScreen:
 
     def get_data_from_source(self):
         data = self.system_controller.get_management_interface_details()
+        self.logger_.log_info("source data {}".format(json.dumps(data)))
         self.set_source_data(data)
     
     def set_network_data(self):
@@ -43,6 +44,7 @@ class NetworkAdaptorScreen:
             tem_list.append(__data.get('macAddress'))
             tem_list.append(__data.get('state'))
             resposne_data.append(tem_list) 
+        self.logger_.log_info("source data {}".format(json.dumps(resposne_data)))
         self.labels = resposne_data
     
     def get_current_interface(self):
