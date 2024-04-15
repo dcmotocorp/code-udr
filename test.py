@@ -8,7 +8,7 @@ warnings.filterwarnings("ignore")
 from utils import shutdown_computer, get_ip_address, restart_computer
 from constant import SYSTEM_CONFIG_LABEL, PASSWORD_LABEL, USERNAME_LABEL, NOVAIGU_HTTP_LABEL, \
     NOVAIGU_PLATFORM_LABEL, NOVAIGU_LABEL, F2_CONFIGURATION_SYSTEM, SHUT_DOWN_RESTART, AUTHENTICATION_SCREEN, KEY_ESC, \
-    ESC_CANCLE, F11_RESTART, F2_SHUT_DOWN, PASSWORD, HOSTNAME, SSH, LOCK_DOWN_MODE,KEY_DOWN,KEY_UP,MANAGEMENT_INTERFACE, NETWORK_ADAPTOR, IP_CONFIGURATION, DNS_SERVER
+    ESC_CANCLE, F11_RESTART, F2_SHUT_DOWN, PASSWORD, HOSTNAME, SSH, LOCK_DOWN_MODE,KEY_DOWN,KEY_UP,MANAGEMENT_INTERFACE, NETWORK_ADAPTOR, IP_CONFIGURATION, DNS_SERVER,RESET_SYSTEM_CONFIG
 from dialogs.restart_shutdown import ShutdownRestart
 from dialogs.authentication import AuthenticationScreen
 from dialogs.update_password import UpdatePasswordScreen
@@ -20,6 +20,7 @@ from dialogs.configure_management import ConfigureManagement
 from dialogs.ip_configuration import IPConfigurationScreen
 from dialogs.net_work_adaptor import NetworkAdaptorScreen
 from dialogs.dns_configuration import DNSScreen
+from dialogs.reset_system import ResetScreen
 from logs.udr_logger import UdrLogger
 from  system_controller.systemcontroler import SystemControler
 from data.database import UserDatabase
@@ -419,7 +420,20 @@ class NovaiguApplication:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
                         self.host_name = HostnameScreen(self.screen_height, self.screen_width,self)
-                        self.host_name.update_status = True    
+                        self.host_name.update_status = True 
+                elif current_screen == RESET_SYSTEM_CONFIG:
+                    if   hasattr(self, 'reset_screen')  and self.reset_screen !=None  and self.reset_screen.update_status == True  :
+                        self.system_config.active_status = True
+                        self.system_config.update_password_screen = False 
+                        self.reset_screen.clear()
+                        self.reset_system_config_screen()
+                        self.reset_screen = None
+                        curses.curs_set(0)
+                    else:
+                        self.set_main_screen_black()
+                        self.system_config.set_sytem_config_screen_dark()
+                        self.reset_screen = ResetScreen(self.screen_height, self.screen_width,self)
+                        self.reset_screen.update_status = True    
                 elif current_screen == SSH:
                      
                     if   hasattr(self, 'ssh_screen')  and self.ssh_screen !=None  and self.ssh_screen.update_status == True  :
@@ -444,6 +458,7 @@ class NovaiguApplication:
                             self.ssh_screen = None
                         except Exception as ex:
                             self.logger_.log_info("Exception occure while cleaning ssh screen  {}".format(str(ex)))
+                
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
