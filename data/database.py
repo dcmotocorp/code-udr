@@ -296,7 +296,7 @@ class UserDatabase:
         DO UPDATE SET
             selected_interface = excluded.selected_interface,
             update_on = CURRENT_TIMESTAMP
-    ''', (interface_name, selected_interface))
+    ''', (interface_name, selected_interface,interface_name))
         connection.commit()
         connection.close()
 
