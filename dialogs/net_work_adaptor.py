@@ -66,7 +66,7 @@ class NetworkAdaptorScreen:
     def get_current_interface(self):
         current_index = self.current_selected_label_index
         self.logger_.log_info("current_index data current_index {}".format(current_index))
-        if current_index:
+        if current_index is not None:
             cselected_list = self.labels[current_index]
             self.logger_.log_info("cselected_list data cselected_list {}".format(cselected_list))
             return cselected_list[0]
