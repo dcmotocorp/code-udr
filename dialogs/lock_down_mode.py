@@ -77,7 +77,7 @@ class LockdownModeScreen:
                     color_pair = self.selected_index
                 else:
                     color_pair = self.normal_color_pair
-            self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
+                self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
         else:        
             # Add labels to popup_bottom_win
             for index, label in enumerate(values):
