@@ -219,11 +219,13 @@ class SystemControler:
             # Extract primary and secondary DNS servers
             primary_dns = dns_servers[0]
             secondary_dns = dns_servers[1] if len(dns_servers) > 1 else None
-            
+            self.logger_.log_info(" primary secondarye in {}  {}".format(primary_dns,secondary_dns))  
             return primary_dns,secondary_dns
         except FileNotFoundError:
+            self.logger_.log_info(" file not occure in {}".format(str(e)))
             return "", ""
         except Exception as e:
+            self.logger_.log_info(" exception occure in {}".format(str(e)))
             return "", ""
         
         
