@@ -329,7 +329,11 @@ class NovaiguApplication:
             self.create_shut_down_restart_pop_up()
 
         elif event.name =="shift":
-            if hasattr(self, 'authentication_screen') and self.authentication_screen !=None:
+            
+            if current_screen == PASSWORD and  hasattr(self, 'update_password')  and self.update_password !=None  and self.update_password.update_status == True  :
+                self.update_password.handle_key_event(event)
+            
+            elif hasattr(self, 'authentication_screen') and self.authentication_screen !=None:
                 self.authentication_screen.handle_key_event(event)
 
         
