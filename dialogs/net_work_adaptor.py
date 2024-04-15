@@ -19,6 +19,7 @@ class NetworkAdaptorScreen:
         self.current_selected_label_index = None
         self.labels = [["N1C1","00.01.D1:F3:55:2D","Connected"],["N1C2","00.01.D5:F3:55:2D","Connected"],["N1C3","00.01.D1:F3:55:2D","Connected"]]
         self.current_label = []
+        self.starting_state =True
         self.system_controller = SystemControler()
         self.normal_color_pair = curses.color_pair(3) 
         self.selected_color_pair = curses.color_pair(5)
@@ -111,16 +112,28 @@ class NetworkAdaptorScreen:
         self.auth_bottom_win.addstr( 1, 15,"Mac Address",self.normal_color_pair)
         self.auth_bottom_win.addstr( 1, 35, "Status",self.normal_color_pair)
 
-        # Add labels to popup_bottom_win
-        for index, label in enumerate(self.labels):
-            color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
-            if self.current_selected_label_index ==index:
-                self.auth_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
-            else:
-                self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
-            self.auth_bottom_win.addstr( 2+ index, 5, label[0], color_pair)
-            self.auth_bottom_win.addstr( 2+ index, 15, label[1], color_pair)
-            self.auth_bottom_win.addstr( 2+ index, 35, label[2], color_pair)
+        if current_selected_label_index and self.starting_state ==True:
+            self.starting_state = False 
+            for index, label in enumerate(self.labels):
+                # color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                if self.current_selected_label_index ==index:
+                    self.auth_bottom_win.addstr( 2+ index, 2, "[0]",  self.selected_color_pair)
+                else:
+                    self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", self.normal_color_pair)
+                self.auth_bottom_win.addstr( 2+ index, 5, label[0], self.normal_color_pair)
+                self.auth_bottom_win.addstr( 2+ index, 15, label[1], self.normal_color_pair)
+            self.auth_bottom_win.addstr( 2+ index, 35, label[2], self.normal_color_pair)
+        else:        
+            # Add labels to popup_bottom_win
+            for index, label in enumerate(self.labels):
+                color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                if self.current_selected_label_index ==index:
+                    self.auth_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+                else:
+                    self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
+                self.auth_bottom_win.addstr( 2+ index, 5, label[0], color_pair)
+                self.auth_bottom_win.addstr( 2+ index, 15, label[1], color_pair)
+                self.auth_bottom_win.addstr( 2+ index, 35, label[2], color_pair)
 
 
         # Add label to popup_bottom_win
