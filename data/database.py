@@ -230,7 +230,7 @@ class UserDatabase:
         # Check if the user exists
         cursor.execute('SELECT 1 FROM user_settings WHERE username = ?', (username,))
         user_exists = cursor.fetchone() is not None
-
+        self.logger_.log_info("Update value of user")
         if user_exists:
             # Update non-None values
             update_values = {}
