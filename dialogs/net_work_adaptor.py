@@ -36,7 +36,7 @@ class NetworkAdaptorScreen:
         self.get_selected_interface_data()
     
     def get_selected_interface_data(self):
-        data =  self.user_data_base.get_interfaces_data(MGMT_INTERFACE)
+        data =  self.user_data_base.get_interfaces_data("MGMT_INTERFACE")
         self.logger_.log_info("data mgmt data {}".format(json.dumps(data)))
 
     def set_network_data(self):
