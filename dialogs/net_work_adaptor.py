@@ -46,8 +46,9 @@ class NetworkAdaptorScreen:
     
     def get_current_interface(self):
         current_index = self.current_selected_label_index
-        cselected_list = self.labels[current_index]
-        return cselected_list[0]
+        if current_index:
+            cselected_list = self.labels[current_index]
+            return cselected_list[0]
 
     
     def setup_network_adaptor_screen(self):
