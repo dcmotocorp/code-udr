@@ -74,7 +74,7 @@ class LockdownModeScreen:
             self.starting_state =False
             for index, label in enumerate(values):
                 if self.current_label_head == index:
-                    color_pair = self.selected_index
+                    color_pair = self.current_label_head
                 else:
                     color_pair = self.normal_color_pair
                 self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
@@ -116,16 +116,30 @@ class LockdownModeScreen:
                  self.selected_index = 0
             else:
                  self.selected_index = 0
-            for index, label in enumerate(self.labels):
+            
+            if self.current_label_head == 1:
+                values = ["[ ] enable", "[0] disable"]
+            elif self.current_label_head == 0:
+                values = ["[0] enable", "[ ] disable"]
+            else:
+                values = ["[ ] enable", "[ ] disable"]
+            
+            for index, label in enumerate(values):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             self.auth_bottom_win.refresh()
         elif key == "down":
+            if self.current_label_head == 1:
+                values = ["[ ] enable", "[0] disable"]
+            elif self.current_label_head == 0:
+                values = ["[0] enable", "[ ] disable"]
+            else:
+                values = ["[ ] enable", "[ ] disable"]
             if self.selected_index == 0:
                     self.selected_index = 1
             else:
                 self.selected_index = 1
-            for index, label in enumerate(self.labels):
+            for index, label in enumerate(values):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             self.auth_bottom_win.refresh()
