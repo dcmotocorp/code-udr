@@ -74,7 +74,7 @@ class LockdownModeScreen:
             self.starting_state =False
             for index, label in enumerate(values):
                 if self.current_label_head == index:
-                    color_pair = self.current_label_head
+                    color_pair = self.selected_color_pair
                 else:
                     color_pair = self.normal_color_pair
                 self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
