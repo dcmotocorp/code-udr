@@ -4,6 +4,7 @@ from dialogs.system_config import SystemConfig
 from constant import KEY_UP,KEY_DOWN
 import warnings
 from data.database import UserDatabase
+import json
 
 warnings.filterwarnings("ignore")
 class LockdownModeScreen:
@@ -28,7 +29,7 @@ class LockdownModeScreen:
     def get_default_setting(self):
         data =  self.user_data_base.get_user_settings(self.app.username_input)
         users = self.user_data_base.select_all_users()
-    
+        self.logger_.log_info("data for the lock down {}".format(json.dumps(data)))
         if data and len(data) >0:
             if data[2] ==0:
                 self.current_label_head = 1    
