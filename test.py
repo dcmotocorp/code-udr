@@ -502,7 +502,8 @@ class NovaiguApplication:
                             if hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
                                 try:
                                     current_selected_interface = self.net_work_screen.get_current_interface()
-                                    self.user_data_base.add_interface("MGMT_INTERFACE",current_selected_interface)
+                                    if current_selected_interface:
+                                        self.user_data_base.add_interface("MGMT_INTERFACE",current_selected_interface)
                                 except Exception as ex:
                                     self.logger_.log_info("Exception occure while adding data into interface {}".format(str(ex)))    
                                 
