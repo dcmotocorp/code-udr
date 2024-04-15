@@ -10,6 +10,7 @@ class UpdatePasswordScreen:
         self.screen_width = screen_width
         self.current_password = ""
         self.new_password = ""
+        self.shift_status = False
         self.confirm_password = ""
         self.current_status = "current_password"
         self.update_status = False
@@ -146,6 +147,9 @@ class UpdatePasswordScreen:
                 self.authentication_screen.clear()
                 self.authentication_screen = None
                 self.system_config.create_system_configuration()
+        
+        elif event.name == "shift":
+            self.shift_status = True 
 
         elif event.name in ["up","down"]:
             pass 
@@ -164,25 +168,39 @@ class UpdatePasswordScreen:
                 self.set_cursor_position()
 
         elif len(event.name) == 1:
+            char_ = self.cehck_shift_char(event.name)
             
             if hasattr(self, 'current_password_win') and self.current_password_win != None and  self.current_status == "current_password" and len(self.current_password) < 16  :
-                self.current_password += event.name
+                self.current_password += char_
                 self.current_password_win.addstr(0, 0, self.current_password, curses.color_pair(1))
                 self.current_password_win.refresh()
                 self.set_cursor_position()
                 
             elif hasattr(self, 'new_password_win') and self.new_password_win != None and self.current_status == "current_new" and  len(self.new_password) < 16  :
-                self.new_password += event.name
+                self.new_password += char_
                 self.new_password_win.addstr(0, 0, "*" * len(self.new_password), curses.color_pair(1))
                 self.new_password_win.refresh()
                 self.set_cursor_position()
 
             elif  hasattr(self, 'conform_password_win') and self.conform_password_win != None and self.current_status == "conform_new" and len(self.confirm_password) < 16:
-                self.confirm_password += event.name
+                self.confirm_password += char_
                 self.conform_password_win.addstr(0, 0, "*" * len(self.confirm_password), curses.color_pair(1))
                 self.conform_password_win.refresh()
                 self.set_cursor_position()
 
+    def cehck_shift_char(self,next_char):
+        symbol_char = {"1":"!" ,"2":"@","3":"#","4":"$","5":"%","6":"^","7":"&","8":"*","9":"(","0":")"}
+        if self.shift_status:
+            if next_char in symbol_char:
+                self.shift_status = False
+                return symbol_char[next_char]
+            else:
+                self.shift_status = False
+                return next_char.title()
+                
+        else:
+                return next_char
+    
     def set_cursor_position(self):
         """Set the cursor position based on the current input and status."""
 
