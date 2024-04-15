@@ -426,16 +426,16 @@ class NovaiguApplication:
                         try:
                             selected_value = self.ssh_screen.current_label_head
                             self.logger_.log_info("ssh screen username {} selected_value {}".format(self.username_input,selected_value))
-
+                            current_user_name = self.user_data_base.get_current_login()
+                            
                             if selected_value == 0:    
                                 self.logger_.log_info("inside 0 ssh screen username {} selected_value {}".format(self.username_input,selected_value))
-                                self.user_data_base.update_user_settings(self.username_input,ssh_enable=True)
+                                self.user_data_base.update_user_settings(current_user_name,ssh_enable=True)
                                 self.system_controller.enable_ssh()
                             elif selected_value == 1:
                                 self.logger_.log_info("inside 1 ssh screen username {} selected_value {}".format(self.username_input,selected_value))
-                                self.user_data_base.update_user_settings(self.username_input,ssh_enable=False)
+                                self.user_data_base.update_user_settings(current_user_name,ssh_enable=False)
                                 self.system_controller.disable_ssh() 
-
                             self.system_config.active_status = True
                             self.system_config.update_password_screen = False 
                             self.ssh_screen.clear()
