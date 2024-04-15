@@ -41,7 +41,7 @@ class NetworkAdaptorScreen:
 
     def set_network_data(self):
         inetrface = self.get_current_interface()
-        if inetrface:
+        if inetrface is not None:
             self.system_controller.set_management_interface(inetrface)
         
     def set_source_data(self,data):
