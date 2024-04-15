@@ -320,7 +320,8 @@ class NovaiguApplication:
                 self.system_controller.restart_computer()
     
         elif event.name == "f12":
-            self.create_shut_down_restart_pop_up()
+            if not current_screen:
+                self.create_shut_down_restart_pop_up()
 
         elif event.name =="shift":
             
