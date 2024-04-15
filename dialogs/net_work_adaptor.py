@@ -28,8 +28,9 @@ class NetworkAdaptorScreen:
 
     def get_data_from_source(self):
         data = self.system_controller.get_management_interface_details()
-        self.logger_.log_info("source data {}".format(json.dumps(data)))
-        self.set_source_data(data)
+        response = self.remove_duplicate_data(data)
+        self.logger_.log_info("source data {}".format(json.dumps(response)))
+        self.set_source_data(response)
     
     def set_network_data(self):
         inetrface = self.get_current_interface()
@@ -47,6 +48,14 @@ class NetworkAdaptorScreen:
         self.logger_.log_info("source data {}".format(json.dumps(resposne_data)))
         self.labels = resposne_data
     
+    def remove_duplicate_data(self,response):
+        key_list = []
+        resposne_updated = []
+        for data in response:
+            if data.get('interface') not in key_list:
+                key_list.append(data.get('interface'))
+                resposne_updated.append(data)
+        return  resposne_updated   
     def get_current_interface(self):
         current_index = self.current_selected_label_index
         if current_index:
