@@ -5,6 +5,7 @@ from constant import KEY_UP,KEY_DOWN,SELECT_MANAGEMENT_NETWORK_SERVICE,OBTAIN_IP
 from copy import deepcopy
 from system_controller.systemcontroler import SystemControler
 import json 
+from data.database import UserDatabase
 
 class NetworkAdaptorScreen:
     def __init__(self, screen_height, screen_width,app):
@@ -21,6 +22,7 @@ class NetworkAdaptorScreen:
         self.system_controller = SystemControler()
         self.normal_color_pair = curses.color_pair(3) 
         self.selected_color_pair = curses.color_pair(5)
+        self.user_data_base = UserDatabase()
         self.logger_ = UdrLogger()
         self.selected_index= 0
         self.get_data_from_source()
@@ -32,6 +34,10 @@ class NetworkAdaptorScreen:
         self.logger_.log_info("source data {}".format(json.dumps(response)))
         self.set_source_data(response)
     
+    def get_selected_interface_data(self):
+        data =  self.user_data_base.get_interfaces_data(MGMT_INTERFACE)
+        self.logger_.log_info("data mgmt data {}".format(json.dumps(data)))
+
     def set_network_data(self):
         inetrface = self.get_current_interface()
         if inetrface:

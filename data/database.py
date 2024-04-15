@@ -289,7 +289,7 @@ class UserDatabase:
         cursor.execute('''
         INSERT INTO interfaces (interface_name, selected_interface, create_on, update_on)
         VALUES (?, ?, COALESCE(
-            (SELECT create_on FROM default_settings WHERE interface_name = ?),
+            (SELECT create_on FROM interfaces WHERE interface_name = ?),
             CURRENT_TIMESTAMP),
             CURRENT_TIMESTAMP)
         ON CONFLICT(interface_name) 
@@ -299,3 +299,18 @@ class UserDatabase:
     ''', (interface_name, selected_interface))
         connection.commit()
         connection.close()
+
+    
+    def get_interfaces_data(self,interface_name):
+        connection = sqlite3.connect(self.db_location)
+        cursor = connection.cursor()
+        query = '''
+        SELECT * FROM interfaces
+        WHERE interface_name = ?
+        '''
+        cursor.execute(query, (interface_name,))
+        result = cursor.fetchone()
+        cursor.close()
+        connection.close()
+        return result
+
