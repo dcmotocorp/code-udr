@@ -125,7 +125,7 @@ class HostnameScreen:
         elif len(event.name) == 1:
             if  len(self.current_hostname) < 10  :
                 self.current_hostname += event.name
-                self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(1))
+                self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
                 self.current_password_win.refresh()
                 self.set_cursor_position()
             
