@@ -8,7 +8,7 @@ warnings.filterwarnings("ignore")
 from utils import shutdown_computer, get_ip_address, restart_computer
 from constant import SYSTEM_CONFIG_LABEL, PASSWORD_LABEL, USERNAME_LABEL, NOVAIGU_HTTP_LABEL, \
     NOVAIGU_PLATFORM_LABEL, NOVAIGU_LABEL, F2_CONFIGURATION_SYSTEM, SHUT_DOWN_RESTART, AUTHENTICATION_SCREEN, KEY_ESC, \
-    ESC_CANCLE, F11_RESTART, F2_SHUT_DOWN, PASSWORD, HOSTNAME, SSH, LOCK_DOWN_MODE,KEY_DOWN,KEY_UP,MANAGEMENT_INTERFACE, NETWORK_ADAPTOR, IP_CONFIGURATION, DNS_SERVER
+    ESC_CANCLE, F11_RESTART, F2_SHUT_DOWN, PASSWORD, HOSTNAME, SSH, LOCK_DOWN_MODE,KEY_DOWN,KEY_UP,MANAGEMENT_INTERFACE, NETWORK_ADAPTOR, IP_CONFIGURATION, DNS_SERVER,RESET_SYSTEM_CONFIG
 from dialogs.restart_shutdown import ShutdownRestart
 from dialogs.authentication import AuthenticationScreen
 from dialogs.update_password import UpdatePasswordScreen
@@ -20,6 +20,7 @@ from dialogs.configure_management import ConfigureManagement
 from dialogs.ip_configuration import IPConfigurationScreen
 from dialogs.net_work_adaptor import NetworkAdaptorScreen
 from dialogs.dns_configuration import DNSScreen
+from dialogs.reset_system import ResetScreen
 from logs.udr_logger import UdrLogger
 from  system_controller.systemcontroler import SystemControler
 from data.database import UserDatabase
@@ -145,6 +146,8 @@ class NovaiguApplication:
                 elif hasattr(self, 'lock_down_screen') and self.lock_down_screen != None and  self.lock_down_screen.update_status ==True :
                     self.lock_down_screen.handle_arrow_key(event.name)
                 
+                elif hasattr(self, 'reset_screen') and self.reset_screen !=None and self.reset_screen.update_status == True and current_screen == RESET_SYSTEM_CONFIG:  
+                    self.reset_screen.handle_arrow_key(event)
                 elif  hasattr(self, 'system_config') and self.system_config != None and self.system_config.active_status ==True :
                     self.system_config.handle_arrow_key(event.name)
             
@@ -170,6 +173,9 @@ class NovaiguApplication:
                 elif hasattr(self, 'ssh_screen') and self.ssh_screen != None and  self.ssh_screen.update_status ==True :
                     self.ssh_screen.handle_arrow_key(event.name)
 
+                elif hasattr(self, 'reset_screen') and self.reset_screen !=None and self.reset_screen.update_status == True and current_screen == RESET_SYSTEM_CONFIG:  
+                    self.reset_screen.handle_arrow_key(event)
+                
                 elif hasattr(self, 'update_password') and self.update_password != None and  self.update_password.update_status ==True :
                     self.update_password.handle_arrow_key(event)
 
@@ -211,6 +217,14 @@ class NovaiguApplication:
                     self.reset_system_config_screen()
                     self.host_name = None
                     self.logger_.log_info("Clear pop up hostname screen")
+                
+                elif current_screen == RESET_SYSTEM_CONFIG and hasattr(self, 'reset_screen')  and self.reset_screen !=None and self.reset_screen.update_status == True :
+                    self.system_config.active_status = True
+                    self.system_config.update_password_screen = False 
+                    self.reset_screen.clear()
+                    self.reset_system_config_screen()
+                    self.reset_screen = None
+                    self.logger_.log_info("Clear pop up reset_screen screen")
 
                 
                 elif current_screen == SSH and hasattr(self, 'ssh_screen')  and self.ssh_screen !=None and self.ssh_screen.update_status == True :
@@ -307,8 +321,7 @@ class NovaiguApplication:
             if self.popup_window.popup_win:
                 self.logger_.log_info("shut down system  press f2")
                 self.system_controller.shutdown_system()
-
-            else:
+            elif not current_screen:
                 self.username_input = ""
                 self.password_input = ""
                 self.set_main_screen_black()
@@ -321,7 +334,8 @@ class NovaiguApplication:
                 self.system_controller.restart_computer()
     
         elif event.name == "f12":
-            self.create_shut_down_restart_pop_up()
+            if not current_screen:
+                self.create_shut_down_restart_pop_up()
 
         elif event.name =="shift":
             
@@ -419,23 +433,37 @@ class NovaiguApplication:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
                         self.host_name = HostnameScreen(self.screen_height, self.screen_width,self)
-                        self.host_name.update_status = True    
+                        self.host_name.update_status = True 
+                elif current_screen == RESET_SYSTEM_CONFIG:
+                    if   hasattr(self, 'reset_screen')  and self.reset_screen !=None  and self.reset_screen.update_status == True  :
+                        self.system_config.active_status = True
+                        self.system_config.update_password_screen = False 
+                        self.reset_screen.clear()
+                        self.reset_system_config_screen()
+                        self.reset_screen = None
+                        curses.curs_set(0)
+                    else:
+                        self.set_main_screen_black()
+                        self.system_config.set_sytem_config_screen_dark()
+                        self.reset_screen = ResetScreen(self.screen_height, self.screen_width,self)
+                        self.reset_screen.update_status = True    
                 elif current_screen == SSH:
                      
                     if   hasattr(self, 'ssh_screen')  and self.ssh_screen !=None  and self.ssh_screen.update_status == True  :
                         try:
                             selected_value = self.ssh_screen.current_label_head
                             self.logger_.log_info("ssh screen username {} selected_value {}".format(self.username_input,selected_value))
-
+                            current_user_name = self.user_data_base.get_current_login()
+                            self.logger_.log_info("ssh current_user_name {}".format(current_user_name))
                             if selected_value == 0:    
                                 self.logger_.log_info("inside 0 ssh screen username {} selected_value {}".format(self.username_input,selected_value))
-                                self.user_data_base.update_user_settings(self.username_input,ssh_enable=True)
+                                
+                                self.user_data_base.update_user_settings(current_user_name,ssh_enable=True)
                                 self.system_controller.enable_ssh()
                             elif selected_value == 1:
                                 self.logger_.log_info("inside 1 ssh screen username {} selected_value {}".format(self.username_input,selected_value))
-                                self.user_data_base.update_user_settings(self.username_input,ssh_enable=False)
+                                self.user_data_base.update_user_settings(current_user_name,ssh_enable=False)
                                 self.system_controller.disable_ssh() 
-
                             self.system_config.active_status = True
                             self.system_config.update_password_screen = False 
                             self.ssh_screen.clear()
@@ -443,6 +471,7 @@ class NovaiguApplication:
                             self.ssh_screen = None
                         except Exception as ex:
                             self.logger_.log_info("Exception occure while cleaning ssh screen  {}".format(str(ex)))
+                
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
@@ -502,7 +531,7 @@ class NovaiguApplication:
                             if hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
                                 try:
                                     current_selected_interface = self.net_work_screen.get_current_interface()
-                                    if current_selected_interface:
+                                    if current_selected_interface is not None:
                                         self.user_data_base.add_interface("MGMT_INTERFACE",current_selected_interface)
                                 except Exception as ex:
                                     self.logger_.log_info("Exception occure while adding data into interface {}".format(str(ex)))    
@@ -598,6 +627,9 @@ class NovaiguApplication:
                 
             elif hasattr(self, 'lock_down_screen') and self.lock_down_screen !=None and self.lock_down_screen.update_status == True and current_screen == LOCK_DOWN_MODE:  
                 self.lock_down_screen.handle_arrow_key(event)
+            
+            elif hasattr(self, 'reset_screen') and self.reset_screen !=None and self.reset_screen.update_status == True and current_screen == RESET_SYSTEM_CONFIG:  
+                self.reset_screen.handle_arrow_key(event)
             
             elif   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
                 selected_index = self.configuration_management_screen.selected_index
