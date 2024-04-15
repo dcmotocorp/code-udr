@@ -44,6 +44,7 @@ class NetworkAdaptorScreen:
             for index,_rs in enumerate(self.labels):
                 self.logger_.log_info("data[2] mgmt data {} {}".format(data[2],_rs[0]))
                 if data[2] == _rs[0]:
+                    self.logger_.log_info("index mgmt index {}".format(index))
                     self.current_selected_label_index = index
 
     def set_network_data(self):
