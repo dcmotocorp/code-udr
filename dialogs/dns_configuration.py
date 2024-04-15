@@ -25,7 +25,7 @@ class DNSScreen:
         self.user_data_base = UserDatabase()
         self.system_controller = SystemControler()
         self.primary = "192.168.1.1"
-        self.starting_state ==True
+        self.starting_state =True
         self.secondary =  "192.168.1.1"
         self.input_current_index_status = "prim"
         self.get_dns_priomary_secondary()
