@@ -33,6 +33,7 @@ class NetworkAdaptorScreen:
         response = self.remove_duplicate_data(data)
         self.logger_.log_info("source data {}".format(json.dumps(response)))
         self.set_source_data(response)
+        self.get_selected_interface_data()
     
     def get_selected_interface_data(self):
         data =  self.user_data_base.get_interfaces_data(MGMT_INTERFACE)
