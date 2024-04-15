@@ -54,7 +54,7 @@ class DNSScreen:
         popup_bottom_height = ip_screen_height - popup_top_height
         
         user_input_y = popup_y + popup_top_height + 5
-        user_input_x = popup_x + 30
+        user_input_x = popup_x + 34
         self.primary_change = curses.newwin(1, 16, user_input_y, user_input_x)
         self.primary_change.bkgd(' ', curses.color_pair(2))
         self.primary_change.refresh()
@@ -96,9 +96,9 @@ class DNSScreen:
 
     def set_up_in_address_field(self):
         # ad ip config 
-        ip_adrress_label = "Primary DNS Server :  [                     ]"
+        ip_adrress_label = "Primary DNS Server :       [                     ]"
         self.auth_bottom_win.addstr(5, 8, ip_adrress_label, curses.color_pair(3))
-        mask_adrress_label = "Secondary DNS Server :[                    ]"
+        mask_adrress_label = "Secondary DNS Server :   [                    ]"
         self.auth_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
         self.auth_bottom_win.refresh()
         self.create_update_dns_address()
