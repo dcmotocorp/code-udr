@@ -65,6 +65,17 @@ class UserDatabase:
             )
         ''')
 
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS interfaces (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            interface_name TEXT UNIQUE,
+            selected_interface TEXT,
+            create_on DATETIME,
+            update_on DATETIME
+            )
+        ''')
+
+
         connection.commit()
         connection.close()
     def add_user(self, username, password, password_update=False):
@@ -267,3 +278,20 @@ class UserDatabase:
         # If not found, return None
         return result if result else None
         
+    
+    def add_interface(self,interface_name, selected_interface):
+        connection = sqlite3.connect(self.db_location)
+        cursor = connection.cursor()
+        cursor.execute('''
+        INSERT INTO interfaces (interface_name, selected_interface, create_on, update_on)
+        VALUES (?, ?, COALESCE(
+            (SELECT create_on FROM default_settings WHERE interface_name = ?),
+            CURRENT_TIMESTAMP),
+            CURRENT_TIMESTAMP)
+        ON CONFLICT(interface_name) 
+        DO UPDATE SET
+            selected_interface = excluded.selected_interface,
+            update_on = CURRENT_TIMESTAMP
+    ''', (interface_name, selected_interface))
+        connection.commit()
+        connection.close()
