@@ -3,7 +3,7 @@ from logs.udr_logger import UdrLogger
 from dialogs.system_config import SystemConfig
 from constant import KEY_UP,KEY_DOWN
 from data.database import UserDatabase
-
+import json
 
 class SSHScreen:
     def __init__(self, screen_height, screen_width,app):
