@@ -30,6 +30,7 @@ class IPConfigurationScreen:
         self.ip_address = "192.168.1.1"
         self.sub_mask =  "192.168.1.1"
         self.gate_Way =  "192.168.1.1"
+        self.starting_state =True
         self.input_current_index_status="ip"
         self.user_data_base = UserDatabase()
         self.get_default_Setting()
@@ -170,14 +171,28 @@ class IPConfigurationScreen:
 
         
          # Add labels to popup_bottom_win
-        for index, label in enumerate(self.labels):
-            color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
-            if self.current_seleected_parameter == index:
-                    self.ip_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
-            else:
-                self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
+        if not self.current_seleected_parameter:
+        
+            for index, label in enumerate(self.labels):
+                color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                if self.current_seleected_parameter == index:
+                        self.ip_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+                else:
+                    self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
 
-            self.ip_bottom_win.addstr( 2+ index, 5, label, color_pair)
+                self.ip_bottom_win.addstr( 2+ index, 5, label, color_pair)
+        else:
+            if self.current_seleected_parameter and self.starting_state ==True :
+                self.starting_state =False 
+                for index, label in enumerate(self.labels):
+                # color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                    if self.current_seleected_parameter == index:
+                            self.ip_bottom_win.addstr( 2+ index, 2, "[0]",  self.selected_color_pair)
+                    else:
+                        self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", self.normal_color_pair)
+
+                    self.ip_bottom_win.addstr( 2+ index, 5, label, color_pair)
+
         
         
 
