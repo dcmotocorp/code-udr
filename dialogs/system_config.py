@@ -21,12 +21,12 @@ class SystemConfig:
         self.label_count = len(self.labels)
         self.selected_color_pair = curses.color_pair(5)  # Color pair for selected label
         self.normal_color_pair = curses.color_pair(4)    # Color pair for normal label
-        self.sys_config ={PASSWORD:["Set/Change","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"],
-                            HOSTNAME: ["Set/Change","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"] ,
+        self.sys_config ={PASSWORD:["Set/Change","To prevent unautherized access to this system use ","complex password with minimum lenth of 14 characters"],
+                            HOSTNAME: ["Set/Change","To prevent unautherized access to this system use ","complex password with minimum lenth of 14 characters"] ,
                             MANAGEMENT_INTERFACE:["Configure Management Interface","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"] ,
                             SSH:["SSH","Enable of disable SSH Service",""],
                             LOCK_DOWN_MODE:["Enter/Change Lockdown Mode","Enabling Lockdown Mode will make Following changes","1- Disable the management interface","2 -Disable all user accounts except root access to the console interface.","3- Disable SSH","To exit lockdown made you will need physical access to the UDF from the consolde interface and login with the root creadentials."],
-                            RESET_SYSTEM_CONFIG:["RESET_SYSTEM_CONFIG","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"]}
+                            RESET_SYSTEM_CONFIG:["Reset System Configuration","To prevent unautherized access to this system use","complex password with minimum lenth of 14 characters"]}
         
     def create_system_configuration(self):
         sc_config_height, sc_config_width = int(self.screen_height * 0.98), int(self.screen_width * 0.99)

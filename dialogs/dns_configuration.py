@@ -25,6 +25,7 @@ class DNSScreen:
         self.user_data_base = UserDatabase()
         self.system_controller = SystemControler()
         self.primary = "192.168.1.1"
+        self.starting_state ==True
         self.secondary =  "192.168.1.1"
         self.input_current_index_status = "prim"
         self.get_dns_priomary_secondary()
@@ -136,11 +137,14 @@ class DNSScreen:
         for index, label in enumerate(self.labels):
             color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
             if index == self.current_selected_label_index:
-                    self.auth_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+                if self.starting_state == True:
+                    self.starting_state = False
+                    color_pair = self.selected_color_pair
+                self.auth_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
             else:
                 self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
             self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
-
+     
 
         # Add label to popup_bottom_win
         label_text_bottom_esc = "<Space> Selection"
