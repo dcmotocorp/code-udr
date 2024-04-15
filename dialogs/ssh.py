@@ -70,7 +70,7 @@ class SSHScreen:
         else:
             values = ["[ ] enable", "[ ] disable"]
 
-        self.logger_.log_info("ssh user collected data self.current_label_head screen data {} {}".format(self.current_label_head,json.dumps(valuess)))
+        self.logger_.log_info("ssh user collected data self.current_label_head screen data {} {}".format(self.current_label_head,json.dumps(values)))
         # Add labels to popup_bottom_win
         for index, label in enumerate(values):
             color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
