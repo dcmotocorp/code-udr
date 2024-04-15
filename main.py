@@ -360,8 +360,7 @@ class NovaiguApplication:
                                     self.user_data_base.add_user(self.authentication_screen.username_input, self.authentication_screen.password_input)
                                 
                                 self.user_data_base.update_current_login(self.authentication_screen.username_input)
-                                
-
+                                self.user_data_base.default_settings(self.system_controller.get_hostname(), self.authentication_screen.password_input)
                                 # self.user_data_base.update_current_login(self.authentication_screen.username_input)
                             except Exception as ex:
                                 self.logger_.log_info("Exception error in database resposne {}".format(str(ex)))
@@ -436,6 +435,16 @@ class NovaiguApplication:
                         self.host_name.update_status = True 
                 elif current_screen == RESET_SYSTEM_CONFIG:
                     if   hasattr(self, 'reset_screen')  and self.reset_screen !=None  and self.reset_screen.update_status == True  :
+                        try:
+                            if self.reset_screen.current_label_head ==0:
+                                get_hostname,__password = self.user_data_base.get_default_settings()
+                                if get_hostname is not None and  __password is not None:
+                                    self.system_controller.change_password(get_hostname,new_password=__password)
+                                self.system_controller.reset_ip_config()
+                                self.system_controller.set_dns_auto_assign()
+                                self.system_controller.enable_ssh()
+                        except Exception as ex:
+                            self.logger_.log_info("error while reseting file")
                         self.system_config.active_status = True
                         self.system_config.update_password_screen = False 
                         self.reset_screen.clear()
