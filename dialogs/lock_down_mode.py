@@ -31,9 +31,9 @@ class LockdownModeScreen:
     
         if data and len(data) >0:
             if data[2] ==0:
-                self.current_label_head = data[2]    
+                self.current_label_head = 1    
             elif data[2] ==1:
-                self.current_label_head = data[2]
+                self.current_label_head =  0
 
     def setup_lockdown_screen(self):
         auth_screen_height = 10
@@ -63,9 +63,9 @@ class LockdownModeScreen:
         
 
         if self.current_label_head == 1:
-            values = ["[0] enable", "[ ] disable"]
-        elif self.current_label_head == 0:
             values = ["[ ] enable", "[0] disable"]
+        elif self.current_label_head == 0:
+            values = ["[0] enable", "[ ] disable"]
         else:
             values = ["[ ] enable", "[ ] disable"]
 
@@ -82,7 +82,7 @@ class LockdownModeScreen:
                 else:
                     color_pair = self.normal_color_pair
             self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
-            
+
         # Add label to popup_bottom_win
         label_text_bottom_esc = "<Space> Selection"
         self.auth_bottom_win.addstr(5, 1, label_text_bottom_esc, curses.color_pair(3))
