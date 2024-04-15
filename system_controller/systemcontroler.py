@@ -357,18 +357,23 @@ class SystemControler:
         except Exception as e:
             return []
     
+
+
+
     def enable_ssh(self):
         try:
-            subprocess.run(["sudo", "systemctl", "enable", "ssh"])
-            subprocess.run(["sudo", "systemctl", "start", "ssh"])
+            subprocess.run(["sudo", "systemctl", "enable", "ssh"], stderr=subprocess.DEVNULL)
+            subprocess.run(["sudo", "systemctl", "start", "ssh"], stderr=subprocess.DEVNULL)
         except Exception as ex:
-            self.logger_.log_info("Exception occure while cleaning enable screen  {}".format(str(ex)))
+            self.logger_.log_info("Exception occurred while cleaning enable screen: {}".format(str(ex)))
+    
     def disable_ssh(self):
         try:
-            subprocess.run(["sudo", "systemctl", "stop", "ssh"])
-            subprocess.run(["sudo", "systemctl", "disable", "ssh"])
+            subprocess.run(["sudo", "systemctl", "stop", "ssh"], stderr=subprocess.DEVNULL)
+            subprocess.run(["sudo", "systemctl", "disable", "ssh"], stderr=subprocess.DEVNULL)
         except Exception as ex:
-            self.logger_.log_info("Exception occure while cleaning diable screen  {}".format(str(ex)))
+            self.logger_.log_info("Exception occurred while cleaning disable screen: {}".format(str(ex)))
+
     def start_all_containers(self):
         try:
             client = docker.from_env()
