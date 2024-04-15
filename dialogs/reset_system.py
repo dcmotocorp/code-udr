@@ -96,7 +96,7 @@ class ResetScreen:
     
     def handle_arrow_key(self, key):
     
-        if key == "up":
+        if key.name == "up":
             if self.selected_index == 1:
                  self.selected_index = 0
             else:
@@ -106,7 +106,7 @@ class ResetScreen:
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             
             self.auth_bottom_win.refresh()
-        elif key == "down":
+        elif key.name == "down":
             if self.selected_index == 0:
                  self.selected_index = 1
             else:
