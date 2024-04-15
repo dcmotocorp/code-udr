@@ -114,7 +114,10 @@ class NetworkAdaptorScreen:
         # Add labels to popup_bottom_win
         for index, label in enumerate(self.labels):
             color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
-            self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
+            if self.current_selected_label_index ==index:
+                self.auth_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+            else:
+                self.auth_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
             self.auth_bottom_win.addstr( 2+ index, 5, label[0], color_pair)
             self.auth_bottom_win.addstr( 2+ index, 15, label[1], color_pair)
             self.auth_bottom_win.addstr( 2+ index, 35, label[2], color_pair)
