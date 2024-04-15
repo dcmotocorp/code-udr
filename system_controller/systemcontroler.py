@@ -53,7 +53,7 @@ class SystemControler:
 
 
         
-    def change_password(self, user_name, old_password, new_password):
+    def change_password(self, user_name, old_password=None, new_password=None):
         try:
             # Prepare the command to change the password using chpasswd
             command = f"echo '{user_name}:{new_password}' | sudo chpasswd"
