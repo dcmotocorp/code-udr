@@ -256,7 +256,7 @@ class UserDatabase:
                 logger_.log_info("user values  update_params{}".format(json.dumps(update_params)))
                 cursor.execute(update_query, update_params)
                 connection.commit()
-                connection.close()
+                
 
         else:
             # Insert new record
