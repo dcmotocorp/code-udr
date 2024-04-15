@@ -40,7 +40,7 @@ class NetworkAdaptorScreen:
         self.logger_.log_info("data mgmt data {}".format(json.dumps(data)))
         if data and len(data)>0:
             for index,_rs in enumerate(self.labels):
-                if data[2] == _rs.get('interface'):
+                if data[2] == _rs[0]:
                     self.current_selected_label_index = index
 
     def set_network_data(self):
