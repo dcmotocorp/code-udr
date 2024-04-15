@@ -70,13 +70,13 @@ class IPConfigurationScreen:
         ip_input_x = popup_x + 6
 
 
-        ip_adrress_label = "IP Address :         [                      ]"
+        ip_adrress_label = "IP Address :      [                      ]"
         self.ip_bottom_win.addstr(5, 8, ip_adrress_label, curses.color_pair(3))
 
 
 
 
-        mask_adrress_label = "Subnet Mask :     [                     ]"
+        mask_adrress_label = "Subnet Mask :     [                   ]"
         self.ip_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
 
         getway_label = "Default Getway :  [                   ]"
