@@ -40,9 +40,9 @@ class DNSScreen:
         self.logger_.log_info(" primary and secondaru current data  {}".format(json.dumps(data)))
         if data and len(data) >0 :
             if data[3] ==0:
-                self.current_selected_label_index = 1   
+                self.current_selected_label_index = 0 
             elif data[3] ==1:
-                self.current_selected_label_index = 0
+                self.current_selected_label_index = 1
 
     
     def create_update_dns_address(self):
