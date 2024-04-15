@@ -89,7 +89,7 @@ class DNSScreen:
         primary,secondary = self.system_controller.get_dns(interface)
         if not primary:
             primary = ""
-        if secondary:
+        if not secondary:
             secondary = ""
         self.primary = primary
         self.secondary = secondary
