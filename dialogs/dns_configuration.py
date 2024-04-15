@@ -55,7 +55,7 @@ class DNSScreen:
         
         user_input_y = popup_y + popup_top_height + 5
         user_input_x = popup_x + 34
-        self.primary_change = curses.newwin(1, 16, user_input_y, user_input_x)
+        self.primary_change = curses.newwin(1, 14, user_input_y, user_input_x)
         self.primary_change.bkgd(' ', curses.color_pair(2))
         self.primary_change.refresh()
     
@@ -64,7 +64,7 @@ class DNSScreen:
         
         #set mask 
         user_input_y +=1 
-        self.secondary_change = curses.newwin(1, 16, user_input_y, user_input_x)
+        self.secondary_change = curses.newwin(1, 14, user_input_y, user_input_x)
         self.secondary_change.bkgd(' ', curses.color_pair(2))
         self.secondary_change.refresh()
     
@@ -258,13 +258,13 @@ class DNSScreen:
         
         elif len(key.name) == 1:
             self.logger_.log_info("=inside========ip logegr key name {}".format(key.name))
-            if   hasattr(self, 'primary_change') and self.primary_change !=None and self.input_current_index_status=="prim" and len(self.primary)<15:
+            if   hasattr(self, 'primary_change') and self.primary_change !=None and self.input_current_index_status=="prim" and len(self.primary)<13:
                 self.primary +=key.name
                 self.primary_change.addstr(0, 0, self.primary, curses.color_pair(1))
                 self.primary_change.refresh()
                 self.set_cursor_position()
             
-            elif  hasattr(self, 'secondary_change') and self.secondary_change !=None and self.input_current_index_status=="seco" and len(self.secondary)<15:
+            elif  hasattr(self, 'secondary_change') and self.secondary_change !=None and self.input_current_index_status=="seco" and len(self.secondary)<13:
                 self.secondary +=key.name
                 self.secondary_change.addstr(0, 0, self.secondary, curses.color_pair(1))
                 self.secondary_change.refresh()
