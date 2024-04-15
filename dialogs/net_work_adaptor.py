@@ -112,7 +112,7 @@ class NetworkAdaptorScreen:
         self.auth_bottom_win.addstr( 1, 15,"Mac Address",self.normal_color_pair)
         self.auth_bottom_win.addstr( 1, 35, "Status",self.normal_color_pair)
 
-        if current_selected_label_index and self.starting_state ==True:
+        if self.current_selected_label_index and self.starting_state ==True:
             self.starting_state = False 
             for index, label in enumerate(self.labels):
                 # color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
