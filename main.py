@@ -240,12 +240,7 @@ class NovaiguApplication:
                         selected_label = self.configuration_management_screen.labels[selected_index]
                         if selected_label ==  IP_CONFIGURATION and  hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
                             
-                            if self.ip_config_adaptor.current_selected_label_index ==1 :
-                                self.ip_config_adaptor.set_manually_ip() 
-                            elif self.ip_config_adaptor.current_selected_label_index ==0:
-                                self.ip_config_adaptor.set_ip_address_automatic()
-                            else:
-                                pass 
+                            
                             self.ip_config_adaptor.clear()
                             self.ip_config_adaptor = None
                             self.configuration_management_screen.reset_screen_color()
@@ -485,9 +480,12 @@ class NovaiguApplication:
                         if selected_label ==  IP_CONFIGURATION:
                             if hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
                                 if self.ip_config_adaptor.current_seleected_parameter ==0:
+                                    self.ip_config_adaptor.set_ip_address_automatic()
                                     self.user_data_base.update_user_settings(self.username_input,ip_manual=False) 
                                 elif self.ip_config_adaptor.current_seleected_parameter ==1:
+                                    self.ip_config_adaptor.set_manually_ip() 
                                     self.user_data_base.update_user_settings(self.username_input,ip_manual=True)
+                                
                                 self.ip_config_adaptor.clear()
                                 self.ip_config_adaptor = None
                                 self.configuration_management_screen.reset_screen_color()
@@ -502,6 +500,13 @@ class NovaiguApplication:
 
                         elif  selected_label ==  NETWORK_ADAPTOR:
                             if hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
+                                try:
+                                    current_selected_interface = self.net_work_screen.get_current_interface()
+                                    if current_selected_interface:
+                                        self.user_data_base.add_interface("MGMT_INTERFACE",current_selected_interface)
+                                except Exception as ex:
+                                    self.logger_.log_info("Exception occure while adding data into interface {}".format(str(ex)))    
+                                
                                 self.net_work_screen.set_network_data()
                                 self.net_work_screen.clear()
                                 self.net_work_screen = None
