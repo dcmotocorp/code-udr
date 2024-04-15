@@ -428,12 +428,12 @@ class NovaiguApplication:
                             self.logger_.log_info("ssh screen username {} selected_value {}".format(self.username_input,selected_value))
                             current_user_name = self.user_data_base.get_current_login()
                             self.logger_.log_info("ssh current_user_name {}".format(current_user_name))
-                            if selected_value == 0:    
+                            if selected_value == 1:    
                                 self.logger_.log_info("inside 0 ssh screen username {} selected_value {}".format(self.username_input,selected_value))
                                 
                                 self.user_data_base.update_user_settings(current_user_name,ssh_enable=True)
                                 self.system_controller.enable_ssh()
-                            elif selected_value == 1:
+                            elif selected_value == 0:
                                 self.logger_.log_info("inside 1 ssh screen username {} selected_value {}".format(self.username_input,selected_value))
                                 self.user_data_base.update_user_settings(current_user_name,ssh_enable=False)
                                 self.system_controller.disable_ssh() 
