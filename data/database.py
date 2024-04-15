@@ -1,6 +1,7 @@
 import sqlite3
 import os
 import json 
+from logs.udr_logger import UdrLogger
 
 class UserDatabase:
     _instance = None
@@ -8,7 +9,7 @@ class UserDatabase:
     root_directory = os.path.dirname(script_path)
     db_location = os.path.join(root_directory,"user_database.db")
     db_directory = root_directory
-
+    logger_ = UdrLogger()
     def __new__(cls):
         if not cls._instance:
             cls._instance = super(UserDatabase, cls).__new__(cls)
@@ -230,7 +231,7 @@ class UserDatabase:
         # Check if the user exists
         cursor.execute('SELECT 1 FROM user_settings WHERE username = ?', (username,))
         user_exists = cursor.fetchone() is not None
-        self.logger_.log_info("Update value of user")
+        logger_.log_info("Update value of user")
         if user_exists:
             # Update non-None values
             update_values = {}
@@ -242,7 +243,7 @@ class UserDatabase:
                 update_values['ip_manual'] = ip_manual
             if dns_manual is not None:
                 update_values['dns_manual'] = dns_manual
-            self.logger_.log_info("user values {}".format(json.dumps(update_values)))
+            logger_.log_info("user values {}".format(json.dumps(update_values)))
             if update_values:
                 update_query = 'UPDATE user_settings SET '
                 update_query += ', '.join(f'{key} = ?' for key in update_values)
@@ -250,7 +251,7 @@ class UserDatabase:
 
                 update_params = tuple(update_values[key] for key in update_values)
                 update_params += (username,)
-                self.logger_.log_info("user values  update_params{}".format(json.dumps(update_params)))
+                logger_.log_info("user values  update_params{}".format(json.dumps(update_params)))
                 cursor.execute(update_query, update_params)
                 connection.commit()
                 connection.close()
