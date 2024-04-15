@@ -96,9 +96,9 @@ class DNSScreen:
 
     def set_up_in_address_field(self):
         # ad ip config 
-        ip_adrress_label = "Primary DNS Server :  [              ]"
+        ip_adrress_label = "Primary DNS Server :  [                     ]"
         self.auth_bottom_win.addstr(5, 8, ip_adrress_label, curses.color_pair(3))
-        mask_adrress_label = "Secondary DNS Server :[              ]"
+        mask_adrress_label = "Secondary DNS Server :[                    ]"
         self.auth_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
         self.auth_bottom_win.refresh()
         self.create_update_dns_address()
