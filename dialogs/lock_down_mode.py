@@ -32,9 +32,9 @@ class LockdownModeScreen:
         self.logger_.log_info("data for the lock down {}".format(json.dumps(data)))
         if data and len(data) >0:
             if data[2] ==0:
-                self.current_label_head = 0    
+                self.current_label_head = 1   
             elif data[2] ==1:
-                self.current_label_head =  1
+                self.current_label_head =  0
 
     def setup_lockdown_screen(self):
         auth_screen_height = 10
@@ -115,16 +115,31 @@ class LockdownModeScreen:
                  self.selected_index = 0
             else:
                  self.selected_index = 0
-            for index, label in enumerate(self.labels):
+            
+            if self.current_label_head == 1:
+                values = ["[ ] enable", "[0] disable"]
+            elif self.current_label_head == 0:
+                values = ["[0] enable", "[ ] disable"]
+            else:
+                values = ["[ ] enable", "[ ] disable"]
+            
+            for index, label in enumerate(values):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             self.auth_bottom_win.refresh()
+
         elif key == "down":
             if self.selected_index == 0:
                     self.selected_index = 1
             else:
                 self.selected_index = 1
-            for index, label in enumerate(self.labels):
+            if self.current_label_head == 1:
+                values = ["[ ] enable", "[0] disable"]
+            elif self.current_label_head == 0:
+                values = ["[0] enable", "[ ] disable"]
+            else:
+                values = ["[ ] enable", "[ ] disable"]
+            for index, label in enumerate(values):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             self.auth_bottom_win.refresh()
