@@ -26,12 +26,14 @@ class SSHScreen:
     def get_default_setting(self):
         data =  self.user_data_base.get_user_settings(self.app.username_input)
         users = self.user_data_base.select_all_users()
-    
+
+        self.logger_.log_info("ssh user collected data {}".format(json.dumps(data)))    
         if data and len(data) >0:
             if data[1] ==0:
                 self.current_label_head = data[1]    
             elif data[1] ==1:
                 self.current_label_head = data[1]
+        self.logger_.log_info("ssh user collected data self.current_label_head {}".format(self.current_label_head))
 
     def setup_hostname_screen(self):
         auth_screen_height = 10
@@ -60,6 +62,7 @@ class SSHScreen:
         label_y = (popup_top_height - 1) // 2  # Center vertically
         auth_top_win.addstr(label_y, label_x, label_text, curses.color_pair(4))
         
+        
         if self.current_label_head == 1:
             values = ["[ ] enable", "[0] disable"]
         elif self.current_label_head == 0:
@@ -67,12 +70,10 @@ class SSHScreen:
         else:
             values = ["[ ] enable", "[ ] disable"]
 
+        self.logger_.log_info("ssh user collected data self.current_label_head screen data {} {}".format(self.current_label_head,json.dumps(valuess)))
         # Add labels to popup_bottom_win
         for index, label in enumerate(values):
             color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
-            
-            
-            
             self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
 
 
