@@ -308,7 +308,7 @@ class IPConfigurationScreen:
                 self.ip_address = self.ip_address[:-1]
                 self.in_address_change.clear()
                 self.in_address_change.bkgd(' ', curses.color_pair(2)) 
-                self.in_address_change.addstr(0, 0, self.ip_address, curses.color_pair(1))
+                self.in_address_change.addstr(0, 0, self.ip_address, curses.color_pair(2))
                 self.in_address_change.refresh()
                 self.set_cursor_position()
             
@@ -316,7 +316,7 @@ class IPConfigurationScreen:
                 self.sub_mask = self.sub_mask[:-1]
                 self.sub_mask_change.clear()
                 self.sub_mask_change.bkgd(' ', curses.color_pair(2)) 
-                self.sub_mask_change.addstr(0, 0, self.sub_mask, curses.color_pair(1))
+                self.sub_mask_change.addstr(0, 0, self.sub_mask, curses.color_pair(2))
                 self.sub_mask_change.refresh()
                 self.set_cursor_position()
 
@@ -324,7 +324,7 @@ class IPConfigurationScreen:
                 self.gate_Way = self.gate_Way[:-1]
                 self.gate_Way_change.clear()
                 self.gate_Way_change.bkgd(' ', curses.color_pair(2)) 
-                self.gate_Way_change.addstr(0, 0, self.gate_Way, curses.color_pair(1))
+                self.gate_Way_change.addstr(0, 0, self.gate_Way, curses.color_pair(2))
                 self.gate_Way_change.refresh()
                 self.set_cursor_position()
 

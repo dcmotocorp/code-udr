@@ -24,9 +24,9 @@ class ConfigureManagement:
         self.label_count = len(self.labels)
         self.selected_color_pair = curses.color_pair(5)  # Color pair for selected label
         self.normal_color_pair = curses.color_pair(4)    # Color pair for normal label
-        self.sys_config = {NETWORK_ADAPTOR:["XXXXXXX","XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX","XXXXXXXXXXXXXXXXXXXXXXXXXXXX"],
-                            IP_CONFIGURATION: ["XXXXXXX","XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX","XXXXXXXXXXXXXXXXXXXXXXXXXXXX"] ,
-                            DNS_SERVER:["XXXXXXX","XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX","XXXXXXXXXXXXXXXXXXXXXXXXXXXX"] 
+        self.sys_config = {NETWORK_ADAPTOR:["Aapters","Explore connected networks effortlessly through the Network Adapter's",""],
+                            IP_CONFIGURATION: ["IP Configuration","Modify and update IP addresses for the management interface.","Ensure secure and efficient network management by customizing your \nIP settings"] ,
+                            DNS_SERVER:["DNS Service","Efficiently configure and select from available DNS","servers to optimize network performance and connectivity"] 
                          }
         
     def create_configuration_management(self):

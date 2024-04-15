@@ -260,13 +260,13 @@ class DNSScreen:
             self.logger_.log_info("=inside========ip logegr key name {}".format(key.name))
             if   hasattr(self, 'primary_change') and self.primary_change !=None and self.input_current_index_status=="prim" and len(self.primary)<13:
                 self.primary +=key.name
-                self.primary_change.addstr(0, 0, self.primary, curses.color_pair(1))
+                self.primary_change.addstr(0, 0, self.primary, curses.color_pair(2))
                 self.primary_change.refresh()
                 self.set_cursor_position()
             
             elif  hasattr(self, 'secondary_change') and self.secondary_change !=None and self.input_current_index_status=="seco" and len(self.secondary)<13:
                 self.secondary +=key.name
-                self.secondary_change.addstr(0, 0, self.secondary, curses.color_pair(1))
+                self.secondary_change.addstr(0, 0, self.secondary, curses.color_pair(2))
                 self.secondary_change.refresh()
                 self.set_cursor_position()
 
