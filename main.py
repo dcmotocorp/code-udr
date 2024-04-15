@@ -1,5 +1,9 @@
 import curses
 import keyboard
+import warnings
+
+# Suppress all warnings
+warnings.filterwarnings("ignore")
 
 from utils import shutdown_computer, get_ip_address, restart_computer
 from constant import SYSTEM_CONFIG_LABEL, PASSWORD_LABEL, USERNAME_LABEL, NOVAIGU_HTTP_LABEL, \
@@ -18,7 +22,7 @@ from dialogs.net_work_adaptor import NetworkAdaptorScreen
 from dialogs.dns_configuration import DNSScreen
 from logs.udr_logger import UdrLogger
 from  system_controller.systemcontroler import SystemControler
-from database import UserDatabase
+from data.database import UserDatabase
 
 class NovaiguApplication:
     def __init__(self, stdscr):
@@ -118,12 +122,14 @@ class NovaiguApplication:
         if event.name == KEY_DOWN  :
             try: 
                 
-                
-                
                 if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
                     
                     if hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
                         self.net_work_screen.handle_arrow_key(event)
+                    elif hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
+                        self.ip_config_adaptor.handle_arrow_key(event)
+                    elif hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
+                        self.dns_screen.handle_arrow_key(event)
                     else:
                         self.configuration_management_screen.handle_arrow_key(event.name)
                 
@@ -151,6 +157,10 @@ class NovaiguApplication:
                 if   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
                     if hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
                         self.net_work_screen.handle_arrow_key(event)
+                    elif hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
+                        self.ip_config_adaptor.handle_arrow_key(event)
+                    elif hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
+                        self.dns_screen.handle_arrow_key(event)
                     else:
                         self.configuration_management_screen.handle_arrow_key(event.name)
                 
@@ -230,23 +240,36 @@ class NovaiguApplication:
                         selected_label = self.configuration_management_screen.labels[selected_index]
                         if selected_label ==  IP_CONFIGURATION and  hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
                             
+                            if self.ip_config_adaptor.current_selected_label_index ==1 :
+                                self.ip_config_adaptor.set_manually_ip() 
+                            elif self.ip_config_adaptor.current_selected_label_index ==0:
+                                self.ip_config_adaptor.set_ip_address_automatic()
+                            else:
+                                pass 
                             self.ip_config_adaptor.clear()
                             self.ip_config_adaptor = None
                             self.configuration_management_screen.reset_screen_color()
-                            self.configuration_management_screen.handle_arrow_key("up")
+                            self.configuration_management_screen.refresh_screen()
 
                         elif selected_label ==  NETWORK_ADAPTOR and  hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
                             
                             self.net_work_screen.clear()
                             self.net_work_screen = None
                             self.configuration_management_screen.reset_screen_color()
-                            self.configuration_management_screen.handle_arrow_key("up")
+                            self.configuration_management_screen.refresh_screen()
                         
                         elif selected_label ==  DNS_SERVER and  hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
+                            
+                            if self.dns_screen.current_selected_label_index ==1:
+                                self.dns_screen.set_manually_dns()
+                            elif self.dns_screen.current_selected_label_index==0:
+                                self.dns_screen.set_auto_dns()
+                            else:
+                                pass 
                             self.dns_screen.clear()
                             self.dns_screen = None
                             self.configuration_management_screen.reset_screen_color()
-                            self.configuration_management_screen.handle_arrow_key("up")
+                            self.configuration_management_screen.refresh_screen()
                     
                         else:
                             
@@ -306,22 +329,31 @@ class NovaiguApplication:
             self.create_shut_down_restart_pop_up()
 
         elif event.name =="shift":
-            if hasattr(self, 'authentication_screen') and self.authentication_screen !=None:
+            
+            if current_screen == PASSWORD and  hasattr(self, 'update_password')  and self.update_password !=None  and self.update_password.update_status == True  :
+                self.update_password.handle_key_event(event)
+            
+            elif hasattr(self, 'authentication_screen') and self.authentication_screen !=None:
                 self.authentication_screen.handle_key_event(event)
 
         
         elif event.name == "enter":
             if hasattr(self, 'authentication_screen') and self.authentication_screen != None  :
-                if (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 )  and not hasattr(self, 'system_config'):
+                if (len(self.authentication_screen.username_input) > 0 and len(self.authentication_screen.password_input) > 0 )  and not hasattr(self, 'system_config'):
                     self.logger_.log_info("Current username and password match the condition")
                     response = self.system_controller.authenticate(self.authentication_screen.username_input,self.authentication_screen.password_input)
                     self.logger_.log_info("authentication resposne {}".format(response))
                     if response:
                         try:
-                            
-                            try :
-                                self.user_data_base.default_settings(self.system_controller.get_hostname(), self.authentication_screen.password_input)
+                            try :                                
+                                check_username = self.user_data_base.get_user_details(self.authentication_screen.username_input)
+                                if not check_username:
+                                    self.user_data_base.add_user(self.authentication_screen.username_input, self.authentication_screen.password_input)
+                                
                                 self.user_data_base.update_current_login(self.authentication_screen.username_input)
+                                
+
+                                # self.user_data_base.update_current_login(self.authentication_screen.username_input)
                             except Exception as ex:
                                 self.logger_.log_info("Exception error in database resposne {}".format(str(ex)))
                             self.username_input = self.authentication_screen.username_input
@@ -334,28 +366,45 @@ class NovaiguApplication:
                         except Exception as ex:
                             self.logger_.log_info("Exception while switching to config screen {}".format(ex))
                             pass 
-                elif  (len(self.authentication_screen.username_input) > 0 or len(self.authentication_screen.password_input) > 0 )  and  hasattr(self, 'system_config') and self.system_config == None:
+                elif  (len(self.authentication_screen.username_input) > 0 and len(self.authentication_screen.password_input) > 0 )  and  hasattr(self, 'system_config') and self.system_config == None:
                     try:
-                        self.authentication_screen. clear_input_field()
-                        self.system_config = SystemConfig(self.stdscr.getmaxyx()[0], self.stdscr.getmaxyx()[1], self)
-                        self.system_config.create_system_configuration()
-                        self.system_config.update_password_screen = True 
+                        response = self.system_controller.authenticate(self.authentication_screen.username_input,self.authentication_screen.password_input)
+                        self.logger_.log_info("authentication resposne {}".format(response))
+                        if response:
+                            try:
+                                check_username = self.user_data_base.get_user_details(self.authentication_screen.username_input)
+                                if not check_username:
+                                    self.user_data_base.add_user(self.authentication_screen.username_input, self.authentication_screen.password_input)
+                                self.user_data_base.update_current_login(self.authentication_screen.username_input)
+                                # self.user_data_base.update_current_login(self.authentication_screen.username_input)
+                            except Exception as ex:
+                                self.logger_.log_info("Exception error in database resposne {}".format(str(ex)))
+                            self.authentication_screen.clear_input_field()
+                            self.system_config = SystemConfig(self.stdscr.getmaxyx()[0], self.stdscr.getmaxyx()[1], self)
+                            self.system_config.create_system_configuration()
+                            self.system_config.update_password_screen = True 
                     except Exception as ex:
                         self.logger_.log_info("Exception while creating to config screen {}".format(ex))
 
                 
                 elif current_screen == PASSWORD:
                     if  hasattr(self, 'update_password')  and self.update_password !=None  and self.update_password.update_status == True  :
-                        if self.update_password.current_password == self.password_input: 
-                            self.logger_.log_info("self.username_input {} == self.password_input{}".format(self.username_input,self.password_input,self.update_password.new_password))
+                        
+                        current_user_name = self.user_data_base.get_current_login()
+                        response = self.system_controller.authenticate(current_user_name,self.update_password.current_password)
+                        if response:
+                        # if self.update_password.current_password == self.password_input: 
+                            self.logger_.log_info("self.username_input {} == self.password_input{}".format(self.username_input,self.password_input))
                             status = self.system_controller.change_password(self.username_input,self.password_input,self.update_password.new_password)
                             if status:
+                                self.user_data_base.change_password(self.username_input,self.update_password.new_password)
                                 self.system_config.active_status = True
                                 self.system_config.update_password_screen = False 
                                 self.update_password.clear()
                                 self.reset_system_config_screen()
                                 self.update_password = None
                                 curses.curs_set(0)
+                                
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
@@ -379,36 +428,50 @@ class NovaiguApplication:
                 elif current_screen == SSH:
                      
                     if   hasattr(self, 'ssh_screen')  and self.ssh_screen !=None  and self.ssh_screen.update_status == True  :
-                        
-                        selected_value = self.ssh_screen.current_label_head
-                        if selected_value:
-                            if selected_value == 0:
+                        try:
+                            selected_value = self.ssh_screen.current_label_head
+                            self.logger_.log_info("ssh screen username {} selected_value {}".format(self.username_input,selected_value))
+
+                            if selected_value == 0:    
+                                self.logger_.log_info("inside 0 ssh screen username {} selected_value {}".format(self.username_input,selected_value))
+                                self.user_data_base.update_user_settings(self.username_input,ssh_enable=True)
                                 self.system_controller.enable_ssh()
-                            else:
-                                self.system_controller.disable_ssh()    
+                            elif selected_value == 1:
+                                self.logger_.log_info("inside 1 ssh screen username {} selected_value {}".format(self.username_input,selected_value))
+                                self.user_data_base.update_user_settings(self.username_input,ssh_enable=False)
+                                self.system_controller.disable_ssh() 
+
                             self.system_config.active_status = True
                             self.system_config.update_password_screen = False 
                             self.ssh_screen.clear()
                             self.reset_system_config_screen()
                             self.ssh_screen = None
+                        except Exception as ex:
+                            self.logger_.log_info("Exception occure while cleaning ssh screen  {}".format(str(ex)))
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
                         self.ssh_screen = SSHScreen(self.screen_height, self.screen_width,self)
                         self.ssh_screen.update_status = True 
+                
+                
                 elif current_screen == LOCK_DOWN_MODE:
                     if   hasattr(self, 'lock_down_screen')  and self.lock_down_screen !=None  and self.lock_down_screen.update_status == True  :
                         selected_value = self.lock_down_screen.current_label_head
-                        if selected_value:
-                            if selected_value == 0:
-                                self.system_controller.enable_lockdown_mode()
-                            else:
-                                self.system_controller.exit_lockdown_mode()
-                            self.system_config.active_status = True
-                            self.system_config.update_password_screen = False 
-                            self.lock_down_screen.clear()
-                            self.reset_system_config_screen()
-                            self.lock_down_screen = None
+                        
+                        if selected_value == 0:
+                            self.logger_.log_info("lock down screen username {}".format(self.username_input))
+                            self.user_data_base.update_user_settings(self.username_input,is_lockdown=True)
+                            self.system_controller.enable_lockdown_mode()
+                        elif selected_value == 1:
+                            self.logger_.log_info("lock down screen username else {}".format(self.username_input))
+                            self.user_data_base.update_user_settings(self.username_input,is_lockdown=False)
+                            self.system_controller.exit_lockdown_mode()
+                        self.system_config.active_status = True
+                        self.system_config.update_password_screen = False 
+                        self.lock_down_screen.clear()
+                        self.reset_system_config_screen()
+                        self.lock_down_screen = None
                     else:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
@@ -421,6 +484,10 @@ class NovaiguApplication:
                         selected_label = self.configuration_management_screen.labels[selected_index]
                         if selected_label ==  IP_CONFIGURATION:
                             if hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
+                                if self.ip_config_adaptor.current_seleected_parameter ==0:
+                                    self.user_data_base.update_user_settings(self.username_input,ip_manual=False) 
+                                elif self.ip_config_adaptor.current_seleected_parameter ==1:
+                                    self.user_data_base.update_user_settings(self.username_input,ip_manual=True)
                                 self.ip_config_adaptor.clear()
                                 self.ip_config_adaptor = None
                                 self.configuration_management_screen.reset_screen_color()
@@ -435,10 +502,12 @@ class NovaiguApplication:
 
                         elif  selected_label ==  NETWORK_ADAPTOR:
                             if hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
+                                self.net_work_screen.set_network_data()
                                 self.net_work_screen.clear()
                                 self.net_work_screen = None
                                 self.configuration_management_screen.reset_screen_color()
                                 self.configuration_management_screen.refresh_screen()                                
+                                
                                 
                             else:      
                                 self.configuration_management_screen.set_sytem_config_screen_dark()
@@ -448,6 +517,10 @@ class NovaiguApplication:
 
                         elif  selected_label ==  DNS_SERVER:
                             if hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
+                                if self.dns_screen.current_selected_label_index ==0:
+                                    self.user_data_base.update_user_settings(self.username_input,dns_manual=False)
+                                elif self.dns_screen.current_selected_label_index ==1:
+                                    self.user_data_base.update_user_settings(self.username_input,dns_manual=True)                                
                                 self.dns_screen.clear()
                                 self.dns_screen = None
                                 self.configuration_management_screen.reset_screen_color()
@@ -477,6 +550,14 @@ class NovaiguApplication:
         elif event.name == "tab" :
             if hasattr(self, 'update_password') and self.update_password !=None and current_screen == PASSWORD:
                 self.update_password.handle_key_event(event)
+            elif   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
+                selected_index = self.configuration_management_screen.selected_index
+                selected_label = self.configuration_management_screen.labels[selected_index]
+                if hasattr(self, 'ip_config_adaptor') and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True and selected_label == IP_CONFIGURATION:  
+                    self.ip_config_adaptor.handle_arrow_key(event)  
+                elif hasattr(self, 'dns_screen') and self.dns_screen !=None and self.dns_screen.update_status == True and selected_label == DNS_SERVER:  
+                    self.logger_.log_info("logg in configuration in  tab space config")
+                    self.dns_screen.handle_arrow_key(event)
             elif  hasattr(self, 'authentication_screen') and self.authentication_screen !=None :
                 self.authentication_screen.handle_key_event(event)
 
@@ -488,6 +569,15 @@ class NovaiguApplication:
             elif hasattr(self, 'host_name') and self.host_name !=None and self.host_name.update_status == True and current_screen == HOSTNAME:
                 self.host_name.handle_key_event(event)            
             
+            elif   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
+                selected_index = self.configuration_management_screen.selected_index
+                selected_label = self.configuration_management_screen.labels[selected_index]
+                if hasattr(self, 'ip_config_adaptor') and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True and selected_label == IP_CONFIGURATION:  
+                    self.ip_config_adaptor.handle_arrow_key(event)
+
+                elif hasattr(self, 'dns_screen') and self.dns_screen !=None and self.dns_screen.update_status == True and selected_label == DNS_SERVER:  
+                    self.logger_.log_info("logg in configuration in  back space config")
+                    self.dns_screen.handle_arrow_key(event)
 
             if self.current_selected == USERNAME_LABEL:
                 self.username_input = self.authentication_screen.get_username_input()
@@ -517,12 +607,28 @@ class NovaiguApplication:
                     
         else:
             if hasattr(self, 'update_password') and self.update_password !=None and  self.update_password.update_status == True and current_screen == PASSWORD:
+                self.logger_.log_info("logg in 593 ")
                 self.update_password.handle_key_event(event)
             elif hasattr(self, 'host_name') and self.host_name !=None and self.host_name.update_status == True and current_screen == HOSTNAME:
+                self.logger_.log_info("logg in 596 ")
                 self.host_name.handle_key_event(event)
+            elif   hasattr(self, 'configuration_management_screen')  and self.configuration_management_screen !=None  and self.configuration_management_screen.update_status == True  :
+                self.logger_.log_info("logg in configuration ")
+                selected_index = self.configuration_management_screen.selected_index
+                selected_label = self.configuration_management_screen.labels[selected_index]
+                if hasattr(self, 'ip_config_adaptor') and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True and selected_label == IP_CONFIGURATION:  
+                    self.logger_.log_info("logg in configuration in config")
+                    self.ip_config_adaptor.handle_arrow_key(event)
+                elif hasattr(self, 'dns_screen') and self.dns_screen !=None and self.dns_screen.update_status == True and selected_label == DNS_SERVER:  
+                    self.logger_.log_info("logg in configuration in  dns config")
+                    self.dns_screen.handle_arrow_key(event)
+            
             elif hasattr(self, 'authentication_screen') and self.authentication_screen !=None:
                 self.authentication_screen.handle_key_event(event)
+            
+            
             else:
+                self.logger_.log_info("logg in else ")
                 pass 
                 
 
