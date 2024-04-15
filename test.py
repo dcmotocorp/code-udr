@@ -240,12 +240,7 @@ class NovaiguApplication:
                         selected_label = self.configuration_management_screen.labels[selected_index]
                         if selected_label ==  IP_CONFIGURATION and  hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
                             
-                            if self.ip_config_adaptor.current_selected_label_index ==1 :
-                                self.ip_config_adaptor.set_manually_ip() 
-                            elif self.ip_config_adaptor.current_selected_label_index ==0:
-                                self.ip_config_adaptor.set_ip_address_automatic()
-                            else:
-                                pass 
+                            
                             self.ip_config_adaptor.clear()
                             self.ip_config_adaptor = None
                             self.configuration_management_screen.reset_screen_color()
@@ -485,9 +480,12 @@ class NovaiguApplication:
                         if selected_label ==  IP_CONFIGURATION:
                             if hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
                                 if self.ip_config_adaptor.current_seleected_parameter ==0:
+                                    self.ip_config_adaptor.set_ip_address_automatic()
                                     self.user_data_base.update_user_settings(self.username_input,ip_manual=False) 
                                 elif self.ip_config_adaptor.current_seleected_parameter ==1:
+                                    self.ip_config_adaptor.set_manually_ip() 
                                     self.user_data_base.update_user_settings(self.username_input,ip_manual=True)
+                                
                                 self.ip_config_adaptor.clear()
                                 self.ip_config_adaptor = None
                                 self.configuration_management_screen.reset_screen_color()
