@@ -191,7 +191,7 @@ class IPConfigurationScreen:
                     else:
                         self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", self.normal_color_pair)
 
-                    self.ip_bottom_win.addstr( 2+ index, 5, label, color_pair)
+                    self.ip_bottom_win.addstr( 2+ index, 5, label, self.normal_color_pair)
 
         
         
