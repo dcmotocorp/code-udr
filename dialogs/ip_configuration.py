@@ -76,7 +76,7 @@ class IPConfigurationScreen:
 
 
 
-        mask_adrress_label = "Subnet Mask :     [                   ]"
+        mask_adrress_label = "Subnet Mask :     [                     ]"
         self.ip_bottom_win.addstr(6, 8, mask_adrress_label, curses.color_pair(3))
 
         getway_label = "Default Getway :  [                   ]"
