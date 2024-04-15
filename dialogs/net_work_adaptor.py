@@ -38,8 +38,11 @@ class NetworkAdaptorScreen:
     def get_selected_interface_data(self):
         data =  self.user_data_base.get_interfaces_data("MGMT_INTERFACE")
         self.logger_.log_info("data mgmt data {}".format(json.dumps(data)))
+        self.logger_.log_info("data mgmt data 2 {}".format(json.dumps(self.labels)))
+        
         if data and len(data)>0:
             for index,_rs in enumerate(self.labels):
+                self.logger_.log_info("data[2] mgmt data {} {}".format(data[2],_rs[0]))
                 if data[2] == _rs[0]:
                     self.current_selected_label_index = index
 
