@@ -167,6 +167,8 @@ class DNSScreen:
             self.set_up_in_address_field()
             self.set_cursor_position()
         else:
+            self.input_current_index_status = "prim"
+            self.clear_input_fields()
             self.set_cursor_position()
     def clear(self):
         if hasattr(self, 'hostname_screen') and self.hostname_screen != None:
