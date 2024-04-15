@@ -32,9 +32,9 @@ class LockdownModeScreen:
         self.logger_.log_info("data for the lock down {}".format(json.dumps(data)))
         if data and len(data) >0:
             if data[2] ==0:
-                self.current_label_head = 1    
+                self.current_label_head = 0    
             elif data[2] ==1:
-                self.current_label_head =  0
+                self.current_label_head =  1
 
     def setup_lockdown_screen(self):
         auth_screen_height = 10
