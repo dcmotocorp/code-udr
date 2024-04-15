@@ -69,11 +69,7 @@ class LockdownModeScreen:
         else:
             values = ["[ ] enable", "[ ] disable"]
 
-        # Add labels to popup_bottom_win
-        for index, label in enumerate(values):
-            color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
-            self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
-
+        
         if self.current_label_head is not None and self.starting_state == True :
             self.starting_state =False
             for index, label in enumerate(values):
@@ -82,7 +78,13 @@ class LockdownModeScreen:
                 else:
                     color_pair = self.normal_color_pair
             self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
+        else:        
+            # Add labels to popup_bottom_win
+            for index, label in enumerate(values):
+                color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
 
+        
         # Add label to popup_bottom_win
         label_text_bottom_esc = "<Space> Selection"
         self.auth_bottom_win.addstr(5, 1, label_text_bottom_esc, curses.color_pair(3))
