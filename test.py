@@ -307,8 +307,7 @@ class NovaiguApplication:
             if self.popup_window.popup_win:
                 self.logger_.log_info("shut down system  press f2")
                 self.system_controller.shutdown_system()
-
-            else:
+            elif not current_screen:
                 self.username_input = ""
                 self.password_input = ""
                 self.set_main_screen_black()
