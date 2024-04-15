@@ -61,9 +61,9 @@ class SSHScreen:
         auth_top_win.addstr(label_y, label_x, label_text, curses.color_pair(4))
         
         if self.current_label_head == 1:
-            values = ["[0] enable", "[ ] disable"]
-        elif self.current_label_head == 0:
             values = ["[ ] enable", "[0] disable"]
+        elif self.current_label_head == 0:
+            values = ["[0] enable", "[ ] disable"]
         else:
             values = ["[ ] enable", "[ ] disable"]
 
@@ -128,16 +128,14 @@ class SSHScreen:
             if self.selected_index == 1:
                 self.current_label_head = 1
                 values = ["[ ] enable", "[0] disable"]
-            else:
+            elif self.selected_index == 0 :
                 self.current_label_head = 0
                 values = ["[0] enable", "[ ] disable"]
             self.labels = values           
             for index, label in enumerate(self.labels):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
-
             self.auth_bottom_win.refresh()
-         
         self.setup_hostname_screen()
 
 
