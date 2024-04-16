@@ -15,7 +15,7 @@ class UserDatabase:
         if not cls._instance:
             cls._instance = super(UserDatabase, cls).__new__(cls)
             cls._instance._init_database()
-            cls._instance._insert_data()
+            # cls._instance._insert_data()
         return cls._instance
 
     def _init_database(self):
