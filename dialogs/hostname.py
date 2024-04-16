@@ -67,6 +67,7 @@ class HostnameScreen:
         curses.curs_set(1)
         self.hostname_screen.refresh()
         self.current_hostname = self.system_controller.get_hostname()
+        self.logger_.log_info("current hostname value {}".format(self.current_hostname))
         self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
         self.current_password_win.refresh()
 
