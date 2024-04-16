@@ -135,9 +135,9 @@ class DNSScreen:
 
 
         # Add label to auth_top_win
-        label_x = (auth_screen_width - len(CONFIGURE_MANAGEMENT_NETWORK_SERVICE)) // 2
+        label_x = (auth_screen_width - len("Configure DNS Server")) // 2
         label_y = (popup_top_height - 1) // 2  # Center vertically
-        auth_top_win.addstr(label_y, label_x, CONFIGURE_MANAGEMENT_NETWORK_SERVICE, curses.color_pair(4))
+        auth_top_win.addstr(label_y, label_x, "Configure DNS Server", curses.color_pair(4))
         
 
         # Add labels to popup_bottom_win
