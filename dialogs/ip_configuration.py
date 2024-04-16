@@ -212,10 +212,7 @@ class IPConfigurationScreen:
         
         # Create username input box
         user_input_y = popup_y + popup_top_height + 1
-        user_input_x = popup_x + 15
-        # self.current_password_win = curses.newwin(1, 20, user_input_y, user_input_x)
-        # self.current_password_win.refresh()
-        
+        user_input_x = popup_x + 15        
 
         curses.curs_set(1)
         self.hostname_screen.refresh()
@@ -322,6 +319,7 @@ class IPConfigurationScreen:
                 self.setup_network_adaptor_screen()
 
         elif key.name == "backspace":
+            self.logger_.log_info("=iback space key pres key name {}".format(key.name))
             if self.input_current_index_status=="ip" and len(self.ip_address)>0:
                 self.ip_address = self.ip_address[:-1]
                 self.in_address_change.clear()
