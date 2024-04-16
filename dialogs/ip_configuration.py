@@ -177,8 +177,6 @@ class IPConfigurationScreen:
                 for index, label in enumerate(self.labels):
                 # color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                     if self.current_seleected_parameter == index:
-                            # if self.current_seleected_parameter ==1:
-                            #     self.set_up_in_address_field()
                             self.ip_bottom_win.addstr( 2+ index, 2, "[0]",  self.selected_color_pair)
                             self.ip_bottom_win.addstr( 2+ index, 5, label, self.selected_color_pair)
                     else:
@@ -222,10 +220,13 @@ class IPConfigurationScreen:
 
         curses.curs_set(1)
         self.hostname_screen.refresh()
-        # self.current_hostname = self.system_controller.get_hostname()
-        # self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
-        # self.current_password_win.refresh()
-        # self.create_curen()
+        if self.current_seleected_parameter ==1:
+            self.set_up_in_address_field()
+            self.set_cursor_position()
+        else:
+            self.input_current_index_status = "in_address_change"
+            self.clear_input_fields()
+            self.set_cursor_position()
     
         
 
