@@ -30,9 +30,9 @@ class LockdownModeScreen:
         users = self.user_data_base.select_all_users()
         self.logger_.log_info("current lock down data : {}".format(json.dumps(data)))    
         if data and len(data) >0:
-            if data[2] ==0:
+            if data[0] ==0:
                 self.current_label_head = 1    
-            elif data[2] ==1:
+            elif data[0] ==1:
                 self.current_label_head = 0
 
     def setup_lockdown_screen(self):
