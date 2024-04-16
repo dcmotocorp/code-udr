@@ -57,7 +57,7 @@ class SystemConfig:
         self.system_configuration_screen.refresh()
         # Create the square
         square_height =  22
-        square_width =  int(self.screen_width * 0.45)  # Adjust the width as needed
+        square_width =  int(self.screen_width * 0.47)  # Adjust the width as needed
         square_x = int(self.screen_width * 0.4)
         square_y =  2
         self.square_win = curses.newwin(square_height, square_width, square_y, square_x)
