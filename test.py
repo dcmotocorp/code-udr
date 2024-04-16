@@ -309,10 +309,12 @@ class NovaiguApplication:
                         self.current_selected = USERNAME_LABEL
                         self.clear_authetication_screen()
                         self.reset_main_screen_color()
+                        self.refresh_ip_screen()
                         
                     except Exception as ex:
                         self.logger_.log_info("Exception occure in authetication ssystem on pressing esc") 
                 else:
+                    self.refresh_ip_screen()
                     pass 
                 
             except Exception as ex:
