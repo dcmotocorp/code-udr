@@ -292,7 +292,6 @@ class NovaiguApplication:
                         self.system_config = None
                         self.clear_authetication_screen()
                         self.reset_main_screen_color()
-                        self.bottom_win.refresh()
                     except Exception as ex:
                         self.logger_.log_info("Exception occure in system config on pressing esc")
                 
