@@ -336,7 +336,8 @@ class NovaiguApplication:
             
             if current_screen == PASSWORD and  hasattr(self, 'update_password')  and self.update_password !=None  and self.update_password.update_status == True  :
                 self.update_password.handle_key_event(event)
-            
+            elif current_screen == HOSTNAME and   hasattr(self, 'host_name')  and self.host_name !=None  and self.host_name.update_status == True  :
+                self.host_name.handle_key_event(event)
             elif hasattr(self, 'authentication_screen') and self.authentication_screen !=None:
                 self.authentication_screen.handle_key_event(event)
 
