@@ -621,7 +621,7 @@ class SystemControler:
             subprocess.run(["nmcli", "con", "mod", connection_name,
                             "ipv4.addresses", f"{ip_address}/{cidr_subnet_mask}",
                             "ipv4.gateway", default_gateway,
-                            "ipv4.method", "manual"], check=True)
+                            "ipv4.method", "manual"], check=True,stderr=subprocess.DEVNULL)
 
             
             # Reactivate the connection to apply changes
