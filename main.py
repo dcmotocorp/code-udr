@@ -269,12 +269,7 @@ class NovaiguApplication:
                         
                         elif selected_label ==  DNS_SERVER and  hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
                             
-                            if self.dns_screen.current_selected_label_index ==1:
-                                self.dns_screen.set_manually_dns()
-                            elif self.dns_screen.current_selected_label_index==0:
-                                self.dns_screen.set_auto_dns()
-                            else:
-                                pass 
+                           
                             self.dns_screen.clear()
                             self.dns_screen = None
                             self.configuration_management_screen.reset_screen_color()
@@ -561,9 +556,13 @@ class NovaiguApplication:
                         elif  selected_label ==  DNS_SERVER:
                             if hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
                                 if self.dns_screen.current_selected_label_index ==0:
+                                    self.dns_screen.set_auto_dns()
                                     self.user_data_base.update_user_settings(self.username_input,dns_manual=False)
                                 elif self.dns_screen.current_selected_label_index ==1:
+                                    self.dns_screen.set_manually_dns()
                                     self.user_data_base.update_user_settings(self.username_input,dns_manual=True)                                
+                                                                
+                                
                                 self.dns_screen.clear()
                                 self.dns_screen = None
                                 self.configuration_management_screen.reset_screen_color()
