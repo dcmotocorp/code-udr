@@ -40,7 +40,23 @@ class NovaiguApplication:
         self.setup_windows()
     
     def refresh_ip_screen(self):
+        self.logger_.log_info("in the vvv refresh_ip_screen")
         self.ip_address = self.system_controller.get_ip_address()
+        
+        self.novaigu_http_address = NOVAIGU_HTTP_LABEL.format(self.ip_address)
+        top_height = int(0.6 * self.screen_height)
+        # Calculate positions for labels
+        label_width = max(len(NOVAIGU_LABEL), len(NOVAIGU_PLATFORM_LABEL), len(self.novaigu_http_address))
+        label_height = 2
+        label_x = (self.screen_width - label_width) // 2
+        label_y = top_height // 2
+
+        # Add labels to self.top_win
+        self.top_win.addstr(label_y, label_x, NOVAIGU_LABEL)
+        self.top_win.addstr(label_y + label_height, label_x, NOVAIGU_PLATFORM_LABEL)
+        self.top_win.addstr(label_y + 2 * label_height, label_x, self.novaigu_http_address)
+
+
         self.top_win.refresh()
 
 
@@ -297,6 +313,7 @@ class NovaiguApplication:
                         self.system_config = None
                         self.clear_authetication_screen()
                         self.reset_main_screen_color()
+                        self.logger_.log_info("in the system system part refresh_ip_screen")
                         self.refresh_ip_screen()
                     except Exception as ex:
                         self.logger_.log_info("Exception occure in system config on pressing esc")
@@ -309,10 +326,14 @@ class NovaiguApplication:
                         self.current_selected = USERNAME_LABEL
                         self.clear_authetication_screen()
                         self.reset_main_screen_color()
+                        self.logger_.log_info("in the authentication part refresh_ip_screen")
+                        self.refresh_ip_screen()
                         
                     except Exception as ex:
                         self.logger_.log_info("Exception occure in authetication ssystem on pressing esc") 
                 else:
+                    self.logger_.log_info("in the else part refresh_ip_screen")
+                    self.refresh_ip_screen()
                     pass 
                 
             except Exception as ex:
@@ -552,6 +573,7 @@ class NovaiguApplication:
                                     current_selected_interface = self.net_work_screen.get_current_interface()
                                     if current_selected_interface is not None:
                                         self.user_data_base.add_interface("MGMT_INTERFACE",current_selected_interface)
+                                        self.system_controller.restart_service()
                                 except Exception as ex:
                                     self.logger_.log_info("Exception occure while adding data into interface {}".format(str(ex)))    
                                 
