@@ -319,7 +319,7 @@ class IPConfigurationScreen:
                 self.setup_network_adaptor_screen()
 
         elif key.name == "backspace":
-            self.logger_.log_info("=iback space key pres key name {}".format(key.name))
+            self.logger_.log_info("=iback space key pres key name {} self.input_current_index_status ".format(key.name,self.input_current_index_status))
             if self.input_current_index_status=="ip" and len(self.ip_address)>0:
                 self.logger_.log_info("= ip ipipip space key pres key name {}".format(key.name))
                 self.ip_address = self.ip_address[:-1]
