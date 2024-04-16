@@ -173,17 +173,19 @@ class IPConfigurationScreen:
          # Add labels to popup_bottom_win
         if self.current_seleected_parameter and self.starting_state ==True :
                 self.starting_state =False 
+                
                 for index, label in enumerate(self.labels):
                 # color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                     if self.current_seleected_parameter == index:
+                            if self.current_seleected_parameter ==1:
+                                self.set_up_in_address_field()
                             self.ip_bottom_win.addstr( 2+ index, 2, "[0]",  self.selected_color_pair)
                             self.ip_bottom_win.addstr( 2+ index, 5, label, self.selected_color_pair)
                     else:
                         self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", self.normal_color_pair)
                         self.ip_bottom_win.addstr( 2+ index, 5, label, self.normal_color_pair)
 
-                if self.current_seleected_parameter ==1:
-                    self.set_up_in_address_field()
+                
                     
 
         else:     
