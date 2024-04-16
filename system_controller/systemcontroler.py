@@ -625,8 +625,8 @@ class SystemControler:
 
             
             # Reactivate the connection to apply changes
-            subprocess.run(["nmcli", "con", "down", connection_name], check=True)
-            subprocess.run(["nmcli", "con", "up", connection_name], check=True)
+            subprocess.run(["nmcli", "con", "down", connection_name], check=True,stderr=subprocess.DEVNULL)
+            subprocess.run(["nmcli", "con", "up", connection_name], check=True,stderr=subprocess.DEVNULL)
 
             
             # # Bring up the interface
