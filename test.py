@@ -42,6 +42,7 @@ class NovaiguApplication:
     def refresh_ip_screen(self):
         self.logger_.log_info("in the vvv refresh_ip_screen")
         self.ip_address = self.system_controller.get_ip_address()
+        self.logger_.log_info("in the vvv    {}".format(self.ip_address))
         self.top_win.refresh()
 
 
