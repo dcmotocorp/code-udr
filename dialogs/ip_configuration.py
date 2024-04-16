@@ -182,6 +182,8 @@ class IPConfigurationScreen:
                         self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", self.normal_color_pair)
                         self.ip_bottom_win.addstr( 2+ index, 5, label, self.normal_color_pair)
 
+                if self.current_seleected_parameter ==1:
+                    self.set_up_in_address_field()
                     
 
         else:     
