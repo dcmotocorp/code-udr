@@ -171,7 +171,7 @@ class IPConfigurationScreen:
 
         
          # Add labels to popup_bottom_win
-        if not self.current_selected_label_index:
+        if not self.current_seleected_parameter:
                 
                 
                 for index, label in enumerate(self.labels):
@@ -192,8 +192,9 @@ class IPConfigurationScreen:
                     self.ip_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
                     self.ip_bottom_win.addstr( 2+ index, 5, label, color_pair)
                 else:
-                    self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", self.normal_color_pair)
-                    self.ip_bottom_win.addstr( 2+ index, 5, label, self.normal_color_pair)
+                    color_pair = self.normal_color_pair
+                    self.ip_bottom_win.addstr( 2+ index, 2, "[ ]",color_pair)
+                self.ip_bottom_win.addstr( 2+ index, 5, label, color_pair)
 
                 
             
