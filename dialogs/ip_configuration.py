@@ -184,17 +184,20 @@ class IPConfigurationScreen:
                         self.ip_bottom_win.addstr( 2+ index, 5, label, color_pair)
 
         else:     
+            self.logger_.log_info("sip config selected {}".format(self.current_seleected_parameter))
             for index, label in enumerate(self.labels):
                 # color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 if self.current_seleected_parameter == index and self.starting_state == True:
-                    self.starting_state = False 
+                    self.starting_state = False
+                    self.logger_.log_info("ip config starting_state {}".format(self.current_seleected_parameter)) 
                     color_pair = self.selected_color_pair
                     self.ip_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
                     self.ip_bottom_win.addstr( 2+ index, 5, label, color_pair)
                 else:
+                    self.logger_.log_info("ip config else starting_state {}".format(self.current_seleected_parameter)) 
                     color_pair = self.normal_color_pair
                     self.ip_bottom_win.addstr( 2+ index, 2, "[ ]",color_pair)
-                self.ip_bottom_win.addstr( 2+ index, 5, label, color_pair)
+                    self.ip_bottom_win.addstr( 2+ index, 5, label, color_pair)
 
                 
             
