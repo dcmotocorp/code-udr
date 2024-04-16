@@ -416,6 +416,7 @@ class NovaiguApplication:
                 elif current_screen == HOSTNAME:
                     if   hasattr(self, 'host_name')  and self.host_name !=None  and self.host_name.update_status == True  :
                         if len(self.host_name.current_hostname) >0:
+                            self.logger_.log_info("set host name value {}".format(self.host_name.current_hostname))
                             self.system_controller.set_hostname(self.host_name.current_hostname)
                             self.system_config.active_status = True
                             self.system_config.update_password_screen = False 
