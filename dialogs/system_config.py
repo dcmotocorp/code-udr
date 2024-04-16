@@ -77,6 +77,8 @@ class SystemConfig:
         for i, line in enumerate(label_value):
             if i==0 :
                 self.square_win.addstr(2, 2, line, self.normal_color_pair)
+            elif i in  [7,8,9]:
+                self.square_win.addstr(i +4, 2, line, self.normal_color_pair)
             else:
                 self.square_win.addstr(i +3, 2, line, self.normal_color_pair)
         
