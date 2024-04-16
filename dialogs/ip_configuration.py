@@ -220,7 +220,7 @@ class IPConfigurationScreen:
             self.set_up_in_address_field()
             self.set_cursor_position()
         else:
-            self.input_current_index_status = "in_address_change"
+            self.input_current_index_status = "ip"
             self.clear_input_fields()
             self.set_cursor_position()
     
@@ -319,7 +319,7 @@ class IPConfigurationScreen:
                 self.setup_network_adaptor_screen()
 
         elif key.name == "backspace":
-            self.logger_.log_info("=iback space key pres key name {} self.input_current_index_status {}".format(key.name,self.input_current_index_status))
+            self.logger_.log_info("=backspace value {}  ={}".format(key.name,self.input_current_index_status))
             if self.input_current_index_status=="ip" and len(self.ip_address)>0:
                 self.logger_.log_info("= ip ipipip space key pres key name {}".format(key.name))
                 self.ip_address = self.ip_address[:-1]
