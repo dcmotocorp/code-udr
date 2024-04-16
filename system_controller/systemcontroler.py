@@ -160,7 +160,7 @@ class SystemControler:
     def get_connection_name(self, interface):
         try:
             # Execute the nmcli command to get connection information
-            result = subprocess.run(['nmcli', '-t', '-f', 'NAME,DEVICE', 'connection', 'show', '--active'], capture_output=True, text=True, check=True)
+            result = subprocess.run(['nmcli', '-t', '-f', 'NAME,DEVICE', 'connection', 'show', '--active'], capture_output=True, text=True, check=True,stderr=subprocess.DEVNULL)
             output = result.stdout.strip()
 
             # Parse the output to find the connection name associated with the interface
