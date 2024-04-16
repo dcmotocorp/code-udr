@@ -78,9 +78,73 @@ class UserDatabase:
             )
         ''')
 
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS udr_site_user_status (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                status INTEGER NOT NULL DEFAULT 0,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+
 
         connection.commit()
         connection.close()
+
+    def update_status_for_all(self):
+        conn = sqlite3.connect(self.db_location)
+        cursor = conn.cursor()
+
+        try:
+            # Step 1: Select all users and their current statuses
+            cursor.execute('SELECT id, status FROM udr_site_user_master')
+            users = cursor.fetchall()
+
+            # Step 2: Update the status for all users in udr_site_user_master
+            cursor.execute('UPDATE udr_site_user_master SET status = ?', (0,))
+
+            # Step 3: Log each status change in the status_log table
+            for user_id, status in users:
+                # Check if the user ID already exists in the status_log table
+                cursor.execute('SELECT 1 FROM udr_site_user_status WHERE id = ?', (user_id,))
+                if not cursor.fetchone():
+                    cursor.execute('INSERT INTO udr_site_user_status (id, status) VALUES (?, ?)',
+                                (user_id, status))
+
+            conn.commit()
+        except Exception as e:
+            logger_.log_error(f"error in changing user status for UI {str(e)}")
+        finally:
+            conn.close()
+    
+    def revert_status(self):
+        conn = sqlite3.connect(self.db_location)
+        cursor = conn.cursor()
+
+        try:
+            # Start a transaction
+            conn.begin()
+
+            # Step 1: Fetch user_id and old_status from status_log
+            cursor.execute('SELECT id, status FROM udr_site_user_status')
+            changes = cursor.fetchall()
+
+            # Step 2: Update the udr_site_user_master based on the fetched logs
+            for user_id, old_status in changes:
+                cursor.execute('UPDATE udr_site_user_master SET status = ? WHERE id = ?', (old_status, user_id))
+
+            # Step 3: Delete all records from status_log after updates
+            cursor.execute('DELETE FROM udr_site_user_status')
+
+            # Commit the transaction if all operations were successful
+            conn.commit()
+        except Exception as e:
+            # Roll back any changes if an error occurs
+            conn.rollback()
+            logger_.log_error(f"error in changing user status for UI {str(e)}")
+        finally:
+            # Ensure the connection is closed after the operation
+            conn.close()
     def add_user(self, username, password, password_update=False):
         # Add a user to the database
         connection = sqlite3.connect(self.db_location)

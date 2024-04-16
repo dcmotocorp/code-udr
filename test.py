@@ -491,12 +491,15 @@ class NovaiguApplication:
                         
                         if selected_value == 0:
                             self.logger_.log_info("lock down screen username {}".format(self.username_input))
+                            self.user_data_base.update_status_for_all()
                             self.user_data_base.update_user_settings(self.username_input,is_lockdown=True)
                             self.system_controller.enable_lockdown_mode()
                         elif selected_value == 1:
                             self.logger_.log_info("lock down screen username else {}".format(self.username_input))
+                            self.user_data_base.revert_status()
                             self.user_data_base.update_user_settings(self.username_input,is_lockdown=False)
                             self.system_controller.exit_lockdown_mode()
+                        
                         self.system_config.active_status = True
                         self.system_config.update_password_screen = False 
                         self.lock_down_screen.clear()
