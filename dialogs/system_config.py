@@ -69,12 +69,16 @@ class SystemConfig:
         #setup new tab
         current_label = self.labels[self.selected_index]
         label_value = self.sys_config.get(current_label) 
-        self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
-        self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
-        self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
-        self.square_win.addstr(5, 2, "", self.normal_color_pair)
-        self.square_win.refresh() 
-
+        # self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
+        # self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
+        # self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
+        # self.square_win.addstr(5, 2, "", self.normal_color_pair)
+        # self.square_win.refresh() 
+        for i, line in enumerate(label_value):
+            self.square_win.addstr(i + 1, 2, line, self.normal_color_pair)
+        
+            # Refresh the square window to show changes
+            self.square_win.refresh()
         #for the bottom part set the label
         label_text_bottom_enter_ok = "<Enter> Ok"
         self.sc_config_bottom_win.addstr(sc_config_top_height-10, 2, label_text_bottom_enter_ok, curses.color_pair(3))
