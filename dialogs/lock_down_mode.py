@@ -69,8 +69,9 @@ class LockdownModeScreen:
         else:
             values = ["[ ] enable", "[ ] disable"]
 
-        
+        self.logger_.log_info("current lock down values : {}".format(json.dumps(values))) 
         if self.current_label_head is not None and self.starting_state == True :
+            self.logger_.log_info("inmside starting state") 
             self.starting_state =False
             for index, label in enumerate(values):
                 if self.current_label_head == index:
@@ -80,6 +81,7 @@ class LockdownModeScreen:
                 self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
         else:        
             # Add labels to popup_bottom_win
+            self.logger_.log_info("else part starting state") 
             for index, label in enumerate(values):
                 color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
                 self.auth_bottom_win.addstr( 2+ index, 5, label, color_pair)
