@@ -2,6 +2,7 @@ import curses
 from logs.udr_logger import UdrLogger
 from dialogs.system_config import SystemConfig
 from  system_controller.systemcontroler import SystemControler
+import re
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -14,6 +15,7 @@ class HostnameScreen:
         self.current_hostname = ""
         self.autheticated_parameter = True
         self.update_status = False
+        self.shift_status = False
         self.system_controller  = SystemControler()
         self.logger_ = UdrLogger()
         self.setup_hostname_screen()
@@ -101,9 +103,21 @@ class HostnameScreen:
         return self.current_hostname
 
 
-
+    def cehck_shift_char(self,next_char):
+        symbol_char = {"1":"!" ,"2":"@","3":"#","4":"$","5":"%","6":"^","7":"&","8":"*","9":"(","0":")"}
+        if self.shift_status:
+            if next_char in symbol_char:
+                self.shift_status = False
+                return symbol_char[next_char]
+            else:
+                self.shift_status = False
+                return next_char.title()
+                
+        else:
+                return next_char
 
     def handle_key_event(self, event):
+        pattern = re.compile(r'^[a-zA-Z]$')
         if event.name == "backspace":
             if len(self.current_hostname) > 0:
                 self.current_hostname = self.current_hostname[:-1]
@@ -120,13 +134,18 @@ class HostnameScreen:
                 self.logger_.log_info("Create system config screen ")
                 self.system_config.create_system_configuration()
 
+        elif event.name == "shift":
+            self.shift_status = True
+
         elif event.name in ["up","down"]:
             pass 
 
         elif len(event.name) == 1:
-            if  len(self.current_hostname) < 10  :
-                self.current_hostname += event.name
-                self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
-                self.current_password_win.refresh()
-                self.set_cursor_position()
+            char_value = self.cehck_shift_char(event.name)
+            if pattern.match(char_value):
+                if  len(self.current_hostname) < 10  :
+                    self.current_hostname += char_value
+                    self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
+                    self.current_password_win.refresh()
+                    self.set_cursor_position()
             
