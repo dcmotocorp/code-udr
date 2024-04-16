@@ -190,10 +190,12 @@ class IPConfigurationScreen:
                     self.starting_state = False 
                     color_pair = self.selected_color_pair
                     self.ip_bottom_win.addstr( 2+ index, 2, "[0]", color_pair)
+                    self.ip_bottom_win.addstr( 2+ index, 5, label, color_pair)
                 else:
                     self.ip_bottom_win.addstr( 2+ index, 2, "[ ]", color_pair)
+                    self.ip_bottom_win.addstr( 2+ index, 5, label, color_pair)
 
-                self.ip_bottom_win.addstr( 2+ index, 5, label, color_pair)
+                
             
         
         
