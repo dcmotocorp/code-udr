@@ -1,3 +1,11 @@
+import os 
+
+script_path = os.path.abspath(__file__)
+root_directory = os.path.dirname(script_path)
+db_location = os.path.join(root_directory,"user_database.db")
+db_directory = root_directory
+
+
 SYSTEM_CONFIG_LABEL = "System Configuration :"
 PASSWORD_LABEL = "Password:  ["
 USERNAME_LABEL = "username"

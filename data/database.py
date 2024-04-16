@@ -2,15 +2,14 @@ import sqlite3
 import os
 import json 
 from logs.udr_logger import UdrLogger
-
+from constant import db_location,db_directory
 logger_ = UdrLogger()
 
 class UserDatabase:
     _instance = None
-    script_path = os.path.abspath(__file__)
-    root_directory = os.path.dirname(script_path)
-    db_location = os.path.join(root_directory,"user_database.db")
-    db_directory = root_directory
+
+    db_location = db_location
+    db_directory = db_directory
     
     def __new__(cls):
         if not cls._instance:
