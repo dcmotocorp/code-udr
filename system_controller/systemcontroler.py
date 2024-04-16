@@ -621,12 +621,12 @@ class SystemControler:
             subprocess.run(["nmcli", "con", "mod", connection_name,
                             "ipv4.addresses", f"{ip_address}/{cidr_subnet_mask}",
                             "ipv4.gateway", default_gateway,
-                            "ipv4.method", "manual"], check=True,stderr=subprocess.DEVNULL)
+                            "ipv4.method", "manual"],stderr=subprocess.DEVNULL)
 
             
             # Reactivate the connection to apply changes
-            subprocess.run(["nmcli", "con", "down", connection_name], check=True,stderr=subprocess.DEVNULL)
-            subprocess.run(["nmcli", "con", "up", connection_name], check=True,stderr=subprocess.DEVNULL)
+            subprocess.run(["nmcli", "con", "down", connection_name],stderr=subprocess.DEVNULL)
+            subprocess.run(["nmcli", "con", "up", connection_name],stderr=subprocess.DEVNULL)
 
             
             # # Bring up the interface
