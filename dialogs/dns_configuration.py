@@ -100,7 +100,7 @@ class DNSScreen:
         self.system_controller.set_dns_auto_assign()
     
     def set_manually_dns(self):
-        self.system_controller.set_dns_servers(self.primary,self.secondary)
+        self.system_controller.set_dns_configuration_manually_linux(self.primary,self.secondary)
 
     def set_up_in_address_field(self):
         # ad ip config 
