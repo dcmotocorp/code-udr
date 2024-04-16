@@ -25,7 +25,7 @@ class SystemConfig:
                             HOSTNAME: ["Set/Change","To prevent unautherized access to this system use ","complex password with minimum lenth of 14 characters"] ,
                             MANAGEMENT_INTERFACE:["Configure Management Interface","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"] ,
                             SSH:["SSH","Enable of disable SSH Service",""],
-                            LOCK_DOWN_MODE:["Enter/Change Lockdown Mode","Enabling Lockdown Mode will make Following changes","1- Disable the management interface","2- Disable all user accounts except root access to the ","   console interface.", "3- Disable SSH","To exit lockdown made you will need physical access to the ","UDF from the consolde interface and login with the ","root creadentials."],
+                            LOCK_DOWN_MODE:["Enter/Change Lockdown Mode","Enabling Lockdown Mode will make Following changes:","1- Disable the management interface","2- Disable all user accounts except root access to the ","   console interface.", "3- Disable SSH","To exit lockdown made you will need physical access to the ","UDF from the consolde interface and login with the ","root creadentials."],
                             RESET_SYSTEM_CONFIG:["Reset System Configuration","To prevent unautherized access to this system use","complex password with minimum lenth of 14 characters"]}
         
     def create_system_configuration(self):
@@ -77,7 +77,7 @@ class SystemConfig:
         for i, line in enumerate(label_value):
             if i==0 :
                 self.square_win.addstr(2, 2, line, self.normal_color_pair)
-            elif i in  [7,8,9]:
+            elif i in  [6,7,8,9]:
                 self.square_win.addstr(i +4, 2, line, self.normal_color_pair)
             else:
                 self.square_win.addstr(i +3, 2, line, self.normal_color_pair)
