@@ -38,6 +38,10 @@ class NovaiguApplication:
         self.system_controller  = SystemControler()
         self.user_data_base = UserDatabase()
         self.setup_windows()
+    
+    def refresh_ip_screen(self):
+        self.top_win.refresh()
+
 
     def setup_windows(self):
         # Initialize curses
@@ -292,7 +296,7 @@ class NovaiguApplication:
                         self.system_config = None
                         self.clear_authetication_screen()
                         self.reset_main_screen_color()
-                        self.setup_windows()
+                        self.refresh_ip_screen()
                     except Exception as ex:
                         self.logger_.log_info("Exception occure in system config on pressing esc")
                 
