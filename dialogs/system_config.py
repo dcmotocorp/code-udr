@@ -154,14 +154,14 @@ class SystemConfig:
             
 
 
-            current_label = self.labels[self.selected_index]
-            label_value = self.sys_config.get(current_label) 
-            self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
-            self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
-            self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
-            if len(label_value) ==4 :
-                self.square_win.addstr(5, 2, label_value[3], self.normal_color_pair)
-            self.square_win.refresh()
+            # current_label = self.labels[self.selected_index]
+            # label_value = self.sys_config.get(current_label) 
+            # self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
+            # self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
+            # self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
+            # if len(label_value) ==4 :
+            #     self.square_win.addstr(5, 2, label_value[3], self.normal_color_pair)
+            # self.square_win.refresh()
             self.sc_config_top_win.refresh()
 
             
@@ -174,14 +174,14 @@ class SystemConfig:
             
             current_label = self.labels[self.selected_index]
             label_value = self.sys_config.get(current_label) 
-            self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
-            self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
-            self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
-            if len(label_value) ==4 :
-                self.square_win.addstr(5, 2, label_value[2], self.normal_color_pair)
+            # self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
+            # self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
+            # self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
+            # if len(label_value) ==4 :
+            #     self.square_win.addstr(5, 2, label_value[2], self.normal_color_pair)
             
 
-            self.square_win.refresh()
+            # self.square_win.refresh()
             self.sc_config_top_win.refresh()
         self.create_system_configuration()
 
