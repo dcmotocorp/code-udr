@@ -573,6 +573,7 @@ class NovaiguApplication:
                                     current_selected_interface = self.net_work_screen.get_current_interface()
                                     if current_selected_interface is not None:
                                         self.user_data_base.add_interface("MGMT_INTERFACE",current_selected_interface)
+                                        self.system_controller.restart_service()
                                 except Exception as ex:
                                     self.logger_.log_info("Exception occure while adding data into interface {}".format(str(ex)))    
                                 

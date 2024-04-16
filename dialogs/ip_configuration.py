@@ -231,10 +231,12 @@ class IPConfigurationScreen:
 
     def set_manually_ip(self):
         self.system_controller.set_ip_configuration_manual(self.ip_address,self.sub_mask,self.gate_Way)
-         
+        self.system_controller.restart_service()
+
     def set_ip_address_automatic(self):
         self.set_data()
         self.system_controller.reset_ip_config()
+        self.system_controller.restart_service()
         
     def clear(self):
         if hasattr(self, 'hostname_screen') and self.hostname_screen != None:

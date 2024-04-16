@@ -1201,3 +1201,8 @@ Mask={mask}"""
         # Check if the command executed successfully
         
         return True, "Primary interface changed"
+    def restart_service(self):
+        try:
+            subprocess.run(["sudo", "systemctl", "restart", "configuration-app.service"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+        except Exception:
+            pass
