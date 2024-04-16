@@ -40,6 +40,7 @@ class NovaiguApplication:
         self.setup_windows()
     
     def refresh_ip_screen(self):
+        self.logger_.log_info("in the vvv refresh_ip_screen")
         self.ip_address = self.system_controller.get_ip_address()
         self.top_win.refresh()
 
@@ -297,6 +298,7 @@ class NovaiguApplication:
                         self.system_config = None
                         self.clear_authetication_screen()
                         self.reset_main_screen_color()
+                        self.logger_.log_info("in the system system part refresh_ip_screen")
                         self.refresh_ip_screen()
                     except Exception as ex:
                         self.logger_.log_info("Exception occure in system config on pressing esc")
@@ -309,11 +311,13 @@ class NovaiguApplication:
                         self.current_selected = USERNAME_LABEL
                         self.clear_authetication_screen()
                         self.reset_main_screen_color()
+                        self.logger_.log_info("in the authentication part refresh_ip_screen")
                         self.refresh_ip_screen()
                         
                     except Exception as ex:
                         self.logger_.log_info("Exception occure in authetication ssystem on pressing esc") 
                 else:
+                    self.logger_.log_info("in the else part refresh_ip_screen")
                     self.refresh_ip_screen()
                     pass 
                 
