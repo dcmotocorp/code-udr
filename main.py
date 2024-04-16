@@ -40,6 +40,7 @@ class NovaiguApplication:
         self.setup_windows()
     
     def refresh_ip_screen(self):
+        self.ip_address = self.system_controller.get_ip_address()
         self.top_win.refresh()
 
 
@@ -80,11 +81,11 @@ class NovaiguApplication:
         self.top_win.refresh()
         self.bottom_win.refresh()
 
-        ip_address = self.system_controller.get_ip_address()
-        novaigu_http_address = NOVAIGU_HTTP_LABEL.format(ip_address)
+        self.ip_address = self.system_controller.get_ip_address()
+        self.novaigu_http_address = NOVAIGU_HTTP_LABEL.format(self.ip_address)
 
         # Calculate positions for labels
-        label_width = max(len(NOVAIGU_LABEL), len(NOVAIGU_PLATFORM_LABEL), len(novaigu_http_address))
+        label_width = max(len(NOVAIGU_LABEL), len(NOVAIGU_PLATFORM_LABEL), len(self.novaigu_http_address))
         label_height = 2
         label_x = (self.screen_width - label_width) // 2
         label_y = top_height // 2
@@ -92,7 +93,7 @@ class NovaiguApplication:
         # Add labels to self.top_win
         self.top_win.addstr(label_y, label_x, NOVAIGU_LABEL)
         self.top_win.addstr(label_y + label_height, label_x, NOVAIGU_PLATFORM_LABEL)
-        self.top_win.addstr(label_y + 2 * label_height, label_x, novaigu_http_address)
+        self.top_win.addstr(label_y + 2 * label_height, label_x, self.novaigu_http_address)
 
         # Refresh the self.top_win to apply changes
         self.top_win.refresh()
