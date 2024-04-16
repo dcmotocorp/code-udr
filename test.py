@@ -42,7 +42,21 @@ class NovaiguApplication:
     def refresh_ip_screen(self):
         self.logger_.log_info("in the vvv refresh_ip_screen")
         self.ip_address = self.system_controller.get_ip_address()
-        self.logger_.log_info("in the vvv    {}".format(self.ip_address))
+        
+        self.novaigu_http_address = NOVAIGU_HTTP_LABEL.format(self.ip_address)
+        top_height = int(0.6 * self.screen_height)
+        # Calculate positions for labels
+        label_width = max(len(NOVAIGU_LABEL), len(NOVAIGU_PLATFORM_LABEL), len(self.novaigu_http_address))
+        label_height = 2
+        label_x = (self.screen_width - label_width) // 2
+        label_y = top_height // 2
+
+        # Add labels to self.top_win
+        self.top_win.addstr(label_y, label_x, NOVAIGU_LABEL)
+        self.top_win.addstr(label_y + label_height, label_x, NOVAIGU_PLATFORM_LABEL)
+        self.top_win.addstr(label_y + 2 * label_height, label_x, self.novaigu_http_address)
+
+
         self.top_win.refresh()
 
 
