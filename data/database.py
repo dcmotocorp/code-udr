@@ -15,6 +15,7 @@ class UserDatabase:
         if not cls._instance:
             cls._instance = super(UserDatabase, cls).__new__(cls)
             cls._instance._init_database()
+            cls._instance._insert_data()
         return cls._instance
 
     def _init_database(self):
@@ -86,6 +87,21 @@ class UserDatabase:
                 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         ''')
+        # Create the sb_site_user_master table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS udr_site_user_master (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                site_id INTEGER NOT NULL,
+                role_id INTEGER NOT NULL,
+                username TEXT DEFAULT NULL,
+                password TEXT DEFAULT NULL,
+                full_name TEXT DEFAULT NULL,
+                description TEXT DEFAULT NULL,
+                status INTEGER NOT NULL DEFAULT 0,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
 
 
         connection.commit()
@@ -122,9 +138,6 @@ class UserDatabase:
         cursor = conn.cursor()
 
         try:
-            # Start a transaction
-            conn.begin()
-
             # Step 1: Fetch user_id and old_status from status_log
             cursor.execute('SELECT id, status FROM udr_site_user_status')
             changes = cursor.fetchall()
@@ -377,3 +390,15 @@ class UserDatabase:
         connection.close()
         return result
 
+    def _insert_data(self):
+        connection = sqlite3.connect(self.db_location)
+        cursor = connection.cursor()
+
+    
+        insert_query_user_master = """
+            INSERT INTO udr_site_user_master(id, site_id, role_id, username, password, full_name, description, status, created_at, updated_at) VALUES 
+            (1,1,1,'admin','bc0c1ddc7fa0a127ba4cf290c2714833','Admin','Admin User',1,'2023-08-16 11:10:52','2024-01-17 13:52:48');
+            """
+        cursor.execute(insert_query_user_master)
+        connection.commit()
+        connection.close()
