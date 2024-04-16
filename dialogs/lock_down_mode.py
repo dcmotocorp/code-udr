@@ -56,7 +56,7 @@ class LockdownModeScreen:
         self.auth_bottom_win.bkgd(' ', curses.color_pair(2))  # Grey background
 
         # Add label to auth_top_win
-        label_text = "SSH Service"
+        label_text = "Lock-down Mode"
         label_x = (auth_screen_width - len(label_text)) // 2
         label_y = (popup_top_height - 1) // 2  # Center vertically
         auth_top_win.addstr(label_y, label_x, label_text, curses.color_pair(4))
