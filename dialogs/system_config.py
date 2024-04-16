@@ -75,7 +75,10 @@ class SystemConfig:
         # self.square_win.addstr(5, 2, "", self.normal_color_pair)
         # self.square_win.refresh() 
         for i, line in enumerate(label_value):
-            self.square_win.addstr(i + 2, 2, line, self.normal_color_pair)
+            if i==0 :
+                self.square_win.addstr(2, 2, line, self.normal_color_pair)
+            else:
+                self.square_win.addstr(i +3, 2, line, self.normal_color_pair)
         
             # Refresh the square window to show changes
             self.square_win.refresh()
