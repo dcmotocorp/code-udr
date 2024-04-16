@@ -567,11 +567,11 @@ class SystemControler:
             connection_name = self.get_connection_name(interface)
 
             # Clear the custom DNS settings to revert to obtaining DNS automatically
-            subprocess.run(["nmcli", "con", "mod", connection_name, "ipv4.ignore-auto-dns", "no", "ipv4.dns", ""], check=True)
+            subprocess.run(["nmcli", "con", "mod", connection_name, "ipv4.ignore-auto-dns", "no", "ipv4.dns", ""], check=True,stderr=subprocess.DEVNULL)
 
             # Reactivate the connection to apply changes
-            subprocess.run(["nmcli", "con", "down", connection_name], check=True)
-            subprocess.run(["nmcli", "con", "up", connection_name], check=True)
+            subprocess.run(["nmcli", "con", "down", connection_name], check=True,stderr=subprocess.DEVNULL)
+            subprocess.run(["nmcli", "con", "up", connection_name], check=True,stderr=subprocess.DEVNULL)
 
             
             return True, "DNS configuration set to auto-assign successfully."
