@@ -55,7 +55,7 @@ class IPConfigurationScreen:
         self.logger_.log_info("==========ip,mask,gate_way {}{}{}".format(ip,mask,gate_way))
         self.ip_address = ip 
         self.sub_mask = mask
-        self.gate_Way = "Not Found"
+        self.gate_Way = gate_way
 
     def set_up_in_address_field(self):
         # ad ip config 
@@ -233,6 +233,7 @@ class IPConfigurationScreen:
         
 
     def set_manually_ip(self):
+        self.logger_.log_info("value for self.ip_address,self.sub_mask,self.gate_Way {} {} {}".format(self.ip_address,self.sub_mask,self.gate_Way))
         self.system_controller.set_ip_configuration_manual(self.ip_address,self.sub_mask,self.gate_Way)
         self.system_controller.restart_service()
 

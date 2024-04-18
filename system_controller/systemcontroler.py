@@ -181,6 +181,8 @@ class SystemControler:
         try:
             
             interface = self.get_default_interface()
+            if not interface:
+                return False
             connection_name = self.get_connection_name(interface=interface)
 
             # Construct the command based on whether secondary DNS is provided
@@ -272,10 +274,10 @@ class SystemControler:
     def enable_lockdown_mode(self, user_name=None):
         try:
             # Disable all network interfaces
-            interface = self.get_default_interface()
+            # interface = self.get_default_interface()
             
-            self.reset_ip_down_interface(interface=interface)
-            subprocess.run(["sudo", "ip", "link", "set", interface, "down"])
+            # self.reset_ip_down_interface(interface=interface)
+            # subprocess.run(["sudo", "ip", "link", "set", interface, "down"])
 
             # Save iptables rules to a file
             # subprocess.run(["sudo", "iptables-save"], stdout=subprocess.PIPE, check=True, text=True, input="").stdout > "/etc/iptables/rules.v4"
@@ -304,9 +306,9 @@ class SystemControler:
             # subprocess.run(["sudo", "iptables-restore", "-c", "/etc/iptables/rules.v4"])
 
             # Enable all network interfaces
-            interface= self.get_default_interface()
+            # interface= self.get_default_interface()
         
-            subprocess.run(["sudo", "ip", "link", "set", interface, "up"])
+            # subprocess.run(["sudo", "ip", "link", "set", interface, "up"])
 
             # Enable outgoing traffic
             # subprocess.run(["sudo", "iptables", "-D", "OUTPUT", "-j", "DROP"])
@@ -483,7 +485,8 @@ class SystemControler:
     def reset_ip_config(self):
         try:
             interface = self.get_default_interface()
-
+            if not interface:
+                return False
             # Release the DHCP lease
             subprocess.run(['sudo', 'dhclient', '-r', interface], check=True)
             # Flush the IP address configuration
@@ -564,6 +567,8 @@ class SystemControler:
     def set_dns_auto_assign(self):
         try:
             interface = self.get_default_interface()
+            if not interface :
+                return False
             connection_name = self.get_connection_name(interface)
 
             # Clear the custom DNS settings to revert to obtaining DNS automatically
@@ -612,6 +617,8 @@ class SystemControler:
     def set_ip_configuration_manual(self, ip_address, subnet_mask, default_gateway):
         try:
             interface = self.get_default_interface()
+            if not interface :
+                return False
             connection_name = self.get_connection_name(interface=interface)
             # Check if the configuration already exists for the interface
             # Convert the subnet mask to CIDR notation
@@ -1183,6 +1190,7 @@ Mask={mask}"""
 
     def set_management_interface(self, interface):
         try:
+            subprocess.run(["sudo", "ip", "link", "set", interface, "up"])
             ip_address = self.get_ipv4_address(interface=interface)
             print(ip_address)
             if ip_address:

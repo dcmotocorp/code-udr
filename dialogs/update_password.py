@@ -122,7 +122,7 @@ class UpdatePasswordScreen:
                 self.current_password = self.current_password[:-1]
                 self.current_password_win.clear()
                 self.current_password_win.bkgd(' ', curses.color_pair(2)) 
-                self.current_password_win.addstr(0, 0, self.current_password, curses.color_pair(2))
+                self.current_password_win.addstr(0, 0, "*" * len(self.current_password), curses.color_pair(2))
                 self.current_password_win.refresh()
                 self.set_cursor_position()
 
@@ -172,7 +172,8 @@ class UpdatePasswordScreen:
             
             if hasattr(self, 'current_password_win') and self.current_password_win != None and  self.current_status == "current_password" and len(self.current_password) < 16  :
                 self.current_password += char_
-                self.current_password_win.addstr(0, 0, self.current_password, curses.color_pair(2))
+                self.current_password_win.addstr(0, 0, "*" * len(self.current_password), curses.color_pair(2))
+                
                 self.current_password_win.refresh()
                 self.set_cursor_position()
                 
