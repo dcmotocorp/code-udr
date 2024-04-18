@@ -141,14 +141,13 @@ class HostnameScreen:
             pass 
 
         elif len(event.name) == 1:
-            char_value = self.cehck_shift_char(event.name)
-            
-            if char_value == "-" and   len(self.current_hostname) < 10:
-                self.current_hostname += char_value
+            if event.name == "-" and   len(self.current_hostname) < 10:
+                self.current_hostname += event.name
                 self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
                 self.current_password_win.refresh()
                 self.set_cursor_position()
             else:
+                char_value = self.cehck_shift_char(event.name)
                 if pattern.match(char_value) and len(self.current_hostname) < 10:
                     self.current_hostname += char_value
                     self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
