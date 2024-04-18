@@ -50,7 +50,7 @@ class HostnameScreen:
         auth_bottom_win.addstr(1, 1, username_label, curses.color_pair(3))
 
         end_bracket_user = "]"
-        auth_bottom_win.addstr(1, 35, end_bracket_user, curses.color_pair(3))
+        auth_bottom_win.addstr(1, 45, end_bracket_user, curses.color_pair(3))
 
         # Add label to popup_bottom_win
         label_text_bottom_esc = "<Esc> Cancel"
@@ -142,7 +142,7 @@ class HostnameScreen:
 
         elif len(event.name) == 1:
             self.logger_.log_info(" — event name  {} {}".format(event.name,len(self.current_hostname)))
-            if event.name == "—" and   len(self.current_hostname) < 20:
+            if event.name == "−" and   len(self.current_hostname) < 20:
                 self.logger_.log_info("check condition of hostname {}".format(event.name))
                 self.current_hostname += event.name
                 self.current_hostname_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
