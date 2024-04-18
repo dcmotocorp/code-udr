@@ -182,19 +182,18 @@ class DNSScreen:
         self.auth_bottom_win.refresh()
         curses.curs_set(1)
         self.hostname_screen.refresh()
-        # if self.current_selected_label_index ==1:
-        #     self.set_up_in_address_field()
-        #     self.set_cursor_position()
-        # else:
-        #     self.clear_input_fields()
+    
         
         if self.current_selected_label_index ==1:
             self.set_up_in_address_field()
             self.set_cursor_position()
+            curses.curs_set(1)
         else:
             self.input_current_index_status = "prim"
             self.clear_input_fields()
             self.set_cursor_position()
+            curses.curs_set(0)
+
     def clear(self):
         if hasattr(self, 'hostname_screen') and self.hostname_screen != None:
             self.hostname_screen.clear()
@@ -238,8 +237,10 @@ class DNSScreen:
             self.auth_bottom_win.refresh()
             if self.current_selected_label_index ==1:
                 self.set_up_in_address_field()
+                curses.curs_set(0)
             else:
                 self.setup_network_adaptor_screen()
+                curses.curs_set(1)
     
         
         
