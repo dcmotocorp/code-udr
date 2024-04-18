@@ -32,9 +32,11 @@ class SSHScreen:
         self.logger_.log_info("ssh user collected data {}".format(json.dumps(users)))    
         if data and len(data) >0:
             if data[1] ==0:
-                self.current_label_head = 1  
+                self.current_label_head = 1
+                self.selected_index =1  
             elif data[1] ==1:
                 self.current_label_head = 0
+                self.selected_index =0
         self.logger_.log_info("ssh user collected data self.current_label_head {}".format(self.current_label_head))
 
     def setup_hostname_screen(self):
