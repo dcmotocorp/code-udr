@@ -147,17 +147,20 @@ class LockdownModeScreen:
             self.auth_bottom_win.refresh()
         
         elif key.name == "space":   
+            self.logger_.log_info("selected_index lock down selected_index : {}".format(self.selected_index))
+            
             if self.selected_index == 1:
                 self.current_label_head = 1
                 values = ["[ ] enable", "[0] disable"]
             elif self.selected_index == 0:
                 self.current_label_head = 0
                 values = ["[0] enable", "[ ] disable"]          
-            if  self.selected_index in [0,1]:
-                for index, label in enumerate(values):
-                    color_pair = self.selected_color_pair if index == self.current_label_head else self.normal_color_pair
-                    self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
-                self.auth_bottom_win.refresh()
+            
+            self.logger_.log_info("selected_index lock down selected_index : {}".format(self.selected_index))
+            for index, label in enumerate(values):
+                color_pair = self.selected_color_pair if index == self.current_label_head else self.normal_color_pair
+                self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
+            self.auth_bottom_win.refresh()
 
 
             
