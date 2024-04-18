@@ -230,6 +230,7 @@ class IPConfigurationScreen:
             self.input_current_index_status = "ip"
             self.clear_input_fields()
             self.set_cursor_position()
+            curses.curs_set(0)
     
         
 
