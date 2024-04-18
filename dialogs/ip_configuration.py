@@ -55,7 +55,7 @@ class IPConfigurationScreen:
         self.logger_.log_info("==========ip,mask,gate_way {}{}{}".format(ip,mask,gate_way))
         self.ip_address = ip 
         self.sub_mask = mask
-        self.gate_Way = gate_way
+        self.gate_Way = "Not Found"
 
     def set_up_in_address_field(self):
         # ad ip config 
