@@ -85,6 +85,7 @@ class IPConfigurationScreen:
          
         self.ip_bottom_win.refresh()
         self.create_update_ip_address()
+        curses.curs_set(0)
 
     def clear_input_fields(self):
         
