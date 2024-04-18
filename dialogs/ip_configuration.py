@@ -226,6 +226,7 @@ class IPConfigurationScreen:
         if self.current_seleected_parameter ==1:
             self.set_up_in_address_field()
             self.set_cursor_position()
+            curses.curs_set(1)
         else:
             self.input_current_index_status = "ip"
             self.clear_input_fields()
