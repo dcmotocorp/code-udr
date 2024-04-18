@@ -155,7 +155,7 @@ class LockdownModeScreen:
                 values = ["[0] enable", "[ ] disable"]
             self.labels = values           
             for index, label in enumerate(self.labels):
-                color_pair = self.selected_color_pair if index == self.selected_index else self.normal_color_pair
+                color_pair = self.selected_color_pair if index == self.current_label_head else self.normal_color_pair
                 self.auth_bottom_win.addstr(2 + index, 5, label, color_pair)
             self.auth_bottom_win.refresh()
 

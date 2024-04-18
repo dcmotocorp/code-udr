@@ -13,7 +13,7 @@ import os
 import spwd
 from pyroute2 import IPRoute
 from logs.udr_logger import UdrLogger
-
+import subprocess
 
 class SystemControler:
     def __init__(self) -> None:
@@ -1214,3 +1214,20 @@ Mask={mask}"""
             subprocess.run(["sudo", "systemctl", "restart", "configuration-app.service"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
         except Exception:
             pass
+    
+    
+
+    def check_ssh_status(self):
+        try:
+            # Run systemctl command to check SSH service status
+            result = subprocess.run(['systemctl', 'is-active', 'ssh'], capture_output=True, text=True, check=True)
+            status = result.stdout.strip()  # Get the status output
+            
+            if status == 'active':
+                return True
+                
+            else:
+                return False
+        except subprocess.CalledProcessError:
+            return False
+
