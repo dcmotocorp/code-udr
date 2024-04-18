@@ -141,6 +141,7 @@ class HostnameScreen:
             pass 
 
         elif len(event.name) == 1:
+            self.logger_.log_info(" - event name  {}".format(event.name))
             if event.name == "-" and   len(self.current_hostname) < 10:
                 self.current_hostname += event.name
                 self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
