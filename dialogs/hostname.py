@@ -117,7 +117,7 @@ class HostnameScreen:
                 return next_char
 
     def handle_key_event(self, event):
-        pattern = re.compile(r'^[a-zA-Z0-9-]$')
+        pattern = re.compile(r'^[a-zA-Z0-9"-"]$')
         if event.name == "backspace":
             if len(self.current_hostname) > 0:
                 self.current_hostname = self.current_hostname[:-1]
