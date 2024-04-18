@@ -62,23 +62,23 @@ class HostnameScreen:
         # Create username input box
         user_input_y = popup_y + popup_top_height + 1
         user_input_x = popup_x + 15
-        self.current_password_win = curses.newwin(1, 20, user_input_y, user_input_x)
-        self.current_password_win.refresh()
+        self.current_hostname_win = curses.newwin(1, 21, user_input_y, user_input_x)
+        self.current_hostname_win.refresh()
         
 
         curses.curs_set(1)
         self.hostname_screen.refresh()
         self.current_hostname = self.system_controller.get_hostname()
         self.logger_.log_info("current hostname value {}".format(self.current_hostname))
-        self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
-        self.current_password_win.refresh()
+        self.current_hostname_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
+        self.current_hostname_win.refresh()
 
 
     def set_cursor_position(self):
         """Set the cursor position based on the current input and status."""
 
-        self.current_password_win.move(0, len(self.current_hostname))
-        self.current_password_win.refresh()
+        self.current_hostname_win.move(0, len(self.current_hostname))
+        self.current_hostname_win.refresh()
 
 
 
@@ -92,10 +92,10 @@ class HostnameScreen:
 
 
     def clear_input_field(self):
-        if hasattr(self, 'current_password_win') and self.current_password_win != None:
-            self.current_password_win.clear()
-            self.current_password_win.refresh()
-            self.current_password_win = None
+        if hasattr(self, 'current_password_win') and self.current_hostname_win != None:
+            self.current_hostname_win.clear()
+            self.current_hostname_win.refresh()
+            self.current_hostname_win = None
 
 
 
@@ -121,10 +121,10 @@ class HostnameScreen:
         if event.name == "backspace":
             if len(self.current_hostname) > 0:
                 self.current_hostname = self.current_hostname[:-1]
-                self.current_password_win.clear()
-                self.current_password_win.bkgd(' ', curses.color_pair(2)) 
-                self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
-                self.current_password_win.refresh()
+                self.current_hostname_win.clear()
+                self.current_hostname_win.bkgd(' ', curses.color_pair(2)) 
+                self.current_hostname_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
+                self.current_hostname_win.refresh()
                 self.set_cursor_position()
  
         elif event.name == "enter":
@@ -142,17 +142,19 @@ class HostnameScreen:
 
         elif len(event.name) == 1:
             self.logger_.log_info(" - event name  {}".format(event.name))
-            if event.name == "-" and   len(self.current_hostname) < 10:
+            if event.name == "-" and   len(self.current_hostname) < 20:
+                self.logger_.log_info("check condition of hostname {}".format(event.name))
                 self.current_hostname += event.name
-                self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
-                self.current_password_win.refresh()
+                self.current_hostname_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
+                self.current_hostname_win.refresh()
                 self.set_cursor_position()
             else:
+                self.logger_.log_info("check else condition of hostname {}".format(event.name))
                 char_value = self.cehck_shift_char(event.name)
-                if pattern.match(char_value) and len(self.current_hostname) < 10:
+                if pattern.match(char_value) and len(self.current_hostname) < 20:
                     self.current_hostname += char_value
-                    self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
-                    self.current_password_win.refresh()
+                    self.current_hostname_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
+                    self.current_hostname_win.refresh()
                     self.set_cursor_position()
                 
                      
