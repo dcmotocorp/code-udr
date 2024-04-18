@@ -50,7 +50,7 @@ class HostnameScreen:
         auth_bottom_win.addstr(1, 1, username_label, curses.color_pair(3))
 
         end_bracket_user = "]"
-        auth_bottom_win.addstr(1, 39, end_bracket_user, curses.color_pair(3))
+        auth_bottom_win.addstr(1, 37, end_bracket_user, curses.color_pair(3))
 
         # Add label to popup_bottom_win
         label_text_bottom_esc = "<Esc> Cancel"
