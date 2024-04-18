@@ -117,7 +117,7 @@ class HostnameScreen:
                 return next_char
 
     def handle_key_event(self, event):
-        pattern = re.compile(r'^[a-zA-Z0-9"-"]$')
+        pattern = re.compile(r'^[a-zA-Z0-9]$')
         if event.name == "backspace":
             if len(self.current_hostname) > 0:
                 self.current_hostname = self.current_hostname[:-1]
@@ -142,10 +142,17 @@ class HostnameScreen:
 
         elif len(event.name) == 1:
             char_value = self.cehck_shift_char(event.name)
-            if pattern.match(char_value):
-                if  len(self.current_hostname) < 10  :
+            
+            if char == "-" and   len(self.current_hostname) < 10:
+                self.current_hostname += char_value
+                self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
+                self.current_password_win.refresh()
+                self.set_cursor_position()
+            else:
+                if pattern.match(char_value) and len(self.current_hostname) < 10:
                     self.current_hostname += char_value
                     self.current_password_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
                     self.current_password_win.refresh()
                     self.set_cursor_position()
-            
+                
+                     
