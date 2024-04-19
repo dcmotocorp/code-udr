@@ -401,7 +401,7 @@ class SystemControler:
             self.update_hosts_file(socket.gethostname(), new_hostname)
 
             # Run the hostnamectl command to set the new hostname
-            subprocess.run(['sudo', 'hostnamectl', 'set-hostname', f"{new_hostname}"], check=True)
+            subprocess.run(['sudo', 'hostnamectl', 'set-hostname', f'{new_hostname}'], check=True)
             self.logger_.log_info("host name value in controller {}".format(new_hostname))
             return True, "host name changed"
         except subprocess.CalledProcessError as e:
