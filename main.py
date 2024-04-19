@@ -230,6 +230,7 @@ class NovaiguApplication:
                     self.reset_system_config_screen()
                     self.update_password = None
                     self.logger_.log_info("Clear pop up password screen")
+                    curses.curs_set(0)
 
                 elif current_screen == HOSTNAME and hasattr(self, 'host_name')  and self.host_name !=None and self.host_name.update_status == True :
                     self.system_config.active_status = True
@@ -238,6 +239,7 @@ class NovaiguApplication:
                     self.reset_system_config_screen()
                     self.host_name = None
                     self.logger_.log_info("Clear pop up hostname screen")
+                    curses.curs_set(0)
                 
                 elif current_screen == RESET_SYSTEM_CONFIG and hasattr(self, 'reset_screen')  and self.reset_screen !=None and self.reset_screen.update_status == True :
                     self.system_config.active_status = True
@@ -246,7 +248,7 @@ class NovaiguApplication:
                     self.reset_system_config_screen()
                     self.reset_screen = None
                     self.logger_.log_info("Clear pop up reset_screen screen")
-
+                    
                 
                 elif current_screen == SSH and hasattr(self, 'ssh_screen')  and self.ssh_screen !=None and self.ssh_screen.update_status == True :
                     self.system_config.active_status = True
@@ -280,6 +282,7 @@ class NovaiguApplication:
                             self.ip_config_adaptor = None
                             self.configuration_management_screen.reset_screen_color()
                             self.configuration_management_screen.refresh_screen()
+                            curses.curs_set(0)
 
                         elif selected_label ==  NETWORK_ADAPTOR and  hasattr(self, 'net_work_screen')  and self.net_work_screen !=None and self.net_work_screen.update_status == True:
                             
@@ -287,6 +290,7 @@ class NovaiguApplication:
                             self.net_work_screen = None
                             self.configuration_management_screen.reset_screen_color()
                             self.configuration_management_screen.refresh_screen()
+                            curses.curs_set(0)
                         
                         elif selected_label ==  DNS_SERVER and  hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
                             
@@ -295,12 +299,14 @@ class NovaiguApplication:
                             self.dns_screen = None
                             self.configuration_management_screen.reset_screen_color()
                             self.configuration_management_screen.refresh_screen()
+                            curses.curs_set(0)
                     
                         else:
                             
                             self.configuration_management_screen.clear()
                             self.reset_system_config_screen()
                             self.configuration_management_screen = None
+                            curses.curs_set(0)
                     except Exception as ex:
                         self.logger_.log_info("Exception occure in management interface {}".format(str(ex)))
 
@@ -315,6 +321,7 @@ class NovaiguApplication:
                         self.reset_main_screen_color()
                         self.logger_.log_info("in the system system part refresh_ip_screen")
                         self.refresh_ip_screen()
+                        curses.curs_set(0)
                     except Exception as ex:
                         self.logger_.log_info("Exception occure in system config on pressing esc")
                 
@@ -328,6 +335,7 @@ class NovaiguApplication:
                         self.reset_main_screen_color()
                         self.logger_.log_info("in the authentication part refresh_ip_screen")
                         self.refresh_ip_screen()
+                        curses.curs_set(0)
                         
                     except Exception as ex:
                         self.logger_.log_info("Exception occure in authetication ssystem on pressing esc") 
@@ -480,7 +488,8 @@ class NovaiguApplication:
                         self.set_main_screen_black()
                         self.system_config.set_sytem_config_screen_dark()
                         self.reset_screen = ResetScreen(self.screen_height, self.screen_width,self)
-                        self.reset_screen.update_status = True    
+                        self.reset_screen.update_status = True 
+                        curses.curs_set(0)   
                 elif current_screen == SSH:
                      
                     if   hasattr(self, 'ssh_screen')  and self.ssh_screen !=None  and self.ssh_screen.update_status == True  :
