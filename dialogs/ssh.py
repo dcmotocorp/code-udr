@@ -123,6 +123,7 @@ class SSHScreen:
         self.auth_bottom_win.addstr(5, 23, label_text_bottom_enter_ok, curses.color_pair(3))
         auth_top_win.refresh()
         self.auth_bottom_win.refresh()
+        curses.curs_set(0)
 
     def clear(self):
         if hasattr(self, 'hostname_screen') and self.hostname_screen != None:

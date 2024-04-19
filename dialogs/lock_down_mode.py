@@ -117,6 +117,7 @@ class LockdownModeScreen:
     
         auth_top_win.refresh()
         self.auth_bottom_win.refresh()
+        curses.curs_set(0)
 
     def clear(self):
         if hasattr(self, 'hostname_screen') and self.hostname_screen != None:
