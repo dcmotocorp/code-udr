@@ -258,8 +258,10 @@ class DNSScreen:
             
             if self.current_selected_label_index ==1:
                 self.set_up_in_address_field()
+                curses.curs_set(1)
             else:
-                self.setup_network_adaptor_screen() 
+                self.setup_network_adaptor_screen()
+                curses.curs_set(0) 
         elif key.name == "tab":
             if self.input_current_index_status=="prim":
                 self.input_current_index_status="seco"
