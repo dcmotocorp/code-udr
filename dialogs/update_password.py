@@ -49,7 +49,7 @@ class UpdatePasswordScreen:
         auth_bottom_win.addstr(1, 1, username_label, curses.color_pair(3))
 
         end_bracket_user = "]"
-        auth_bottom_win.addstr(1, 37, end_bracket_user, curses.color_pair(3))
+        auth_bottom_win.addstr(1, 39, end_bracket_user, curses.color_pair(3))
 
         # Add label to popup_bottom_win
         label_text_bottom_esc = "<Esc> Cancel"
@@ -66,10 +66,10 @@ class UpdatePasswordScreen:
 
         # Print password label
         auth_bottom_win.addstr(3, 1, "New Password:      [", curses.color_pair(3))
-        auth_bottom_win.addstr(3, 37, end_bracket_user, curses.color_pair(3))
+        auth_bottom_win.addstr(3, 39, end_bracket_user, curses.color_pair(3))
 
         auth_bottom_win.addstr(5, 1, "Confirm Password:  [", curses.color_pair(3))
-        auth_bottom_win.addstr(5, 37, end_bracket_user, curses.color_pair(3))
+        auth_bottom_win.addstr(5, 39, end_bracket_user, curses.color_pair(3))
 
         # Create password input box
         password_input_y = user_input_y + 2
