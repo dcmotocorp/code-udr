@@ -41,7 +41,14 @@ class LockdownModeScreen:
                 self.user_data_base.update_user_settings(current_user_name,is_lockdown=False)
                 self.logger_.log_info("current lock down data  is : {}".format(data[0]))
                 self.current_label_head = 1
-                self.selected_index =1   
+                self.selected_index =1
+        if data == None:
+            self.logger_.log_info("current lock down data  None is : {}".format(data))
+            current_user_name = self.user_data_base.get_current_login()
+            self.user_data_base.update_user_settings(current_user_name,is_lockdown=False)
+            self.current_label_head = 1
+            self.selected_index =1   
+            
 
 
     def setup_lockdown_screen(self):
