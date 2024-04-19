@@ -27,7 +27,8 @@ class SSHScreen:
         self.setup_hostname_screen()
     
     def get_default_setting(self):
-        data =  self.user_data_base.get_user_settings(self.app.username_input)
+        current_user_name = self.user_data_base.get_current_login()
+        data =  self.user_data_base.get_user_settings(current_user_name)
         users = self.user_data_base.select_all_users()
 
         self.logger_.log_info("ssh user collected data {}".format(json.dumps(data)))
