@@ -36,6 +36,9 @@ class LockdownModeScreen:
             elif data[0] ==1:
                 self.current_label_head = 0
                 self.selected_index =0
+            elif data[0] == None:
+                self.logger_.log_info("current lock down data  is : {}".format(data[0])) 
+
 
     def setup_lockdown_screen(self):
         auth_screen_height = 10
