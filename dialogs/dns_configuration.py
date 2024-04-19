@@ -182,7 +182,6 @@ class DNSScreen:
 
         auth_top_win.refresh()
         self.auth_bottom_win.refresh()
-        curses.curs_set(1)
         self.hostname_screen.refresh()
     
         
@@ -221,9 +220,10 @@ class DNSScreen:
             self.auth_bottom_win.refresh()
             if self.current_selected_label_index ==1:
                 self.set_up_in_address_field()
+                curses.curs_set(1)
             else:
                 self.setup_network_adaptor_screen()
-            
+                curses.curs_set(0)
         elif key.name =="down":
             if self.selected_index == 0:
                  self.selected_index = 1
@@ -239,10 +239,10 @@ class DNSScreen:
             self.auth_bottom_win.refresh()
             if self.current_selected_label_index ==1:
                 self.set_up_in_address_field()
-                curses.curs_set(0)
+                curses.curs_set(1)
             else:
                 self.setup_network_adaptor_screen()
-                curses.curs_set(1)
+                curses.curs_set(0)
     
         
         
