@@ -4,6 +4,7 @@ from dialogs.system_config import SystemConfig
 from constant import KEY_UP,KEY_DOWN
 from data.database import UserDatabase
 import json
+from  system_controller.systemcontroler import SystemControler
 
 class SSHScreen:
     def __init__(self, screen_height, screen_width,app):
@@ -18,6 +19,7 @@ class SSHScreen:
         self.selected_color_pair = curses.color_pair(5)
         self.logger_ = UdrLogger()
         self.selected_index= 0
+        self.system_controller  = SystemControler()
         self.user_data_base = UserDatabase()
         self.current_label_head = None
         self.starting_state = True 
@@ -37,6 +39,28 @@ class SSHScreen:
             elif data[1] ==1:
                 self.current_label_head = 0
                 self.selected_index =0
+            elif data[1] == None:
+                status = self.system_controller.check_ssh_status()
+                if status == True:
+                    self.current_label_head = 0
+                    self.selected_index =0
+                else:
+                    self.current_label_head = 1
+                    self.selected_index =1 
+        elif data == None:
+            current_user_name = self.user_data_base.get_current_login()
+            status = self.system_controller.check_ssh_status()
+            if status == True:
+                self.current_label_head = 0
+                self.selected_index =0
+                self.user_data_base.update_user_settings(current_user_name,ssh_enable=True)
+            else:
+                self.current_label_head = 1
+                self.selected_index =1
+                self.user_data_base.update_user_settings(current_user_name,ssh_enable=False)
+
+
+
         self.logger_.log_info("ssh user collected data self.current_label_head {}".format(self.current_label_head))
 
     def setup_hostname_screen(self):
