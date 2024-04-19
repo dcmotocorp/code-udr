@@ -444,6 +444,7 @@ class NovaiguApplication:
                             status = self.system_controller.change_password(self.username_input,self.password_input,self.update_password.new_password)
                             if status:
                                 self.user_data_base.change_password(self.username_input,self.update_password.new_password)
+                                self.system_controller.restart_service()
                                 self.system_config.active_status = True
                                 self.system_config.update_password_screen = False 
                                 self.update_password.clear()
