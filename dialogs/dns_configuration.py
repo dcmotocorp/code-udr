@@ -262,6 +262,7 @@ class DNSScreen:
             else:
                 self.setup_network_adaptor_screen()
                 curses.curs_set(0) 
+            self.set_cursor_position()
         elif key.name == "tab":
             if self.input_current_index_status=="prim":
                 self.input_current_index_status="seco"
