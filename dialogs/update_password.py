@@ -118,7 +118,7 @@ class UpdatePasswordScreen:
 
     def handle_key_event(self, event):
         if event.name == "backspace":
-            if self.current_status == "current_password"  and  len(self.current_password) < 16:
+            if self.current_status == "current_password"  and  len(self.current_password) >0:
                 self.current_password = self.current_password[:-1]
                 self.current_password_win.clear()
                 self.current_password_win.bkgd(' ', curses.color_pair(2)) 
@@ -126,7 +126,7 @@ class UpdatePasswordScreen:
                 self.current_password_win.refresh()
                 self.set_cursor_position()
 
-            elif self.current_status == "current_new" and  len(self.new_password) <16:
+            elif self.current_status == "current_new" and  len(self.new_password) >0:
                 self.new_password = self.new_password[:-1]
                 self.new_password_win.clear()
                 self.new_password_win.bkgd(' ', curses.color_pair(2)) 
@@ -134,7 +134,7 @@ class UpdatePasswordScreen:
                 self.new_password_win.refresh()
                 self.set_cursor_position()
 
-            elif self.current_status == "conform_new" and len(self.confirm_password) <16:
+            elif self.current_status == "conform_new" and len(self.confirm_password) >0:
                 self.confirm_password = self.confirm_password[:-1]
                 self.conform_password_win.clear()
                 self.conform_password_win.bkgd(' ', curses.color_pair(2)) 
