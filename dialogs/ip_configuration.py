@@ -43,9 +43,11 @@ class IPConfigurationScreen:
 
         if data and len(data) >0 :
             if data[2] ==0:
-                self.current_seleected_parameter = data[2]    
+                self.current_seleected_parameter = data[2]
+                self.selected_index =data[2]    
             elif data[2] ==1:
                 self.current_seleected_parameter = data[2]
+                self.selected_index =data[2]
     
 
 
@@ -237,8 +239,9 @@ class IPConfigurationScreen:
 
     def set_manually_ip(self):
         self.logger_.log_info("value for self.ip_address,self.sub_mask,self.gate_Way {} {} {}".format(self.ip_address,self.sub_mask,self.gate_Way))
-        self.system_controller.set_ip_configuration_manual(self.ip_address,self.sub_mask,self.gate_Way)
-        self.system_controller.restart_service()
+        if len(self.ip_address) >0 and len(self.sub_mask)>0 and len(self.gate_Way) >0 :
+            self.system_controller.set_ip_configuration_manual(self.ip_address,self.sub_mask,self.gate_Way)
+            self.system_controller.restart_service()
 
     def set_ip_address_automatic(self):
         self.set_data()

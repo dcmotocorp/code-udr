@@ -47,6 +47,7 @@ class NetworkAdaptorScreen:
                 if data[2] == _rs[0]:
                     self.logger_.log_info("index mgmt index {}".format(index))
                     self.current_selected_label_index = index
+                    self.selected_index = index
 
     def set_network_data(self):
         inetrface = self.get_current_interface()
