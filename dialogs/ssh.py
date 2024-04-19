@@ -45,9 +45,11 @@ class SSHScreen:
                 if status == True:
                     self.current_label_head = 0
                     self.selected_index =0
+                    self.user_data_base.update_user_settings(current_user_name,ssh_enable=True)
                 else:
                     self.current_label_head = 1
                     self.selected_index =1 
+                    self.user_data_base.update_user_settings(current_user_name,ssh_enable=False)
         elif data == None:
             current_user_name = self.user_data_base.get_current_login()
             status = self.system_controller.check_ssh_status()
