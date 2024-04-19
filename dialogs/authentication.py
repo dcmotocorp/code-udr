@@ -145,7 +145,7 @@ class AuthenticationScreen:
             if len(self.username_input) >0 or len(self.password_input) >0:
                 self.authentication_screen.clear()
                 self.authentication_screen = None
-                self.system_config.create_system_configuration()
+                
 
         elif event.name == "tab":
             if  self.current_status == "username":
