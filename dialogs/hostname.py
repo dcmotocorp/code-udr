@@ -144,7 +144,7 @@ class HostnameScreen:
             self.logger_.log_info(" — event name  {} {}".format(event.name,len(self.current_hostname)))
             if event.name == "−" and   len(self.current_hostname) < 20:
                 self.logger_.log_info("check condition of hostname {}".format(event.name))
-                self.current_hostname += event.name
+                self.current_hostname += '-'
                 self.current_hostname_win.addstr(0, 0, self.current_hostname, curses.color_pair(2))
                 self.current_hostname_win.refresh()
                 self.set_cursor_position()
