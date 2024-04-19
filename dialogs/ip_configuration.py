@@ -223,7 +223,6 @@ class IPConfigurationScreen:
         user_input_y = popup_y + popup_top_height + 1
         user_input_x = popup_x + 15        
 
-        curses.curs_set(1)
         self.hostname_screen.refresh()
         if self.current_seleected_parameter ==1:
             self.set_up_in_address_field()
