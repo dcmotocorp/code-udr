@@ -37,6 +37,7 @@ class DNSScreen:
     def get_default_Setting(self):
         data =  self.user_data_base.get_user_settings(self.app.username_input)
         users = self.user_data_base.select_all_users()
+        self.logger_.log_info(" primary user data  {}".format(json.dumps(users)))
         self.logger_.log_info(" primary and secondaru current data  {}".format(json.dumps(data)))
         if data and len(data) >0 :
             if data[3] ==0:
