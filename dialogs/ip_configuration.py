@@ -291,8 +291,10 @@ class IPConfigurationScreen:
             self.ip_bottom_win.refresh()
             if self.current_seleected_parameter ==1:
                 self.set_up_in_address_field()
+                curses.curs_set(1)
             else:
                 self.setup_network_adaptor_screen() 
+                curses.curs_set(0)
 
         elif key.name =="down":
             
@@ -312,8 +314,10 @@ class IPConfigurationScreen:
             self.ip_bottom_win.refresh()
             if self.current_seleected_parameter ==1:
                 self.set_up_in_address_field()
+                curses.curs_set(1)
             else:
                 self.setup_network_adaptor_screen()
+                curses.curs_set(0)
 
         elif key.name == "space":
             self.current_seleected_parameter = self.selected_index
