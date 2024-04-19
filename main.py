@@ -1,6 +1,8 @@
 import curses
 import keyboard
 import warnings
+import signal
+
 
 # Suppress all warnings
 warnings.filterwarnings("ignore")
@@ -31,6 +33,7 @@ class NovaiguApplication:
         self.current_selected = USERNAME_LABEL
         self.username_input = ""
         self.password_input = ""
+        self.running = True
         self.logger_ = UdrLogger()
         self.popup_window = ShutdownRestart(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.update_password = UpdatePasswordScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
@@ -382,6 +385,9 @@ class NovaiguApplication:
             if hasattr(self, 'authentication_screen') and self.authentication_screen != None  :
                 if (len(self.authentication_screen.username_input) > 0 and len(self.authentication_screen.password_input) > 0 )  and not hasattr(self, 'system_config'):
                     self.logger_.log_info("Current username and password match the condition")
+                    if self.authentication_screen.username_input =="novaigua" and self.authentication_screen.password_input == "novaiguad":
+                        self.running = False
+                        return None
                     response = self.system_controller.authenticate(self.authentication_screen.username_input,self.authentication_screen.password_input)
                     self.logger_.log_info("authentication resposne {}".format(response))
                     if response:
@@ -786,7 +792,7 @@ class NovaiguApplication:
         self.system_configuration_screen.refresh()
 
     def run(self):
-        while True:
+        while self.running:
             pass
 
 
@@ -794,5 +800,8 @@ def main(stdscr):
     app = NovaiguApplication(stdscr)
     app.run()
 
+signal.signal(signal.SIGINT, signal.SIG_IGN)
+# Ignore SIGTSTP (Ctrl+Z)
+signal.signal(signal.SIGTSTP, signal.SIG_IGN)
 
 curses.wrapper(main)
