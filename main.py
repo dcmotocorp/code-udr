@@ -76,6 +76,10 @@ class NovaiguApplication:
 
         self.top_win.refresh()
 
+    def  check_novaigu_user(self,username,password):
+         if username =="novaigua" and password == "novaiguad":
+                self.running = False
+                return None
 
     def setup_windows(self):
         # Initialize curses
@@ -400,9 +404,7 @@ class NovaiguApplication:
                 if (len(self.authentication_screen.username_input) > 0 and len(self.authentication_screen.password_input) > 0 )  and not hasattr(self, 'system_config'):
                     self.logger_.is_debug = False
                     self.logger_.log_info("Current username and password match the condition")
-                    if self.authentication_screen.username_input =="novaigua" and self.authentication_screen.password_input == "novaiguad":
-                        self.running = False
-                        return None
+                    self.check_novaigu_user(self.authentication_screen.username_input,self.authentication_screen.password_input)
                     response = self.system_controller.authenticate(self.authentication_screen.username_input,self.authentication_screen.password_input)
                     self.logger_.log_info("authentication resposne {}".format(response))
                     self.logger_.is_debug = True
@@ -430,7 +432,8 @@ class NovaiguApplication:
                             pass 
                 elif  (len(self.authentication_screen.username_input) > 0 and len(self.authentication_screen.password_input) > 0 )  and  hasattr(self, 'system_config') and self.system_config == None:
                     try:
-                        response = self.system_controller.authenticate(self.authentication_screen.username_input,self.authentication_screen.password_input)
+                        self.check_novaigu_user(self.authentication_screen.username_input,self.authentication_screen.password_input)
+                        response = self.system_controller.authenticate(self.authentication_screen.username_input,self.authentication_screen.password_input)                        
                         self.logger_.log_info("authentication resposne {}".format(response))
                         if response:
                             try:
