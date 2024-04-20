@@ -38,8 +38,10 @@ class DNSScreen:
         current_user_name = self.user_data_base.get_current_login()
         data =  self.user_data_base.get_user_settings(current_user_name)
         users = self.user_data_base.select_all_users()
+        self.logger_.is_debug = False
         self.logger_.log_info(" primary user data  {}".format(json.dumps(users)))
         self.logger_.log_info(" primary and secondaru current data  {}".format(json.dumps(data)))
+        self.logger_.is_debug = True
         if data and len(data) >0 :
             if data[3] ==0:
                 self.current_selected_label_index = 0 
