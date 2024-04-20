@@ -1,11 +1,16 @@
 import sqlite3
 import os
+import json 
+from logs.udr_logger import UdrLogger
+from constant import db_location,db_directory
+logger_ = UdrLogger()
 
 class UserDatabase:
     _instance = None
-    db_location = '/var/db/user_database.db'
-    db_directory = '/var/db'
 
+    db_location = db_location
+    db_directory = db_directory
+    
     def __new__(cls):
         if not cls._instance:
             cls._instance = super(UserDatabase, cls).__new__(cls)
@@ -18,7 +23,6 @@ class UserDatabase:
 
         # Create the directory if it doesn't exist
         if not os.path.exists(self.db_directory):
-            print(f"creating director {self.db_directory}")
             os.makedirs(self.db_directory)
 
             # Set read and write permissions to the directory
@@ -64,8 +68,95 @@ class UserDatabase:
             )
         ''')
 
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS interfaces (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            interface_name TEXT UNIQUE,
+            selected_interface TEXT,
+            create_on DATETIME,
+            update_on DATETIME
+            )
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS udr_site_user_status (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                status INTEGER NOT NULL DEFAULT 0,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        # Create the sb_site_user_master table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS udr_site_user_master (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                site_id INTEGER NOT NULL,
+                role_id INTEGER NOT NULL,
+                username TEXT DEFAULT NULL,
+                password TEXT DEFAULT NULL,
+                full_name TEXT DEFAULT NULL,
+                description TEXT DEFAULT NULL,
+                status INTEGER NOT NULL DEFAULT 0,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+
+
         connection.commit()
         connection.close()
+
+    def update_status_for_all(self):
+        conn = sqlite3.connect(self.db_location)
+        cursor = conn.cursor()
+
+        try:
+            # Step 1: Select all users and their current statuses
+            cursor.execute('SELECT id, status FROM udr_site_user_master')
+            users = cursor.fetchall()
+
+            # Step 2: Update the status for all users in udr_site_user_master
+            cursor.execute('UPDATE udr_site_user_master SET status = ?', (0,))
+
+            # Step 3: Log each status change in the status_log table
+            for user_id, status in users:
+                # Check if the user ID already exists in the status_log table
+                cursor.execute('SELECT 1 FROM udr_site_user_status WHERE id = ?', (user_id,))
+                if not cursor.fetchone():
+                    cursor.execute('INSERT INTO udr_site_user_status (id, status) VALUES (?, ?)',
+                                (user_id, status))
+
+            conn.commit()
+        except Exception as e:
+            logger_.log_error(f"error in changing user status for UI {str(e)}")
+        finally:
+            conn.close()
+    
+    def revert_status(self):
+        conn = sqlite3.connect(self.db_location)
+        cursor = conn.cursor()
+
+        try:
+            # Step 1: Fetch user_id and old_status from status_log
+            cursor.execute('SELECT id, status FROM udr_site_user_status')
+            changes = cursor.fetchall()
+
+            # Step 2: Update the udr_site_user_master based on the fetched logs
+            for user_id, old_status in changes:
+                cursor.execute('UPDATE udr_site_user_master SET status = ? WHERE id = ?', (old_status, user_id))
+
+            # Step 3: Delete all records from status_log after updates
+            cursor.execute('DELETE FROM udr_site_user_status')
+
+            # Commit the transaction if all operations were successful
+            conn.commit()
+        except Exception as e:
+            # Roll back any changes if an error occurs
+            conn.rollback()
+            logger_.log_error(f"error in changing user status for UI {str(e)}")
+        finally:
+            # Ensure the connection is closed after the operation
+            conn.close()
     def add_user(self, username, password, password_update=False):
         # Add a user to the database
         connection = sqlite3.connect(self.db_location)
@@ -113,10 +204,8 @@ class UserDatabase:
 
         if result:
             hostname, password = result
-            print(f"Hostname: {hostname}, Password: {password}")
             return hostname, password
         else:
-            print("No data found.")
             return None, None
 
 
@@ -215,12 +304,11 @@ class UserDatabase:
         connection = sqlite3.connect(self.db_location)
         cursor = connection.cursor()
 
-        print(f"Type of username: {type(username)}")  # Add this line for debugging
-
+        
         # Check if the user exists
         cursor.execute('SELECT 1 FROM user_settings WHERE username = ?', (username,))
         user_exists = cursor.fetchone() is not None
-
+        logger_.log_info("Update value of user")
         if user_exists:
             # Update non-None values
             update_values = {}
@@ -232,7 +320,7 @@ class UserDatabase:
                 update_values['ip_manual'] = ip_manual
             if dns_manual is not None:
                 update_values['dns_manual'] = dns_manual
-
+            logger_.log_info("user values {}".format(json.dumps(update_values)))
             if update_values:
                 update_query = 'UPDATE user_settings SET '
                 update_query += ', '.join(f'{key} = ?' for key in update_values)
@@ -240,7 +328,7 @@ class UserDatabase:
 
                 update_params = tuple(update_values[key] for key in update_values)
                 update_params += (username,)
-
+                logger_.log_info("user values  update_params{}".format(json.dumps(update_params)))
                 cursor.execute(update_query, update_params)
 
         else:
@@ -269,3 +357,36 @@ class UserDatabase:
         # If not found, return None
         return result if result else None
         
+    
+    def add_interface(self,interface_name, selected_interface):
+        connection = sqlite3.connect(self.db_location)
+        cursor = connection.cursor()
+        cursor.execute('''
+        INSERT INTO interfaces (interface_name, selected_interface, create_on, update_on)
+        VALUES (?, ?, COALESCE(
+            (SELECT create_on FROM interfaces WHERE interface_name = ?),
+            CURRENT_TIMESTAMP),
+            CURRENT_TIMESTAMP)
+        ON CONFLICT(interface_name) 
+        DO UPDATE SET
+            selected_interface = excluded.selected_interface,
+            update_on = CURRENT_TIMESTAMP
+    ''', (interface_name, selected_interface, interface_name))
+        connection.commit()
+        connection.close()
+
+    
+    def get_interfaces_data(self,interface_name):
+        connection = sqlite3.connect(self.db_location)
+        cursor = connection.cursor()
+        query = '''
+        SELECT * FROM interfaces
+        WHERE interface_name = ?
+        '''
+        cursor.execute(query, (interface_name,))
+        result = cursor.fetchone()
+        cursor.close()
+        connection.close()
+        return result
+
+    

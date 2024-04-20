@@ -6,7 +6,9 @@ import curses
 from constant import SYSTEM_CONFIG_LABEL, PASSWORD, HOSTNAME, SSH,LOCK_DOWN_MODE,MANAGEMENT_INTERFACE,\
     RESET_SYSTEM_CONFIG,KEY_DOWN,KEY_UP,NETWORK_ADAPTOR,IP_CONFIGURATION,DNS_SERVER,CONFIGURE_MANAGEMENT_INTERFACE
 from logs.udr_logger import UdrLogger
+import warnings
 
+warnings.filterwarnings("ignore")
 class ConfigureManagement:
     def __init__(self, screen_height, screen_width, app=None):
         self.popup_win = None
@@ -22,9 +24,9 @@ class ConfigureManagement:
         self.label_count = len(self.labels)
         self.selected_color_pair = curses.color_pair(5)  # Color pair for selected label
         self.normal_color_pair = curses.color_pair(4)    # Color pair for normal label
-        self.sys_config = {NETWORK_ADAPTOR:["XXXXXXX","XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX","XXXXXXXXXXXXXXXXXXXXXXXXXXXX"],
-                            IP_CONFIGURATION: ["XXXXXXX","XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX","XXXXXXXXXXXXXXXXXXXXXXXXXXXX"] ,
-                            DNS_SERVER:["XXXXXXX","XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX","XXXXXXXXXXXXXXXXXXXXXXXXXXXX"] 
+        self.sys_config = {NETWORK_ADAPTOR:["Aapters","Explore connected networks effortlessly","through the Network Adapter's"],
+                            IP_CONFIGURATION: ["IP Configuration","Modify and update IP addresses for the management .","interface Ensure secure and efficient network management\n  by customizing your IP settings ",] ,
+                            DNS_SERVER:["DNS Service","Efficiently configure and select from available DNS","servers to optimize network performance and connectivity"] 
                          }
         
     def create_configuration_management(self):
@@ -144,6 +146,9 @@ class ConfigureManagement:
     def update_color(self):
         pass 
     
+    def refresh_screen(self):
+        self.create_configuration_management()
+
 
     def handle_arrow_key(self, key):
         if hasattr(self, 'sc_config_top_win') and self.sc_config_top_win != None:

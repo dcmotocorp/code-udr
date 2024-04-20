@@ -21,12 +21,12 @@ class SystemConfig:
         self.label_count = len(self.labels)
         self.selected_color_pair = curses.color_pair(5)  # Color pair for selected label
         self.normal_color_pair = curses.color_pair(4)    # Color pair for normal label
-        self.sys_config ={PASSWORD:["Set/Change","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"],
-                            HOSTNAME: ["Set/Change","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"] ,
+        self.sys_config ={PASSWORD:["Set/Change","To prevent unautherized access to this system use ","complex password with minimum lenth of 14 characters"],
+                            HOSTNAME: ["Set/Change","To prevent unautherized access to this system use ","complex password with minimum lenth of 14 characters"] ,
                             MANAGEMENT_INTERFACE:["Configure Management Interface","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"] ,
                             SSH:["SSH","Enable of disable SSH Service",""],
-                            LOCK_DOWN_MODE:["Enter/Change Lockdown Mode","Enabling Lockdown Mode will make Following changes","1- Disable the management interface","2 -Disable all user accounts except root access to the console interface.","3- Disable SSH","To exit lockdown made you will need physical access to the UDF from the consolde interface and login with the root creadentials."],
-                            RESET_SYSTEM_CONFIG:["RESET_SYSTEM_CONFIG","To prevent unautherized access to this system use complex","password with minimum lenth of 14 characters"]}
+                            LOCK_DOWN_MODE:["Enter/Change Lockdown Mode","Enabling Lockdown Mode will make Following changes:","1- Disable the management interface","2- Disable all user accounts except root access to the ","   console interface.", "3- Disable SSH and remote access service on all other ","   interfaces.","4- The UDR functions will still be enabled.","To exit lockdown made you will need physical access to the ","UDR interface and login with the root creadentials."],
+                            RESET_SYSTEM_CONFIG:["Reset System","Reset System to the original settings",""]}
         
     def create_system_configuration(self):
         sc_config_height, sc_config_width = int(self.screen_height * 0.98), int(self.screen_width * 0.99)
@@ -57,7 +57,7 @@ class SystemConfig:
         self.system_configuration_screen.refresh()
         # Create the square
         square_height =  22
-        square_width =  int(self.screen_width * 0.45)  # Adjust the width as needed
+        square_width =  int(self.screen_width * 0.47)  # Adjust the width as needed
         square_x = int(self.screen_width * 0.4)
         square_y =  2
         self.square_win = curses.newwin(square_height, square_width, square_y, square_x)
@@ -69,12 +69,21 @@ class SystemConfig:
         #setup new tab
         current_label = self.labels[self.selected_index]
         label_value = self.sys_config.get(current_label) 
-        self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
-        self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
-        self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
-        self.square_win.addstr(5, 2, "", self.normal_color_pair)
-        self.square_win.refresh() 
-
+        # self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
+        # self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
+        # self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
+        # self.square_win.addstr(5, 2, "", self.normal_color_pair)
+        # self.square_win.refresh() 
+        for i, line in enumerate(label_value):
+            if i==0 :
+                self.square_win.addstr(2, 2, line, self.normal_color_pair)
+            elif i in  [8,9,10,11]:
+                self.square_win.addstr(i +4, 2, line, self.normal_color_pair)
+            else:
+                self.square_win.addstr(i +3, 2, line, self.normal_color_pair)
+        
+            # Refresh the square window to show changes
+            self.square_win.refresh()
         #for the bottom part set the label
         label_text_bottom_enter_ok = "<Enter> Ok"
         self.sc_config_bottom_win.addstr(sc_config_top_height-10, 2, label_text_bottom_enter_ok, curses.color_pair(3))
@@ -112,7 +121,10 @@ class SystemConfig:
         self.sc_config_bottom_win.addstr(sc_config_top_height-10, sc_config_width-15, label_text_bottom_esc_log_out, curses.color_pair(0))
                 
 
-    def handle_arrow_key(self, key):
+    def refreash_command(self):
+        self.create_system_configuration()
+        
+    def handle_arrow_key(self, key=None):
         self.sc_config_top_win.clear()
         self.sc_config_top_win = None
         
@@ -130,11 +142,10 @@ class SystemConfig:
     
         # Set background colors for each partition within the pop-up window
         self.sc_config_top_win.bkgd(' ', curses.color_pair(1))
-        
-        
+  
         if key ==  KEY_UP:
             self.selected_index = max(0, self.selected_index - 1)            
-              # Yellow background
+            # Yellow background
             
             
             for index, label in enumerate(self.labels):
@@ -143,14 +154,14 @@ class SystemConfig:
             
 
 
-            current_label = self.labels[self.selected_index]
-            label_value = self.sys_config.get(current_label) 
-            self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
-            self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
-            self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
-            if len(label_value) ==4 :
-                self.square_win.addstr(5, 2, label_value[3], self.normal_color_pair)
-            self.square_win.refresh()
+            # current_label = self.labels[self.selected_index]
+            # label_value = self.sys_config.get(current_label) 
+            # self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
+            # self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
+            # self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
+            # if len(label_value) ==4 :
+            #     self.square_win.addstr(5, 2, label_value[3], self.normal_color_pair)
+            # self.square_win.refresh()
             self.sc_config_top_win.refresh()
 
             
@@ -163,13 +174,14 @@ class SystemConfig:
             
             current_label = self.labels[self.selected_index]
             label_value = self.sys_config.get(current_label) 
-            self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
-            self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
-            self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
-            if len(label_value) ==4 :
-                self.square_win.addstr(5, 2, label_value[2], self.normal_color_pair)
+            # self.square_win.addstr(1, 2, label_value[0], self.normal_color_pair)
+            # self.square_win.addstr(3, 2, label_value[1], self.normal_color_pair)
+            # self.square_win.addstr(4, 2, label_value[2], self.normal_color_pair)
+            # if len(label_value) ==4 :
+            #     self.square_win.addstr(5, 2, label_value[2], self.normal_color_pair)
             
 
-            self.square_win.refresh()
+            # self.square_win.refresh()
             self.sc_config_top_win.refresh()
         self.create_system_configuration()
+

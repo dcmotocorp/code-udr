@@ -1,10 +1,7 @@
 import curses
 from logs.udr_logger import UdrLogger
 from dialogs.system_config import SystemConfig
-import warnings
 
-# Suppress all warnings
-warnings.filterwarnings("ignore")
 
 class AuthenticationScreen:
     def __init__(self, stdscr, screen_height, screen_width):
@@ -14,10 +11,13 @@ class AuthenticationScreen:
         self.username_input = ""
         self.password_input = ""
         self.current_status = "username"
-        self.autheticated_parameter = True
+        self.authenticated_parameter = True
         self.shift_status = False
         self.logger_ = UdrLogger()
         self.setup_authentication_screen()
+        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)  # Grey background
+        curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLUE)
+
 
     def setup_authentication_screen(self):
         # Create a pop-up window
@@ -71,105 +71,85 @@ class AuthenticationScreen:
 
         # Create password input box
         password_input_y = user_input_y + 2
-        self.password_win = curses.newwin(1, 20, password_input_y, user_input_x)
+        self.password_win = curses.newwin(2, 20, password_input_y, user_input_x)
         self.password_win.refresh()
 
-    
+        # Set placeholders for username and password fields
+        username_placeholder = "Enter username"
+        password_placeholder = "Enter password"
+        self.username_win.addstr(0, 0, username_placeholder, curses.color_pair(3))
+        self.password_win.addstr(0, 0, password_placeholder, curses.color_pair(3))
+        self.username_win.refresh()
+        self.password_win.refresh()
 
-        curses.curs_set(1)
+        curses.curs_set(1)  # Show the cursor in the terminal
         self.authentication_screen.refresh()
         self.set_cursor_position()
 
     def set_cursor_position(self):
         """Set the cursor position based on the current input and status."""
         if self.current_status == "username":
-            if hasattr(self, 'username_win') and self.username_win != None:
-                self.username_win.move(0, len(self.username_input))
-                self.username_win.refresh()
+            # Move the cursor to the end of the current username input
+            self.username_win.move(0, len(self.username_input))
+            self.username_win.refresh()
         elif self.current_status == "password":
-            if hasattr(self, 'password_win') and self.password_win != None:
-                self.password_win.move(0, len(self.password_input))
-                self.password_win.refresh()
+            # Move the cursor to the end of the current password input
+            self.password_win.move(0, len(self.password_input))
+            self.password_win.refresh()
 
-    def clear(self):
-        
-        self.authentication_screen.clear()
-        self.authentication_screen.refresh()
-
-    def clear_input_field(self):
-        if hasattr(self, 'username_win') and self.username_win != None:
-            self.username_win.clear()
-            self.username_win = None 
-        if hasattr(self, 'password_win') and self.password_win != None:
-            self.password_win.clear()
-            self.password_win = None
-
-    def get_username_input(self):
-        return self.username_input
-
-    def get_password_input(self):
-        return self.password_input
-
-    def cehck_shift_char(self,next_char):
-        symbol_char = {"1":"!" ,"2":"@","3":"#","4":"$","5":"%","6":"^","7":"&","8":"*","9":"(","0":")"}
-        if self.shift_status:
-            if next_char in symbol_char:
-                self.shift_status = False
-                return symbol_char[next_char]
-            else:
-                self.shift_status = False
-                return next_char.title()
-                
-        else:
-                return next_char
-        
     def handle_key_event(self, event):
+        # Handle key events
         if event.name == "backspace":
+            # Handle backspace
             if self.current_status == "username" and len(self.username_input) > 0:
                 self.username_input = self.username_input[:-1]
-                if hasattr(self, 'username_win') and self.username_win != None:
-                    self.username_win.clear()
-                    self.username_win.bkgd(' ', curses.color_pair(2)) 
-                    self.username_win.addstr(0, 0, self.username_input, curses.color_pair(2))
-                    self.username_win.refresh()
-                    self.set_cursor_position()
+                self.username_win.clear()
+                self.username_win.addstr(0, 0, self.username_input, curses.color_pair(2))
+                self.set_cursor_position()
             elif self.current_status == "password" and len(self.password_input) > 0:
                 self.password_input = self.password_input[:-1]
-                if hasattr(self, 'password_win') and self.password_win != None:
-                    self.password_win.clear()
-                    self.password_win.bkgd(' ', curses.color_pair(2)) 
-                    self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(2))
-                    self.password_win.refresh()
-                    self.set_cursor_position()
+                self.password_win.clear()
+                self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(2))
+                self.set_cursor_position()
         elif event.name == "enter":
-            if len(self.username_input) >0 or len(self.password_input) >0:
+            # Handle enter key (perform the action you need here)
+            if len(self.username_input) > 0 or len(self.password_input) > 0:
                 self.authentication_screen.clear()
                 self.authentication_screen = None
-                
-
+                self.system_config.create_system_configuration()
         elif event.name == "tab":
-            if  self.current_status == "username":
+            # Switch between username and password input fields
+            if self.current_status == "username":
                 self.current_status = "password"
-                self.logger_.log_info("CURRENT PASSWORD FIED")
-                self.set_cursor_position()
             elif self.current_status == "password":
                 self.current_status = "username"
-                self.logger_.log_info("CURRENT USERNAME FIED")
-                self.set_cursor_position()
-            
+            self.set_cursor_position()
         elif event.name == "shift":
-            self.shift_status = True 
+            self.shift_status = True
         elif len(event.name) == 1:
+            # Handle character input
             char_ = self.cehck_shift_char(event.name)
-            if  self.current_status == "username" and len(self.username_input) < 19  :
+            if self.current_status == "username" and len(self.username_input) < 20:
                 self.username_input += char_
-                if hasattr(self, 'username_win') and self.username_win != None:
-                    self.username_win.addstr(0, 0, self.username_input, curses.color_pair(2))
-                    self.username_win.refresh()
-                    self.set_cursor_position()
-            if  self.current_status == "password" and  len(self.password_input) < 19  :
+                self.username_win.addstr(0, 0, self.username_input, curses.color_pair(2))
+                self.set_cursor_position()
+            elif self.current_status == "password" and len(self.password_input) < 20:
                 self.password_input += char_
-                if hasattr(self, 'password_win') and self.password_win != None:
-                    self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(2))
-                    self.password_win.refresh()
-                    self.set_cursor_position()
+                self.password_win.addstr(0, 0, "*" * len(self.password_input), curses.color_pair(2))
+                self.set_cursor_position()
+    
+    def run(self):
+        while True :
+            pass 
+
+    # Other methods...
+
+if __name__ == "__main__":
+    # Initialize curses and run the authentication screen
+    
+    def main(stdscr):
+    
+        obj = AuthenticationScreen(stdscr, curses.LINES, curses.COLS)
+        obj.run()
+    
+    curses.wrapper(main)

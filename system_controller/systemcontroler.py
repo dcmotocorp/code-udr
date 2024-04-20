@@ -13,7 +13,7 @@ import os
 import spwd
 from pyroute2 import IPRoute
 from logs.udr_logger import UdrLogger
-
+import subprocess
 
 class SystemControler:
     def __init__(self) -> None:
@@ -53,7 +53,7 @@ class SystemControler:
 
 
         
-    def change_password(self, user_name, old_password, new_password):
+    def change_password(self, user_name, old_password=None, new_password=None):
         try:
             # Prepare the command to change the password using chpasswd
             command = f"echo '{user_name}:{new_password}' | sudo chpasswd"
@@ -181,6 +181,8 @@ class SystemControler:
         try:
             
             interface = self.get_default_interface()
+            if not interface:
+                return False
             connection_name = self.get_connection_name(interface=interface)
 
             # Construct the command based on whether secondary DNS is provided
@@ -219,11 +221,13 @@ class SystemControler:
             # Extract primary and secondary DNS servers
             primary_dns = dns_servers[0]
             secondary_dns = dns_servers[1] if len(dns_servers) > 1 else None
-            
+            self.logger_.log_info(" primary secondarye in {}  {}".format(primary_dns,secondary_dns))  
             return primary_dns,secondary_dns
         except FileNotFoundError:
+            self.logger_.log_info(" file not occure in {}".format(str(e)))
             return "", ""
         except Exception as e:
+            self.logger_.log_info(" exception occure in {}".format(str(e)))
             return "", ""
         
         
@@ -270,11 +274,10 @@ class SystemControler:
     def enable_lockdown_mode(self, user_name=None):
         try:
             # Disable all network interfaces
-            interfaces = self.get_default_interface()
+            # interface = self.get_default_interface()
             
-            for interface in interfaces:
-                self.reset_ip_down_interface(interface=interface)
-                subprocess.run(["sudo", "ip", "link", "set", interface, "down"])
+            # self.reset_ip_down_interface(interface=interface)
+            # subprocess.run(["sudo", "ip", "link", "set", interface, "down"])
 
             # Save iptables rules to a file
             # subprocess.run(["sudo", "iptables-save"], stdout=subprocess.PIPE, check=True, text=True, input="").stdout > "/etc/iptables/rules.v4"
@@ -284,7 +287,7 @@ class SystemControler:
 
             # Disable SSH
             subprocess.run(["sudo", "service", "ssh", "stop"])
-
+            self.restart_service()
             # Disable all user accounts except root
             # users = self.get_all_users()
             # root_users = self.get_root_users(users=users)
@@ -297,24 +300,24 @@ class SystemControler:
         except Exception as e:
             pass 
 
-    def exit_lockdown_mode(self, user_name):
+    def exit_lockdown_mode(self):
         try:
             # Load iptables rules from the file
             # subprocess.run(["sudo", "iptables-restore", "-c", "/etc/iptables/rules.v4"])
 
             # Enable all network interfaces
-            interfaces = self.get_default_interface()
-            for interface in interfaces:
-                subprocess.run(["sudo", "ip", "link", "set", interface, "up"])
+            # interface= self.get_default_interface()
+        
+            # subprocess.run(["sudo", "ip", "link", "set", interface, "up"])
 
             # Enable outgoing traffic
             # subprocess.run(["sudo", "iptables", "-D", "OUTPUT", "-j", "DROP"])
 
             # Enable SSH
             subprocess.run(["sudo", "service", "ssh", "start"])
-
-    
-        except Exception as e:
+            self.restart_service()
+        except Exception as ex:
+            self.logger_.log_info("Exception occure in exit lock down {}".format(str(ex)))
             pass 
     
     def lock_screen_linux(self):
@@ -358,13 +361,22 @@ class SystemControler:
         except Exception as e:
             return []
     
-    def enable_ssh(self):
-        subprocess.run(["sudo", "systemctl", "enable", "ssh"])
-        subprocess.run(["sudo", "systemctl", "start", "ssh"])
 
+
+
+    def enable_ssh(self):
+        try:
+            subprocess.run(["sudo", "systemctl", "enable", "ssh"], stderr=subprocess.DEVNULL)
+            subprocess.run(["sudo", "systemctl", "start", "ssh"], stderr=subprocess.DEVNULL)
+        except Exception as ex:
+            self.logger_.log_info("Exception occurred while cleaning enable screen: {}".format(str(ex)))
+    
     def disable_ssh(self):
-        subprocess.run(["sudo", "systemctl", "stop", "ssh"])
-        subprocess.run(["sudo", "systemctl", "disable", "ssh"])
+        try:
+            subprocess.run(["sudo", "systemctl", "stop", "ssh"], stderr=subprocess.DEVNULL)
+            subprocess.run(["sudo", "systemctl", "disable", "ssh"], stderr=subprocess.DEVNULL)
+        except Exception as ex:
+            self.logger_.log_info("Exception occurred while cleaning disable screen: {}".format(str(ex)))
 
     def start_all_containers(self):
         try:
@@ -389,8 +401,10 @@ class SystemControler:
             self.update_hosts_file(socket.gethostname(), new_hostname)
 
             # Run the hostnamectl command to set the new hostname
-            subprocess.run(['sudo', 'hostnamectl', 'set-hostname', new_hostname], check=True)
 
+            self.logger_.log_info("host name value in controller {} type {}".format(new_hostname,type(new_hostname)))
+            subprocess.run(['sudo', 'hostnamectl', 'set-hostname', str(new_hostname)], check=True)
+            
             return True, "host name changed"
         except subprocess.CalledProcessError as e:
             return False, f"Error: {str(e)}"
@@ -473,7 +487,8 @@ class SystemControler:
     def reset_ip_config(self):
         try:
             interface = self.get_default_interface()
-
+            if not interface:
+                return False
             # Release the DHCP lease
             subprocess.run(['sudo', 'dhclient', '-r', interface], check=True)
             # Flush the IP address configuration
@@ -554,14 +569,16 @@ class SystemControler:
     def set_dns_auto_assign(self):
         try:
             interface = self.get_default_interface()
+            if not interface :
+                return False
             connection_name = self.get_connection_name(interface)
 
             # Clear the custom DNS settings to revert to obtaining DNS automatically
-            subprocess.run(["nmcli", "con", "mod", connection_name, "ipv4.ignore-auto-dns", "no", "ipv4.dns", ""], check=True)
+            subprocess.run(["nmcli", "con", "mod", connection_name, "ipv4.ignore-auto-dns", "no", "ipv4.dns", ""], check=True,stderr=subprocess.DEVNULL)
 
             # Reactivate the connection to apply changes
-            subprocess.run(["nmcli", "con", "down", connection_name], check=True)
-            subprocess.run(["nmcli", "con", "up", connection_name], check=True)
+            subprocess.run(["nmcli", "con", "down", connection_name], check=True,stderr=subprocess.DEVNULL)
+            subprocess.run(["nmcli", "con", "up", connection_name], check=True,stderr=subprocess.DEVNULL)
 
             
             return True, "DNS configuration set to auto-assign successfully."
@@ -602,21 +619,24 @@ class SystemControler:
     def set_ip_configuration_manual(self, ip_address, subnet_mask, default_gateway):
         try:
             interface = self.get_default_interface()
+            if not interface :
+                return False
             connection_name = self.get_connection_name(interface=interface)
             # Check if the configuration already exists for the interface
             # Convert the subnet mask to CIDR notation
             cidr_subnet_mask = self.convert_subnet_mask_to_cidr(subnet_mask)
 
             # Set the IP address, subnet mask (in CIDR), and gateway
+            self.logger_.log_info("value for set_ip_configuration_manual {} {} {} {}".format(connection_name,ip_address,cidr_subnet_mask,default_gateway))
             subprocess.run(["nmcli", "con", "mod", connection_name,
                             "ipv4.addresses", f"{ip_address}/{cidr_subnet_mask}",
                             "ipv4.gateway", default_gateway,
-                            "ipv4.method", "manual"], check=True)
+                            "ipv4.method", "manual"],stderr=subprocess.DEVNULL)
 
             
             # Reactivate the connection to apply changes
-            subprocess.run(["nmcli", "con", "down", connection_name], check=True)
-            subprocess.run(["nmcli", "con", "up", connection_name], check=True)
+            subprocess.run(["nmcli", "con", "down", connection_name],stderr=subprocess.DEVNULL)
+            subprocess.run(["nmcli", "con", "up", connection_name],stderr=subprocess.DEVNULL)
 
             
             # # Bring up the interface
@@ -671,7 +691,7 @@ class SystemControler:
 
             return []
     
-    def set_dns_servers(self, ip_address, primary_dns, secondary_dns):
+    def set_dns_servers(self, primary_dns, secondary_dns):
         try:
             # Linux command to set DNS servers
             command = f"sudo nmcli connection modify 'Wired connection 1' ipv4.dns '{primary_dns} {secondary_dns}'"
@@ -1164,3 +1184,53 @@ Mask={mask}"""
                 })
 
         return interface_states
+    
+    def get_ipv4_address(self, interface):
+        with IPRoute() as ipr:
+            addresses = ipr.get_addr(label=interface, family=2)
+            if addresses:
+                return addresses[0].get_attr('IFA_ADDRESS')
+
+    def set_management_interface(self, interface):
+        try:
+            subprocess.run(["sudo", "ip", "link", "set", interface, "up"])
+            ip_address = self.get_ipv4_address(interface=interface)
+            print(ip_address)
+            if ip_address:
+                with IPRoute() as ipr:
+                    # Find the index of the specified interface
+                    index = ipr.link_lookup(ifname=interface)[0]
+                    print(f"this is index {index}")
+
+                    # Set the specified interface as the primary interface
+                    ipr.link('set', index=index, state='up')
+                    ipr.route('del', dst='default')
+                    ipr.route('add', dst='default', gateway=ip_address)
+        except Exception as e:
+            return False, f"error {str(e)}"
+
+        # Check if the command executed successfully
+        
+        return True, "Primary interface changed"
+    def restart_service(self):
+        try:
+            subprocess.run(["sudo", "systemctl", "restart", "configuration-app.service"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+        except Exception:
+            pass
+    
+    
+
+    def check_ssh_status(self):
+        try:
+            # Run systemctl command to check SSH service status
+            result = subprocess.run(['systemctl', 'is-active', 'ssh'], capture_output=True, text=True, check=True)
+            status = result.stdout.strip()  # Get the status output
+            
+            if status == 'active':
+                return True
+                
+            else:
+                return False
+        except subprocess.CalledProcessError:
+            return False
+

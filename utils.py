@@ -15,7 +15,7 @@ def shutdown_computer():
     elif system_type == "Linux":
         os.system("sudo shutdown -P now")
     else:
-        print("Unsupported operating system")
+        pass 
 
 
 def restart_computer():
@@ -27,7 +27,7 @@ def restart_computer():
     elif system_type == "Darwin":  # For macOS
         os.system("sudo shutdown -r now")
     else:
-        print("Unsupported operating system")
+        pass 
 
 
 
@@ -40,5 +40,4 @@ def get_ip_address():
         s.close()
         return ip_address
     except socket.error as e:
-        print("Error:", e)
         return None
