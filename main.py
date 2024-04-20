@@ -589,11 +589,12 @@ class NovaiguApplication:
                         selected_index = self.configuration_management_screen.selected_index
                         selected_label = self.configuration_management_screen.labels[selected_index]
                         if selected_label ==  IP_CONFIGURATION:
-                            if not self.is_management_interface_selected():
-                                
-                                return False
+                            
                             
                             if hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
+                                if not self.is_management_interface_selected():
+                                    return False
+                                
                                 if self.ip_config_adaptor.current_seleected_parameter ==0:
                                     self.ip_config_adaptor.set_ip_address_automatic()
                                     self.user_data_base.update_user_settings(self.username_input,ip_manual=False) 
