@@ -15,7 +15,7 @@ class UpdatePasswordScreen:
         self.current_status = "current_password"
         self.update_status = False
         self.autheticated_parameter = True
-        self.logger_ = UdrLogger()
+        self.logger_ = UdrLogger(is_debug=True)
         self.setup_update_password_screen()
 
     def setup_update_password_screen(self):

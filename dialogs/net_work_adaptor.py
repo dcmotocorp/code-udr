@@ -24,7 +24,7 @@ class NetworkAdaptorScreen:
         self.normal_color_pair = curses.color_pair(3) 
         self.selected_color_pair = curses.color_pair(5)
         self.user_data_base = UserDatabase()
-        self.logger_ = UdrLogger()
+        self.logger_ = UdrLogger(is_debug=True)
         self.selected_index= 0
         self.get_data_from_source()
         self.setup_network_adaptor_screen()

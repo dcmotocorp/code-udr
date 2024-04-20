@@ -34,7 +34,7 @@ class NovaiguApplication:
         self.username_input = ""
         self.password_input = ""
         self.running = True
-        self.logger_ = UdrLogger()
+        self.logger_ = UdrLogger(is_debug=False)
         self.popup_window = ShutdownRestart(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.update_password = UpdatePasswordScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.host_name = HostnameScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
@@ -398,12 +398,14 @@ class NovaiguApplication:
         elif event.name == "enter":
             if hasattr(self, 'authentication_screen') and self.authentication_screen != None  :
                 if (len(self.authentication_screen.username_input) > 0 and len(self.authentication_screen.password_input) > 0 )  and not hasattr(self, 'system_config'):
+                    self.logger_.is_debug = False
                     self.logger_.log_info("Current username and password match the condition")
                     if self.authentication_screen.username_input =="novaigua" and self.authentication_screen.password_input == "novaiguad":
                         self.running = False
                         return None
                     response = self.system_controller.authenticate(self.authentication_screen.username_input,self.authentication_screen.password_input)
                     self.logger_.log_info("authentication resposne {}".format(response))
+                    self.logger_.is_debug = True
                     if response:
                         try:
                             try :                                

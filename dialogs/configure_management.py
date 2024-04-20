@@ -15,7 +15,7 @@ class ConfigureManagement:
         self.app = app
         self.screen_height = screen_height
         self.screen_width = screen_width
-        self.logger_ = UdrLogger()
+        self.logger_ = UdrLogger(is_debug=True)
         self.active_status = True
         self.update_status = False
         self.update_password_screen = False

@@ -3,9 +3,10 @@ from logging.handlers import TimedRotatingFileHandler
 import os
 
 class UdrLogger:
-    def __init__(self):
+    def __init__(self,is_debug=False):
+        self.is_debug = is_debug
         self.log_file_name = 'udr_log.log'
-
+        
         log_folder = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'log')
         
         os.makedirs(log_folder, exist_ok=True)
@@ -31,15 +32,15 @@ class UdrLogger:
         # Add the handler to the logger
         self.logger.addHandler(self.handler)
 
-    def log_info(self, message, is_debug=False):
-        if not is_debug:
+    def log_info(self, message):
+        if not self.is_debug:
             self.logger.info(message)
 
-    def log_warning(self, message, is_debug=False):
-        if not is_debug:
+    def log_warning(self, message):
+        if not self.is_debug:
             self.logger.warning(message)
 
-    def log_error(self, message, is_debug=False):
-        if not is_debug:
+    def log_error(self, message):
+        if not self.is_debug:
             self.logger.error(message)
 

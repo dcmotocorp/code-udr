@@ -34,7 +34,7 @@ class NovaiguApplication:
         self.username_input = ""
         self.password_input = ""
         self.running = True
-        self.logger_ = UdrLogger()
+        self.logger_ = UdrLogger(is_debug=True)
         self.popup_window = ShutdownRestart(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.update_password = UpdatePasswordScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.host_name = HostnameScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)

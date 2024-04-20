@@ -16,7 +16,7 @@ class AuthenticationScreen:
         self.current_status = "username"
         self.autheticated_parameter = True
         self.shift_status = False
-        self.logger_ = UdrLogger()
+        self.logger_ = UdrLogger(is_debug=True)
         self.setup_authentication_screen()
 
     def setup_authentication_screen(self):

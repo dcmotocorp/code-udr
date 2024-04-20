@@ -17,7 +17,7 @@ class HostnameScreen:
         self.update_status = False
         self.shift_status = False
         self.system_controller  = SystemControler()
-        self.logger_ = UdrLogger()
+        self.logger_ = UdrLogger(is_debug=True)
         self.setup_hostname_screen()
 
     def setup_hostname_screen(self):

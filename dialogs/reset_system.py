@@ -16,7 +16,7 @@ class ResetScreen:
         self.labels = ["[ ] Yes", "[ ] No"]
         self.normal_color_pair = curses.color_pair(3) 
         self.selected_color_pair = curses.color_pair(5)
-        self.logger_ = UdrLogger()
+        self.logger_ = UdrLogger(is_debug=Trues)
         self.selected_index= 0
         self.user_data_base = UserDatabase()
         self.current_label_head = None

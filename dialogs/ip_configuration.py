@@ -24,7 +24,7 @@ class IPConfigurationScreen:
         self.labels = [OBTAIN_IP_AUTOMATIC, MANUALLY_IP_AUTOMATIC]
         self.normal_color_pair = curses.color_pair(3) 
         self.selected_color_pair = curses.color_pair(5)
-        self.logger_ = UdrLogger()
+        self.logger_ = UdrLogger(is_debug=True)
         self.selected_index= 0
         self.system_controller = SystemControler()
         self.ip_address = "192.168.1.1"
