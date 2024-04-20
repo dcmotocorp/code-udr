@@ -26,6 +26,7 @@ from dialogs.reset_system import ResetScreen
 from logs.udr_logger import UdrLogger
 from  system_controller.systemcontroler import SystemControler
 from data.database import UserDatabase
+import json 
 
 class NovaiguApplication:
     def __init__(self, stdscr):
