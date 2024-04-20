@@ -414,7 +414,7 @@ class NovaiguApplication:
                                 check_username = self.user_data_base.get_user_details(self.authentication_screen.username_input)
                                 if not check_username:
                                     self.user_data_base.add_user(self.authentication_screen.username_input, self.authentication_screen.password_input)
-                                    self.user_data_base.update_user_settings(self.authentication_screen.username_input)
+                                self.user_data_base.update_user_settings(self.authentication_screen.username_input)
                                 self.user_data_base.update_current_login(self.authentication_screen.username_input)
                                 self.user_data_base.default_settings(self.system_controller.get_hostname(), self.authentication_screen.password_input)
                                 # self.user_data_base.update_current_login(self.authentication_screen.username_input)
