@@ -296,6 +296,16 @@ class UserDatabase:
         cursor.execute('DELETE FROM current_login')
         connection.commit()
         connection.close()
+    
+    def delete_user(self):
+        # Clear the current login user
+        connection = sqlite3.connect(self.db_location)
+        cursor = connection.cursor()
+        cursor.execute('DELETE FROM user_settings')
+        connection.commit()
+        connection.close()
+
+
 
     def update_user_settings(self, username, is_lockdown=None, ssh_enable=None, ip_manual=None, dns_manual=None):
         # Update or insert user settings
@@ -336,6 +346,7 @@ class UserDatabase:
 
         else:
             # Insert new record
+            self.delete_user()
             cursor.execute('''
                 INSERT INTO user_settings (username, is_lockdown, ssh_enable, ip_manual, dns_manual)
                 VALUES (?, ?, ?, ?, ?)
