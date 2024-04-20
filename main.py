@@ -589,7 +589,8 @@ class NovaiguApplication:
                         selected_index = self.configuration_management_screen.selected_index
                         selected_label = self.configuration_management_screen.labels[selected_index]
                         if selected_label ==  IP_CONFIGURATION:
-                            if not self.is_management_interface_selected:
+                            if not self.is_management_interface_selected():
+                                
                                 return False
                             
                             if hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
@@ -637,7 +638,7 @@ class NovaiguApplication:
 
                         elif  selected_label ==  DNS_SERVER:
                             if hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
-                                if not self.is_management_interface_selected:
+                                if not self.is_management_interface_selected():
                                     return False
                                 
                                 if self.dns_screen.current_selected_label_index ==0:
