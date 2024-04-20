@@ -54,6 +54,9 @@ class NovaiguApplication:
             self.system_controller.set_management_interface(data[2])
         self.logger_.is_debug = True
     
+    def is_management_interface_selected(self):
+        data =  self.user_data_base.get_interfaces_data("MGMT_INTERFACE")
+        return data 
 
     def get_interface_list(self):
         data = self.system_controller.get_management_interface_details()
@@ -586,6 +589,9 @@ class NovaiguApplication:
                         selected_index = self.configuration_management_screen.selected_index
                         selected_label = self.configuration_management_screen.labels[selected_index]
                         if selected_label ==  IP_CONFIGURATION:
+                            if not self.is_management_interface_selected:
+                                return False
+                            
                             if hasattr(self, 'ip_config_adaptor')  and self.ip_config_adaptor !=None and self.ip_config_adaptor.update_status == True:
                                 if self.ip_config_adaptor.current_seleected_parameter ==0:
                                     self.ip_config_adaptor.set_ip_address_automatic()
@@ -631,6 +637,9 @@ class NovaiguApplication:
 
                         elif  selected_label ==  DNS_SERVER:
                             if hasattr(self, 'dns_screen')  and self.dns_screen !=None and self.dns_screen.update_status == True:
+                                if not self.is_management_interface_selected:
+                                    return False
+                                
                                 if self.dns_screen.current_selected_label_index ==0:
                                     self.dns_screen.set_auto_dns()
                                     self.user_data_base.update_user_settings(self.username_input,dns_manual=False)
