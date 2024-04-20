@@ -40,15 +40,19 @@ class NovaiguApplication:
         self.host_name = HostnameScreen(stdscr.getmaxyx()[0], stdscr.getmaxyx()[1], self)
         self.system_controller  = SystemControler()
         self.user_data_base = UserDatabase()
+        self.pre_event()
         self.mgmt_interface =self.user_data_base
         self.debug_status = False
         self.setup_windows()
     
     def pre_event(self):
+        self.logger_.is_debug = False 
+        self.logger_.log_info("prevent call ")
         data =  self.user_data_base.get_interfaces_data("MGMT_INTERFACE")
         if data:
+            self.logger_.log_info("preevent data found {}".format(json.dumps(data)))
             self.system_controller.set_management_interface(data[2])
-    
+        self.logger_.is_debug = True
     
 
     def get_interface_list(self):
