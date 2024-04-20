@@ -301,6 +301,8 @@ class UserDatabase:
         # Update or insert user settings
         # ip_manual BOOLEAN,
         # dns_manual BOOLEAN,
+        if len(username.strip()) ==0:
+            return False 
         connection = sqlite3.connect(self.db_location)
         cursor = connection.cursor()
 
